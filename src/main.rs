@@ -1,5 +1,6 @@
 mod common;
 mod http;
+mod opts;
 mod routes;
 mod user_pools;
 
@@ -15,7 +16,8 @@ fn setup_logger() {
 #[tokio::main]
 async fn main() {
     setup_logger();
-    user_pools::init_config(None).await;
+    opts::init_opt().await;
+    user_pools::init_config(opts::get_opt_config()).await;
 
     warp::serve(routes::user_pools_routes())
         .run(([127, 0, 0, 1], 8080))

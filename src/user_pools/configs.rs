@@ -1,5 +1,5 @@
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::{collections::HashMap, path::PathBuf};
 use tokio::sync::OnceCell;
 
 const DEFAULT_USER_POOLS_CONFIG_PATH: &str = "./user_pools.yml";
@@ -15,15 +15,18 @@ pub struct Config {
 }
 
 /// Initializes global config.
-pub async fn init_config(path: Option<&str>) {
+pub async fn init_config(path: Option<&PathBuf>) {
     CONFIG
         .get_or_init(|| async { read_config(path).ok() })
         .await;
 }
 
-fn read_config(path: Option<&str>) -> Result<Config, Box<dyn std::error::Error>> {
-    let path = path.unwrap_or(DEFAULT_USER_POOLS_CONFIG_PATH);
+fn read_config(path: Option<&PathBuf>) -> Result<Config, Box<dyn std::error::Error>> {
+    let default_path = PathBuf::from(DEFAULT_USER_POOLS_CONFIG_PATH);
+    let path = path.unwrap_or(&default_path);
     let s = std::fs::read_to_string(path)?;
+
+    log::info!("read config: {}", path.display());
     let m: Config = serde_yaml::from_str(&s)?;
     Ok(m)
 }
@@ -42,7 +45,7 @@ mod tests {
 
     #[test]
     fn success_to_read_valid_config() {
-        let config = read_config(Some(VALID_TEST_CONFIG));
+        let config = read_config(Some(&PathBuf::from(VALID_TEST_CONFIG)));
         assert!(config.is_ok());
 
         let admin_add_user_to_group = config.unwrap().admin_add_user_to_group;
@@ -55,7 +58,7 @@ mod tests {
 
     #[test]
     fn error_to_read_invalid_config() {
-        let config = read_config(Some(INVALID_TEST_CONFIG));
+        let config = read_config(Some(&PathBuf::from(INVALID_TEST_CONFIG)));
         assert!(config.is_err());
     }
 }
