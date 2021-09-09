@@ -15,6 +15,7 @@ fn setup_logger() {
 #[tokio::main]
 async fn main() {
     setup_logger();
+    user_pools::init_config(None).await;
 
     warp::serve(routes::user_pools_routes())
         .run(([127, 0, 0, 1], 8080))

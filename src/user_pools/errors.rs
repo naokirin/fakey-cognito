@@ -1,5 +1,5 @@
+use super::ToStatusCode;
 use crate::http;
-use crate::user_pools::ToStatusCode;
 use hyper::StatusCode;
 use std::fmt::Display;
 use strum_macros::{Display, EnumString};
@@ -56,7 +56,7 @@ impl ToStatusCode for CommonError {
 /// Response errors for any actions.
 pub enum ResponseError<T>
 where
-    T: std::fmt::Display + ToStatusCode,
+    T: std::fmt::Display + ToStatusCode + std::str::FromStr,
 {
     ActionError(T),
     CommonError(CommonError),
@@ -64,7 +64,7 @@ where
 
 impl<T> ToStatusCode for ResponseError<T>
 where
-    T: std::fmt::Display + ToStatusCode,
+    T: std::fmt::Display + ToStatusCode + std::str::FromStr,
 {
     fn to_status_code(&self) -> StatusCode {
         match self {
@@ -76,12 +76,25 @@ where
 
 impl<T> Display for ResponseError<T>
 where
-    T: std::fmt::Display + ToStatusCode,
+    T: std::fmt::Display + ToStatusCode + std::str::FromStr,
 {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
             ResponseError::<T>::CommonError(err) => write!(f, "{}", err.to_string()),
             ResponseError::ActionError(err) => write!(f, "{}", err.to_string()),
         }
+    }
+}
+
+impl<T> std::str::FromStr for ResponseError<T>
+where
+    T: std::fmt::Display + ToStatusCode + std::str::FromStr,
+{
+    type Err = strum::ParseError;
+
+    fn from_str(s: &str) -> Result<Self, strum::ParseError> {
+        T::from_str(s)
+            .map(|e| ResponseError::ActionError(e))
+            .or(CommonError::from_str(s).map(|e| ResponseError::CommonError(e)))
     }
 }
