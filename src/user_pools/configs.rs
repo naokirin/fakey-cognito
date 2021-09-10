@@ -1,28 +1,35 @@
-use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, path::PathBuf};
 use tokio::sync::OnceCell;
+use tera::Tera;
+
+pub type Config = HashMap<String, HashMap<String, String>>;
 
 const DEFAULT_USER_POOLS_CONFIG_PATH: &str = "./user_pools.yml";
-static CONFIG: OnceCell<Option<Config>> = OnceCell::const_new();
+static CONFIG: OnceCell<Config> = OnceCell::const_new();
+static TEMPLATES: OnceCell<HashMap<String, Tera>> = OnceCell::const_new();
 
 pub const CONFIG_STATUS_NAME: &str = "status_name";
 pub const CONFIG_TEMPLATE_NAME: &str = "template";
 
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(rename_all = "PascalCase")]
-pub struct Config {
-    pub admin_add_user_to_group: Option<HashMap<String, String>>,
-    pub admin_confirm_sign_up: Option<HashMap<String, String>>,
-}
-
-pub trait GetConfig {
-    fn get_config(name: &String) -> Option<String>;
+pub fn get_config(action: &str, name: &String) -> Option<String> {
+    super::config().get(action)
+            .unwrap_or(&HashMap::new())
+            .get(name)
+            .map(|c| c.clone())
 }
 
 /// Initializes global config.
 pub async fn init_config(path: Option<&PathBuf>) {
     CONFIG
-        .get_or_init(|| async { read_config(path).ok() })
+        .get_or_init(|| async {
+            match read_config(path) {
+                Ok(c) => c,
+                Err(e) => {
+                    log::error!("{}", e);
+                    HashMap::new()
+                }
+            }
+        })
         .await;
 }
 
@@ -37,8 +44,8 @@ fn read_config(path: Option<&PathBuf>) -> Result<Config, Box<dyn std::error::Err
 }
 
 /// Returns config.
-pub fn config() -> &'static Option<Config> {
-    CONFIG.get().unwrap_or(&None)
+pub fn config() -> &'static Config {
+    CONFIG.get().unwrap()
 }
 
 #[cfg(test)]
@@ -54,7 +61,7 @@ mod tests {
         let config = read_config(Some(&PathBuf::from(VALID_TEST_CONFIG)));
         assert!(config.is_ok());
 
-        let admin_add_user_to_group = config.unwrap().admin_add_user_to_group;
+        let admin_add_user_to_group = config.as_ref().unwrap().get("AdminAddUserToGroup");
         assert!(admin_add_user_to_group.is_some());
         assert_eq!(
             Some(&"InternalFailure".to_string()),

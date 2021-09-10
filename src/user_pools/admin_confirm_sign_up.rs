@@ -45,16 +45,9 @@ pub struct AdminConfirmSignUpRequest {
     pub version: Option<String>,
 }
 
-impl super::GetConfig for AdminConfirmSignUpRequest {
-    /// Get config.
-    fn get_config(name: &String) -> Option<String> {
-        super::config()
-            .as_ref()
-            .map(|c| c.admin_confirm_sign_up.as_ref())
-            .unwrap_or(None)
-            .unwrap_or(&std::collections::HashMap::new())
-            .get(name)
-            .map(|c| c.clone())
+impl super::ToActionName for AdminConfirmSignUpRequest {
+    fn to_action_name() -> &'static str {
+        "AdminConfirmSignUp"
     }
 }
 

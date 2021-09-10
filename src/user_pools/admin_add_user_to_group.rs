@@ -37,16 +37,9 @@ pub struct AdminAddUserToGroupRequest {
     pub version: Option<String>,
 }
 
-impl super::GetConfig for AdminAddUserToGroupRequest {
-    /// Get config.
-    fn get_config(name: &String) -> Option<String> {
-        super::config()
-            .as_ref()
-            .map(|c| c.admin_add_user_to_group.as_ref())
-            .unwrap_or(None)
-            .unwrap_or(&std::collections::HashMap::new())
-            .get(name)
-            .map(|c| c.clone())
+impl super::ToActionName for AdminAddUserToGroupRequest {
+    fn to_action_name() -> &'static str {
+        "AdminAddUserToGroup"
     }
 }
 
