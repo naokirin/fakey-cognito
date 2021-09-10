@@ -58,7 +58,9 @@ where
     E: std::str::FromStr + std::fmt::Display + ToStatusCode,
 {
     use std::str::FromStr;
-    if let Some(name) = super::get_config(R::to_action_name(), &super::CONFIG_STATUS_NAME.to_string()) {
+    if let Some(name) =
+        super::get_config(R::to_action_name(), &super::CONFIG_STATUS_NAME.to_string())
+    {
         let error = super::ResponseError::<E>::from_str(name.as_str());
         if let Ok(e) = error {
             return Some(super::error_response(e));

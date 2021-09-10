@@ -1,21 +1,19 @@
 use std::{collections::HashMap, path::PathBuf};
 use tokio::sync::OnceCell;
-use tera::Tera;
 
 pub type Config = HashMap<String, HashMap<String, String>>;
 
 const DEFAULT_USER_POOLS_CONFIG_PATH: &str = "./user_pools.yml";
 static CONFIG: OnceCell<Config> = OnceCell::const_new();
-static TEMPLATES: OnceCell<HashMap<String, Tera>> = OnceCell::const_new();
 
 pub const CONFIG_STATUS_NAME: &str = "status_name";
-pub const CONFIG_TEMPLATE_NAME: &str = "template";
 
 pub fn get_config(action: &str, name: &String) -> Option<String> {
-    super::config().get(action)
-            .unwrap_or(&HashMap::new())
-            .get(name)
-            .map(|c| c.clone())
+    super::config()
+        .get(action)
+        .unwrap_or(&HashMap::new())
+        .get(name)
+        .map(|c| c.clone())
 }
 
 /// Initializes global config.

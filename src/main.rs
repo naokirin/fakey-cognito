@@ -2,6 +2,7 @@ mod common;
 mod http;
 mod opts;
 mod routes;
+mod templates;
 mod user_pools;
 
 const DEFAULT_LOG_LEVEL: &str = "debug";
@@ -17,7 +18,11 @@ fn setup_logger() {
 async fn main() {
     setup_logger();
     opts::init_opt().await;
-    user_pools::init_config(opts::get_opt_config()).await;
+    let templates_opt = opts::get_opt_templates();
+    tokio::join!(
+        user_pools::init_config(opts::get_opt_config()),
+        templates::init_template(templates_opt.map(String::as_str)),
+    );
 
     warp::serve(routes::user_pools_routes())
         .run(([127, 0, 0, 1], 8080))

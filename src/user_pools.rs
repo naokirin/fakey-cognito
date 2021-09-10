@@ -1,9 +1,9 @@
+mod actions;
 mod admin_add_user_to_group;
 mod admin_confirm_sign_up;
 mod configs;
 mod errors;
 mod responses;
-mod actions;
 
 pub use self::actions::*;
 pub use self::admin_add_user_to_group::*;
