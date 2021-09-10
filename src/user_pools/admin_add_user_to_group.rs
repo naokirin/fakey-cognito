@@ -4,9 +4,6 @@ use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 use strum_macros::{Display, EnumString};
 
-use super::CommonError;
-use super::ToStatusCode;
-
 /// AdminAddUserToGroup response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminAddUserToGroup.html#API_AdminAddUserToGroup_Errors
 #[derive(Display, EnumString)]
@@ -19,7 +16,7 @@ pub enum AdminAddUserToGroupError {
     UserNotFoundException,
 }
 
-impl ToStatusCode for AdminAddUserToGroupError {
+impl super::ToStatusCode for AdminAddUserToGroupError {
     fn to_status_code(&self) -> hyper::StatusCode {
         match self {
             AdminAddUserToGroupError::InvalidParameterException
@@ -41,9 +38,23 @@ pub struct AdminAddUserToGroupRequest {
     pub version: Option<String>,
 }
 
+impl super::GetConfig for AdminAddUserToGroupRequest {
+    /// Get config.
+    fn get_config(name: &String) -> Option<String> {
+        super::config()
+            .as_ref()
+            .map(|c| c.admin_add_user_to_group.as_ref())
+            .unwrap_or(None)
+            .unwrap_or(&std::collections::HashMap::new())
+            .get(name)
+            .map(|c| c.clone())
+    }
+}
+
 impl super::IntoResponse for AdminAddUserToGroupRequest {
     fn into_response(&self) -> super::Response {
-        if let Some(name) = config(&super::CONFIG_STATUS_NAME.to_string()) {
+        use crate::user_pools::configs::GetConfig;
+        if let Some(name) = Self::get_config(&super::CONFIG_STATUS_NAME.to_string()) {
             let error = super::ResponseError::<AdminAddUserToGroupError>::from_str(name.as_str());
             if let Ok(e) = error {
                 return super::error_response(e);
@@ -52,7 +63,7 @@ impl super::IntoResponse for AdminAddUserToGroupRequest {
 
         if valid_request(&self) {
             let error = super::ResponseError::<AdminAddUserToGroupError>::CommonError(
-                CommonError::InvalidParameterValue,
+                super::CommonError::InvalidParameterValue,
             );
             return super::error_response(error);
         }
@@ -70,17 +81,6 @@ fn valid_request(request: &AdminAddUserToGroupRequest) -> bool {
         && !common::is_blank(&request.user_name)
         && !common::is_blank(&request.user_pool_id)
         && !common::is_blank(&request.version)
-}
-
-/// Get config.
-fn config(name: &String) -> Option<String> {
-    super::config()
-        .as_ref()
-        .map(|c| c.admin_add_user_to_group.as_ref())
-        .unwrap_or(None)
-        .unwrap_or(&std::collections::HashMap::new())
-        .get(name)
-        .map(|c| c.clone())
 }
 
 #[cfg(test)]
@@ -112,6 +112,8 @@ mod tests {
 
     #[test]
     fn error_can_convert_to_status_code() {
+        use crate::user_pools::ToStatusCode;
+
         let error = AdminAddUserToGroupError::InvalidParameterException;
         assert_eq!(http::status_code(400), error.to_status_code());
 

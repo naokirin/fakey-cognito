@@ -14,6 +14,10 @@ pub struct Config {
     pub admin_add_user_to_group: Option<HashMap<String, String>>,
 }
 
+pub trait GetConfig {
+    fn get_config(name: &String) -> Option<String>;
+}
+
 /// Initializes global config.
 pub async fn init_config(path: Option<&PathBuf>) {
     CONFIG
