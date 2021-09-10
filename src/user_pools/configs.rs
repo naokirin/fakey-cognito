@@ -12,6 +12,7 @@ pub const CONFIG_TEMPLATE_NAME: &str = "template";
 #[serde(rename_all = "PascalCase")]
 pub struct Config {
     pub admin_add_user_to_group: Option<HashMap<String, String>>,
+    pub admin_confirm_sign_up: Option<HashMap<String, String>>,
 }
 
 pub trait GetConfig {

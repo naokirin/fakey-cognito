@@ -3,26 +3,34 @@ use crate::http;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
 
-/// AdminAddUserToGroup response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminAddUserToGroup.html#API_AdminAddUserToGroup_Errors
+/// AdminConfirmSignUp response errors.
+/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminConfirmSignUp.html#API_AdminConfirmSignUp_Errors
 #[derive(Display, EnumString)]
-pub enum AdminAddUserToGroupError {
+pub enum AdminConfirmSignUpError {
     InternalErrorException,
+    InvalidLambdaResponseException,
     InvalidParameterException,
+    LimitExceededException,
     NotAuthorizedException,
     ResourceNotFoundException,
+    TooManyFailedAttemptsException,
     TooManyRequestsException,
+    UseLambdaValidationException,
     UserNotFoundException,
 }
 
-impl super::ToStatusCode for AdminAddUserToGroupError {
+impl super::ToStatusCode for AdminConfirmSignUpError {
     fn to_status_code(&self) -> hyper::StatusCode {
         match self {
-            AdminAddUserToGroupError::InvalidParameterException
-            | AdminAddUserToGroupError::NotAuthorizedException
-            | AdminAddUserToGroupError::ResourceNotFoundException
-            | AdminAddUserToGroupError::TooManyRequestsException
-            | AdminAddUserToGroupError::UserNotFoundException => http::status_code(400),
+            AdminConfirmSignUpError::InvalidParameterException
+            | AdminConfirmSignUpError::InvalidLambdaResponseException
+            | AdminConfirmSignUpError::LimitExceededException
+            | AdminConfirmSignUpError::NotAuthorizedException
+            | AdminConfirmSignUpError::ResourceNotFoundException
+            | AdminConfirmSignUpError::TooManyFailedAttemptsException
+            | AdminConfirmSignUpError::TooManyRequestsException
+            | AdminConfirmSignUpError::UseLambdaValidationException
+            | AdminConfirmSignUpError::UserNotFoundException => http::status_code(400),
             _ => http::status_code(500),
         }
     }
@@ -30,19 +38,19 @@ impl super::ToStatusCode for AdminAddUserToGroupError {
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "PascalCase")]
-pub struct AdminAddUserToGroupRequest {
-    pub group_name: Option<String>,
+pub struct AdminConfirmSignUpRequest {
+    pub client_metadata: Option<std::collections::HashMap<String, String>>,
     pub username: Option<String>,
     pub user_pool_id: Option<String>,
     pub version: Option<String>,
 }
 
-impl super::GetConfig for AdminAddUserToGroupRequest {
+impl super::GetConfig for AdminConfirmSignUpRequest {
     /// Get config.
     fn get_config(name: &String) -> Option<String> {
         super::config()
             .as_ref()
-            .map(|c| c.admin_add_user_to_group.as_ref())
+            .map(|c| c.admin_confirm_sign_up.as_ref())
             .unwrap_or(None)
             .unwrap_or(&std::collections::HashMap::new())
             .get(name)
@@ -50,15 +58,16 @@ impl super::GetConfig for AdminAddUserToGroupRequest {
     }
 }
 
-impl super::IntoResponse for AdminAddUserToGroupRequest {
+impl super::IntoResponse for AdminConfirmSignUpRequest {
     fn into_response(&self) -> super::Response {
         if let Some(response) =
-            super::config_response::<AdminAddUserToGroupRequest, AdminAddUserToGroupError>()
+            super::config_response::<AdminConfirmSignUpRequest, AdminConfirmSignUpError>()
         {
             return response;
         };
+
         if !valid_request(&self) {
-            let error = super::ResponseError::<AdminAddUserToGroupError>::CommonError(
+            let error = super::ResponseError::<AdminConfirmSignUpError>::CommonError(
                 super::CommonError::InvalidParameterValue,
             );
             return super::error_response(error);
@@ -72,9 +81,8 @@ impl super::IntoResponse for AdminAddUserToGroupRequest {
 }
 
 /// Validates request.
-fn valid_request(request: &AdminAddUserToGroupRequest) -> bool {
-    !common::is_blank(&request.group_name)
-        && !common::is_blank(&request.username)
+fn valid_request(request: &AdminConfirmSignUpRequest) -> bool {
+    !common::is_blank(&request.username)
         && !common::is_blank(&request.user_pool_id)
         && !common::is_blank(&request.version)
 }
@@ -86,8 +94,8 @@ mod tests {
 
     #[test]
     fn success_to_valid_request() {
-        let request = AdminAddUserToGroupRequest {
-            group_name: Some("group_name".to_string()),
+        let request = AdminConfirmSignUpRequest {
+            client_metadata: Some(std::collections::HashMap::new()),
             username: Some("username".to_string()),
             user_pool_id: Some("user_pool_id".to_string()),
             version: Some("version".to_string()),
@@ -97,8 +105,8 @@ mod tests {
 
     #[test]
     fn failure_to_valid_request() {
-        let request = AdminAddUserToGroupRequest {
-            group_name: Some("group_name".to_string()),
+        let request = AdminConfirmSignUpRequest {
+            client_metadata: Some(std::collections::HashMap::new()),
             username: Some("username".to_string()),
             user_pool_id: Some("user_pool_id".to_string()),
             version: Some("".to_string()),
@@ -110,10 +118,10 @@ mod tests {
     fn error_can_convert_to_status_code() {
         use crate::user_pools::ToStatusCode;
 
-        let error = AdminAddUserToGroupError::InvalidParameterException;
+        let error = AdminConfirmSignUpError::InvalidParameterException;
         assert_eq!(http::status_code(400), error.to_status_code());
 
-        let error = AdminAddUserToGroupError::InternalErrorException;
+        let error = AdminConfirmSignUpError::InternalErrorException;
         assert_eq!(http::status_code(500), error.to_status_code());
     }
 }

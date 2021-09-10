@@ -67,6 +67,7 @@ fn post_routes(
         "AdminAddUserToGroup" => {
             user_pools::response::<user_pools::AdminAddUserToGroupRequest>(body)
         }
+        "AdminConfirmSignUp" => user_pools::response::<user_pools::AdminConfirmSignUpRequest>(body),
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,
         )),

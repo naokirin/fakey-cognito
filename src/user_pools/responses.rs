@@ -52,13 +52,14 @@ where
         .unwrap()
 }
 
-pub fn config_response<T>() -> Option<Response>
+pub fn config_response<R, E>() -> Option<Response>
 where
-    T: std::str::FromStr + std::fmt::Display + ToStatusCode + super::GetConfig,
+    R: super::GetConfig,
+    E: std::str::FromStr + std::fmt::Display + ToStatusCode,
 {
     use std::str::FromStr;
-    if let Some(name) = T::get_config(&super::CONFIG_STATUS_NAME.to_string()) {
-        let error = super::ResponseError::<T>::from_str(name.as_str());
+    if let Some(name) = R::get_config(&super::CONFIG_STATUS_NAME.to_string()) {
+        let error = super::ResponseError::<E>::from_str(name.as_str());
         if let Ok(e) = error {
             return Some(super::error_response(e));
         }
