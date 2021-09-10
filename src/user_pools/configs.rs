@@ -39,6 +39,7 @@ pub fn config() -> &'static Option<Config> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use pretty_assertions::assert_eq;
 
     const VALID_TEST_CONFIG: &str = "resources/test/test_valid_user_pools.yml";
     const INVALID_TEST_CONFIG: &str = "resources/test/test_invalid_user_pools.yml";

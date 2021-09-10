@@ -52,11 +52,27 @@ where
         .unwrap()
 }
 
+pub fn config_response<T>() -> Option<Response>
+where
+    T: std::str::FromStr + std::fmt::Display + ToStatusCode + super::GetConfig,
+{
+    use std::str::FromStr;
+    if let Some(name) = T::get_config(&super::CONFIG_STATUS_NAME.to_string()) {
+        let error = super::ResponseError::<T>::from_str(name.as_str());
+        if let Ok(e) = error {
+            return Some(super::error_response(e));
+        }
+    }
+
+    return None;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::http;
     use crate::user_pools::{CommonError, ResponseError};
+    use pretty_assertions::assert_eq;
     use strum_macros::{Display, EnumString};
 
     #[derive(Display, EnumString)]
