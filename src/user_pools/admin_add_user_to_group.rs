@@ -3,6 +3,8 @@ use crate::http;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
 
+pub const ADMIN_ADD_USER_TO_GROUP_NAME: &str = "AdminAddUserToGroup";
+
 /// AdminAddUserToGroup response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminAddUserToGroup.html#API_AdminAddUserToGroup_Errors
 #[derive(Display, EnumString)]
@@ -39,7 +41,7 @@ pub struct AdminAddUserToGroupRequest {
 
 impl super::ToActionName for AdminAddUserToGroupRequest {
     fn to_action_name() -> &'static str {
-        "AdminAddUserToGroup"
+        ADMIN_ADD_USER_TO_GROUP_NAME
     }
 }
 

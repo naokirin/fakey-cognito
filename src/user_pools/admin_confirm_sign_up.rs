@@ -3,6 +3,8 @@ use crate::http;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
 
+pub const ADMIN_CONFIRM_SIGN_UP_NAME: &str = "AdminConfirmSignUp";
+
 /// AdminConfirmSignUp response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminConfirmSignUp.html#API_AdminConfirmSignUp_Errors
 #[derive(Display, EnumString)]
@@ -47,7 +49,7 @@ pub struct AdminConfirmSignUpRequest {
 
 impl super::ToActionName for AdminConfirmSignUpRequest {
     fn to_action_name() -> &'static str {
-        "AdminConfirmSignUp"
+        ADMIN_CONFIRM_SIGN_UP_NAME
     }
 }
 

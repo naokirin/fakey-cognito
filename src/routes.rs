@@ -64,10 +64,12 @@ fn post_routes(
     };
 
     match target.as_str() {
-        "AdminAddUserToGroup" => {
+        user_pools::ADMIN_ADD_USER_TO_GROUP_NAME => {
             user_pools::response::<user_pools::AdminAddUserToGroupRequest>(body)
         }
-        "AdminConfirmSignUp" => user_pools::response::<user_pools::AdminConfirmSignUpRequest>(body),
+        user_pools::ADMIN_CONFIRM_SIGN_UP_NAME => {
+            user_pools::response::<user_pools::AdminConfirmSignUpRequest>(body)
+        }
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,
         )),
