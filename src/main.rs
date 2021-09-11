@@ -22,8 +22,8 @@ async fn main() {
     tokio::join!(
         user_pools::init_config(opts::get_opt_config()),
         templates::init_template(templates_opt.map(String::as_str)),
+        templates::init_default_template()
     );
-
     warp::serve(routes::user_pools_routes())
         .run(([127, 0, 0, 1], 8080))
         .await;

@@ -1,0 +1,9 @@
+{
+    "User": { 
+       "Enabled": true,
+       "UserCreateDate": {{ now() | date(format="%Y%m%d%H%M%S" )}},
+       "UserLastModifiedDate": {{ now() | date(format="%Y%m%d%H%M%S" )}},
+       "Username": "{{Username}}",
+       "UserStatus": "FORCE_CHANGE_PASSWORD"
+    }
+ }

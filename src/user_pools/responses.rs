@@ -22,14 +22,10 @@ pub fn empty_body() -> hyper::Body {
 }
 
 /// Returns body with json serialized value.
-pub fn json_body<T>(value: T) -> hyper::Body
-where
-    T: Serialize,
-{
-    hyper::Body::from(serde_json::to_string(&value).unwrap())
+pub fn json_body(value: &String) -> hyper::Body {
+    hyper::Body::from(value.clone())
 }
 
-// TODO
 pub fn response<'a, T>(body: &'a Bytes) -> UserPoolsResponseResult
 where
     T: Serialize + for<'de> Deserialize<'de> + IntoResponse,

@@ -8,11 +8,11 @@ pub static OPT: OnceCell<Opt> = OnceCell::const_new();
 #[structopt(name = "fakey-cognito", about = "Fake cognito api server.")]
 pub struct Opt {
     /// Read specific config path
-    #[structopt(long, name = "path", parse(from_os_str))]
+    #[structopt(long, name = "config_path", parse(from_os_str))]
     pub config: Option<PathBuf>,
 
     /// Read specific templates directory path
-    #[structopt(long, name = "path")]
+    #[structopt(long, name = "templates_path")]
     pub templates: Option<String>,
 }
 

@@ -33,7 +33,15 @@ pub async fn init_config(path: Option<&PathBuf>) {
 
 fn read_config(path: Option<&PathBuf>) -> Result<Config, Box<dyn std::error::Error>> {
     let default_path = PathBuf::from(DEFAULT_USER_POOLS_CONFIG_PATH);
+    if path == None && !default_path.exists() {
+        return Ok(Default::default());
+    }
     let path = path.unwrap_or(&default_path);
+    if !path.exists() {
+        log::error!("No such file or directory: `{}`", path.display());
+        return Ok(Default::default());
+    }
+
     let s = std::fs::read_to_string(path)?;
 
     log::info!("read config: {}", path.display());

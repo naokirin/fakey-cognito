@@ -70,6 +70,10 @@ fn post_routes(
         user_pools::ADMIN_CONFIRM_SIGN_UP_NAME => {
             user_pools::response::<user_pools::AdminConfirmSignUpRequest>(body)
         }
+        user_pools::ADMIN_CREATE_USER_NAME => {
+            user_pools::response::<user_pools::AdminCreateUserRequest>(body)
+        }
+
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,
         )),
