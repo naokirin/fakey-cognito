@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
 
 pub const ADMIN_ADD_USER_TO_GROUP_NAME: &str = "AdminAddUserToGroup";
+pub const ADMIN_ADD_USER_TO_GROUP_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.AdminAddUserToGroup";
 
 /// AdminAddUserToGroup response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminAddUserToGroup.html#API_AdminAddUserToGroup_Errors
@@ -36,7 +37,6 @@ pub struct AdminAddUserToGroupRequest {
     pub group_name: Option<String>,
     pub username: Option<String>,
     pub user_pool_id: Option<String>,
-    pub version: Option<String>,
 }
 
 impl super::ToActionName for AdminAddUserToGroupRequest {
@@ -71,7 +71,6 @@ fn valid_request(request: &AdminAddUserToGroupRequest) -> bool {
     !common::is_blank(&request.group_name)
         && !common::is_blank(&request.username)
         && !common::is_blank(&request.user_pool_id)
-        && !common::is_blank(&request.version)
 }
 
 #[cfg(test)]
@@ -85,7 +84,6 @@ mod tests {
             group_name: Some("group_name".to_string()),
             username: Some("username".to_string()),
             user_pool_id: Some("user_pool_id".to_string()),
-            version: Some("version".to_string()),
         };
         assert!(valid_request(&request));
     }
@@ -96,7 +94,6 @@ mod tests {
             group_name: Some("group_name".to_string()),
             username: Some("username".to_string()),
             user_pool_id: Some("user_pool_id".to_string()),
-            version: Some("".to_string()),
         };
         assert!(!valid_request(&request));
     }

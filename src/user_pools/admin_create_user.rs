@@ -5,6 +5,7 @@ use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
 
 pub const ADMIN_CREATE_USER_NAME: &str = "AdminCreateUser";
+pub const ADMIN_CREATE_USER_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.AdminCreateUser";
 
 /// AdminCreateUser response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminCreateUser.html#API_AdminCreateUser_Errors
@@ -63,7 +64,6 @@ pub struct AdminCreateUserRequest {
     pub username: Option<String>,
     pub user_pool_id: Option<String>,
     pub validation_data: Option<Vec<std::collections::HashMap<String, String>>>,
-    pub version: Option<String>,
 }
 
 impl super::ToActionName for AdminCreateUserRequest {
@@ -101,7 +101,6 @@ impl super::IntoResponse for AdminCreateUserRequest {
 fn valid_request(request: &AdminCreateUserRequest) -> bool {
     !common::is_blank(&request.username)
         && !common::is_blank(&request.user_pool_id)
-        && !common::is_blank(&request.version)
 }
 
 #[cfg(test)]
@@ -114,7 +113,6 @@ mod tests {
         let request = AdminCreateUserRequest {
             username: Some("username".to_string()),
             user_pool_id: Some("user_pool_id".to_string()),
-            version: Some("version".to_string()),
             ..Default::default()
         };
         assert!(valid_request(&request));
@@ -125,7 +123,6 @@ mod tests {
         let request = AdminCreateUserRequest {
             username: Some("username".to_string()),
             user_pool_id: Some("user_pool_id".to_string()),
-            version: Some("".to_string()),
             ..Default::default()
         };
         assert!(!valid_request(&request));

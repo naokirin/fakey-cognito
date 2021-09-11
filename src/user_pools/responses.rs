@@ -3,7 +3,9 @@ use hyper::StatusCode;
 use serde::{Deserialize, Serialize};
 use std::convert::Infallible;
 
+const AWS_CONTENT_TYPE_HEADER_VALUE: &str = "application/x-amz-json-1.1";
 const AWS_ERROR_TYPE_HEADER: &str = "x-amzn-ErrorType";
+const AWS_ERROR_MESSAGE_HEADER: &str = "x-amzn-ErrorMessage";
 
 pub type Response = warp::http::Response<hyper::Body>;
 pub type UserPoolsResponseResult = std::result::Result<Response, Infallible>;
@@ -44,7 +46,9 @@ where
     warp::http::Response::builder()
         .status(error.to_status_code())
         .header(AWS_ERROR_TYPE_HEADER, format!("{}", error))
-        .body(empty_body())
+        .header(AWS_ERROR_MESSAGE_HEADER, "DUMMY ERROR MESSAGE")
+        .header("Content-Type", AWS_CONTENT_TYPE_HEADER_VALUE)
+        .body(json_body(&format!("{{\"__type\": \"{}\",\"message\":\"DUMMY ERROR MESSAGE\"}}", error)))
         .unwrap()
 }
 

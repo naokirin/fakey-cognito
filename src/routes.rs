@@ -4,7 +4,7 @@ use bytes::Bytes;
 use std::collections::HashMap;
 use warp::Filter;
 
-const AWS_ACTION_TARGET_HEADER: &str = "X-Amz-Target";
+const AWS_ACTION_TARGET_HEADER: &str = "x-amz-target";
 const AWS_ACTION_TAREGET_KEY: &str = "Action";
 
 #[derive(thiserror::Error, Debug, Clone)]
@@ -23,10 +23,17 @@ fn take_action(
 ) -> std::result::Result<String, Box<dyn std::error::Error>> {
     let json: serde_json::Value = serde_json::from_slice(&body)?;
     let body_action = match json {
-        serde_json::Value::Object(map) => match map[AWS_ACTION_TAREGET_KEY].clone() {
-            serde_json::Value::String(s) => Some(s),
-            _ => None,
-        },
+        serde_json::Value::Object(map) => {
+            if map.contains_key(AWS_ACTION_TAREGET_KEY) {
+                match map[AWS_ACTION_TAREGET_KEY].clone() {
+                    serde_json::Value::String(s) => Some(s),
+                    _ => None,
+                }
+            }
+            else {
+                None
+            }
+        }
         _ => None,
     };
 
@@ -64,13 +71,13 @@ fn post_routes(
     };
 
     match target.as_str() {
-        user_pools::ADMIN_ADD_USER_TO_GROUP_NAME => {
+        user_pools::ADMIN_ADD_USER_TO_GROUP_ACTION_NAME => {
             user_pools::response::<user_pools::AdminAddUserToGroupRequest>(body)
         }
-        user_pools::ADMIN_CONFIRM_SIGN_UP_NAME => {
+        user_pools::ADMIN_CONFIRM_SIGN_UP_ACTION_NAME => {
             user_pools::response::<user_pools::AdminConfirmSignUpRequest>(body)
         }
-        user_pools::ADMIN_CREATE_USER_NAME => {
+        user_pools::ADMIN_CREATE_USER_ACTION_NAME => {
             user_pools::response::<user_pools::AdminCreateUserRequest>(body)
         }
 
@@ -88,6 +95,14 @@ pub fn user_pools_routes(
         .and(warp::body::bytes())
         .and(warp::header::optional::<String>(AWS_ACTION_TARGET_HEADER))
         .and(warp::query::<HashMap<String, String>>())
-        .map(|bytes: Bytes, target, queries| post_routes(target, &bytes, queries).unwrap())
+        .and(warp::header::headers_cloned())
+        .map(|bytes: Bytes, target, queries, headers| {
+            log::debug!("request headers: {:?}", &headers);
+            log::debug!("request body: {:?}", &bytes);
+            let result = post_routes(target, &bytes, queries).unwrap();
+            log::debug!("headers: {:?}", &result.headers());
+            log::debug!("status: {:?}", &result.status());
+            result
+        })
         .with(warp::log("info"))
 }

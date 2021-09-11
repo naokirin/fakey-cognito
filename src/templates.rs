@@ -75,33 +75,12 @@ fn render_template_internal(
         for (k, v) in context_values.iter() {
             context.insert(k, &v);
         }
-        for n in t.get_template_names() {
-            log::info!("{}", n);
-        }
         let res = t.render(file_name, &context);
         if let Err(e) = res {
             log::error!("{}", e);
             None
         } else {
-            res.ok().map(escape_json_string)
+            res.ok()
         }
     })
-}
-
-fn escape_json_string(s: String) -> String {
-    s.chars()
-        .map(|c| {
-            let s = c.to_string();
-            let cs = match c {
-                '"' => "\\\"",
-                '\\' => "\\\\",
-                '/' => "\\/",
-                '\n' => "\\n",
-                '\r' => "\\r",
-                '\t' => "\\t",
-                _ => s.as_str(),
-            };
-            cs.to_string()
-        })
-        .collect()
 }
