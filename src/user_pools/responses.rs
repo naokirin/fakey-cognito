@@ -10,8 +10,8 @@ const AWS_ERROR_MESSAGE_HEADER: &str = "x-amzn-ErrorMessage";
 pub type Response = warp::http::Response<hyper::Body>;
 pub type UserPoolsResponseResult = std::result::Result<Response, Infallible>;
 
-pub trait IntoResponse {
-    fn into_response(&self) -> Response;
+pub trait ToResponse {
+    fn to_response(&self) -> Response;
 }
 
 pub trait ToStatusCode {
@@ -30,10 +30,10 @@ pub fn json_body(value: &String) -> hyper::Body {
 
 pub fn response<'a, T>(body: &'a Bytes) -> UserPoolsResponseResult
 where
-    T: Serialize + for<'de> Deserialize<'de> + IntoResponse,
+    T: Serialize + for<'de> Deserialize<'de> + ToResponse,
 {
     match serde_json::from_slice::<T>(body) {
-        Ok(req) => Ok(req.into_response()),
+        Ok(req) => Ok(req.to_response()),
         Err(_) => Ok(error_response(super::CommonError::InternalFailure)),
     }
 }

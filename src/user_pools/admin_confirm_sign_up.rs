@@ -53,8 +53,8 @@ impl super::ToActionName for AdminConfirmSignUpRequest {
     }
 }
 
-impl super::IntoResponse for AdminConfirmSignUpRequest {
-    fn into_response(&self) -> super::Response {
+impl super::ToResponse for AdminConfirmSignUpRequest {
+    fn to_response(&self) -> super::Response {
         if let Some(response) =
             super::config_response::<AdminConfirmSignUpRequest, AdminConfirmSignUpError>()
         {

@@ -72,8 +72,8 @@ impl super::ToActionName for AdminCreateUserRequest {
     }
 }
 
-impl super::IntoResponse for AdminCreateUserRequest {
-    fn into_response(&self) -> super::Response {
+impl super::ToResponse for AdminCreateUserRequest {
+    fn to_response(&self) -> super::Response {
         if let Some(response) =
             super::config_response::<AdminCreateUserRequest, AdminCreateUserError>()
         {

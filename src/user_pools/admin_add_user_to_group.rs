@@ -45,8 +45,8 @@ impl super::ToActionName for AdminAddUserToGroupRequest {
     }
 }
 
-impl super::IntoResponse for AdminAddUserToGroupRequest {
-    fn into_response(&self) -> super::Response {
+impl super::ToResponse for AdminAddUserToGroupRequest {
+    fn to_response(&self) -> super::Response {
         if let Some(response) =
             super::config_response::<AdminAddUserToGroupRequest, AdminAddUserToGroupError>()
         {
