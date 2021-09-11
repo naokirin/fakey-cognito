@@ -5,7 +5,7 @@ mod routes;
 mod templates;
 mod user_pools;
 
-const DEFAULT_LOG_LEVEL: &str = "debug";
+const DEFAULT_LOG_LEVEL: &str = "info";
 const LOG_LEVEL_KEY: &str = "RUST_LOG";
 
 fn setup_logger() {
