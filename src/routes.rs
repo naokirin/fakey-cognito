@@ -29,8 +29,7 @@ fn take_action(
                     serde_json::Value::String(s) => Some(s),
                     _ => None,
                 }
-            }
-            else {
+            } else {
                 None
             }
         }
@@ -79,6 +78,12 @@ fn post_routes(
         }
         user_pools::ADMIN_CREATE_USER_ACTION_NAME => {
             user_pools::response::<user_pools::AdminCreateUserRequest>(body)
+        }
+        user_pools::ADMIN_DELETE_USER_ACTION_NAME => {
+            user_pools::response::<user_pools::AdminDeleteUserRequest>(body)
+        }
+        user_pools::ADMIN_DELETE_USER_ATTRIBUTES_ACTION_NAME => {
+            user_pools::response::<user_pools::AdminDeleteUserAttributesRequest>(body)
         }
 
         _ => Ok(user_pools::error_response(

@@ -99,8 +99,7 @@ impl super::ToResponse for AdminCreateUserRequest {
 
 /// Validates request.
 fn valid_request(request: &AdminCreateUserRequest) -> bool {
-    !common::is_blank(&request.username)
-        && !common::is_blank(&request.user_pool_id)
+    !common::is_blank(&request.username) && !common::is_blank(&request.user_pool_id)
 }
 
 #[cfg(test)]
@@ -122,7 +121,7 @@ mod tests {
     fn failure_to_valid_request() {
         let request = AdminCreateUserRequest {
             username: Some("username".to_string()),
-            user_pool_id: Some("user_pool_id".to_string()),
+            user_pool_id: Some("".to_string()),
             ..Default::default()
         };
         assert!(!valid_request(&request));

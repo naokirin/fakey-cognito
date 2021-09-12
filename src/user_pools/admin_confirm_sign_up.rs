@@ -4,7 +4,8 @@ use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
 
 pub const ADMIN_CONFIRM_SIGN_UP_NAME: &str = "AdminConfirmSignUp";
-pub const ADMIN_CONFIRM_SIGN_UP_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.AdminConfirmSignUp";
+pub const ADMIN_CONFIRM_SIGN_UP_ACTION_NAME: &str =
+    "AWSCognitoIdentityProviderService.AdminConfirmSignUp";
 
 /// AdminConfirmSignUp response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminConfirmSignUp.html#API_AdminConfirmSignUp_Errors
@@ -77,8 +78,7 @@ impl super::ToResponse for AdminConfirmSignUpRequest {
 
 /// Validates request.
 fn valid_request(request: &AdminConfirmSignUpRequest) -> bool {
-    !common::is_blank(&request.username)
-        && !common::is_blank(&request.user_pool_id)
+    !common::is_blank(&request.username) && !common::is_blank(&request.user_pool_id)
 }
 
 #[cfg(test)]
@@ -101,7 +101,7 @@ mod tests {
         let request = AdminConfirmSignUpRequest {
             client_metadata: Some(std::collections::HashMap::new()),
             username: Some("username".to_string()),
-            user_pool_id: Some("user_pool_id".to_string()),
+            user_pool_id: Some("".to_string()),
         };
         assert!(!valid_request(&request));
     }

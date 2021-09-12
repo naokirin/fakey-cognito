@@ -48,7 +48,10 @@ where
         .header(AWS_ERROR_TYPE_HEADER, format!("{}", error))
         .header(AWS_ERROR_MESSAGE_HEADER, "DUMMY ERROR MESSAGE")
         .header("Content-Type", AWS_CONTENT_TYPE_HEADER_VALUE)
-        .body(json_body(&format!("{{\"__type\": \"{}\",\"message\":\"DUMMY ERROR MESSAGE\"}}", error)))
+        .body(json_body(&format!(
+            "{{\"__type\": \"{}\",\"message\":\"DUMMY ERROR MESSAGE\"}}",
+            error
+        )))
         .unwrap()
 }
 
