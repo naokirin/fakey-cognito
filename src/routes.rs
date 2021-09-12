@@ -72,6 +72,9 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::ADMIN_DISABLE_USER_ACTION_NAME => {
             user_pools::response::<user_pools::AdminDisableUserRequest>(body)
         }
+        user_pools::ADMIN_ENABLE_USER_ACTION_NAME => {
+            user_pools::response::<user_pools::AdminEnableUserRequest>(body)
+        }
 
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,
