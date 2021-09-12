@@ -66,6 +66,9 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::ADMIN_DELETE_USER_ATTRIBUTES_ACTION_NAME => {
             user_pools::response::<user_pools::AdminDeleteUserAttributesRequest>(body)
         }
+        user_pools::ADMIN_DISABLE_PROVIDER_FOR_USER_ACTION_NAME => {
+            user_pools::response::<user_pools::AdminDisableProviderForUserRequest>(body)
+        }
 
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,
@@ -93,7 +96,6 @@ fn post_routes(
 
 pub fn user_pools_routes(
 ) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
-    // FIXME: unwrap directed
     warp::path::end()
         .and(warp::post())
         .and(warp::body::bytes())

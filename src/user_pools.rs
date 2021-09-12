@@ -4,7 +4,9 @@ mod admin_confirm_sign_up;
 mod admin_create_user;
 mod admin_delete_user;
 mod admin_delete_user_attributes;
+mod admin_disable_provider_for_user;
 mod configs;
+mod data_types;
 mod errors;
 mod responses;
 
@@ -14,6 +16,8 @@ pub use self::admin_confirm_sign_up::*;
 pub use self::admin_create_user::*;
 pub use self::admin_delete_user::*;
 pub use self::admin_delete_user_attributes::*;
+pub use self::admin_disable_provider_for_user::*;
 pub use self::configs::*;
+pub use self::data_types::*;
 pub use self::errors::*;
 pub use self::responses::*;
