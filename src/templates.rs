@@ -45,23 +45,13 @@ where
     let r = serde_json::to_string(&context_value).unwrap();
     let map: std::collections::HashMap<String, serde_json::Value> =
         serde_json::from_str(&r).unwrap();
-    // TODO: FIX
-    match super::opts::get_opt_templates() {
-        Some(_) => {
-            if let Some(o) = TEMPLATES.get() {
-                render_template_internal(&o, file_name.as_str(), map)
-            } else {
-                None
-            }
-        }
-        None => {
-            if let Some(o) = DEFAULT_TEMPLATES.get() {
-                render_template_internal(&o, file_name.as_str(), map)
-            } else {
-                None
-            }
-        }
+    if let Some(o) = TEMPLATES.get() {
+        return render_template_internal(&o, file_name.as_str(), map);
     }
+    if let Some(o) = DEFAULT_TEMPLATES.get() {
+        return render_template_internal(&o, file_name.as_str(), map);
+    }
+    None
 }
 
 fn render_template_internal(

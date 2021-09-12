@@ -1,5 +1,6 @@
 use crate::common;
 use crate::user_pools;
+use crate::user_pools::UserPoolsResponseResult;
 use bytes::Bytes;
 use std::collections::HashMap;
 use warp::Filter;
@@ -23,16 +24,10 @@ fn take_action(
 ) -> std::result::Result<String, Box<dyn std::error::Error>> {
     let json: serde_json::Value = serde_json::from_slice(&body)?;
     let body_action = match json {
-        serde_json::Value::Object(map) => {
-            if map.contains_key(AWS_ACTION_TAREGET_KEY) {
-                match map[AWS_ACTION_TAREGET_KEY].clone() {
-                    serde_json::Value::String(s) => Some(s),
-                    _ => None,
-                }
-            } else {
-                None
-            }
-        }
+        serde_json::Value::Object(map) => map.get(AWS_ACTION_TAREGET_KEY).and_then(|s| match s {
+            serde_json::Value::String(s) => Some(s.clone()),
+            _ => None,
+        }),
         _ => None,
     };
 
@@ -54,22 +49,8 @@ fn take_action(
     Ok(action)
 }
 
-/// POST routes.
-fn post_routes(
-    action_header: Option<String>,
-    body: &Bytes,
-    queries: HashMap<String, String>,
-) -> user_pools::UserPoolsResponseResult {
-    let target = match take_action(action_header, body, queries) {
-        Ok(action) => action,
-        Err(_) => {
-            return Ok(user_pools::error_response(
-                user_pools::CommonError::MissingAction,
-            ))
-        }
-    };
-
-    match target.as_str() {
+fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
+    match action {
         user_pools::ADMIN_ADD_USER_TO_GROUP_ACTION_NAME => {
             user_pools::response::<user_pools::AdminAddUserToGroupRequest>(body)
         }
@@ -90,6 +71,24 @@ fn post_routes(
             user_pools::CommonError::InvalidAction,
         )),
     }
+}
+
+/// POST routes.
+fn post_routes(
+    action_header: Option<String>,
+    body: &Bytes,
+    queries: HashMap<String, String>,
+) -> user_pools::UserPoolsResponseResult {
+    let target = match take_action(action_header, body, queries) {
+        Ok(action) => action,
+        Err(_) => {
+            return Ok(user_pools::error_response(
+                user_pools::CommonError::MissingAction,
+            ))
+        }
+    };
+
+    post_action_routes(target.as_ref(), &body)
 }
 
 pub fn user_pools_routes(
