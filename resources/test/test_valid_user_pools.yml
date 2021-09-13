@@ -1,2 +1,2 @@
 AdminAddUserToGroup:
-  status_name: InternalFailure
+  error_type: InternalFailure

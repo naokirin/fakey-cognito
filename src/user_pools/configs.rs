@@ -6,7 +6,7 @@ pub type Config = HashMap<String, HashMap<String, String>>;
 const DEFAULT_USER_POOLS_CONFIG_PATH: &str = "./user_pools.yml";
 static CONFIG: OnceCell<Config> = OnceCell::const_new();
 
-pub const CONFIG_STATUS_NAME: &str = "status_name";
+pub const CONFIG_ERROR_TYPE: &str = "error_type";
 
 pub fn get_config(action: &str, name: &String) -> Option<String> {
     super::config()
@@ -71,7 +71,7 @@ mod tests {
         assert!(admin_add_user_to_group.is_some());
         assert_eq!(
             Some(&"InternalFailure".to_string()),
-            admin_add_user_to_group.unwrap().get("status_name")
+            admin_add_user_to_group.unwrap().get(CONFIG_ERROR_TYPE)
         );
     }
 

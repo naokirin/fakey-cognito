@@ -61,7 +61,7 @@ where
     E: std::str::FromStr + std::fmt::Display + ToStatusCode,
 {
     use std::str::FromStr;
-    match super::get_config(R::to_action_name(), &super::CONFIG_STATUS_NAME.to_string()) {
+    match super::get_config(R::to_action_name(), &super::CONFIG_ERROR_TYPE.to_string()) {
         Some(name) => super::ResponseError::<E>::from_str(name.as_str())
             .map_or(None, |e| Some(super::error_response(e))),
         _ => None,
