@@ -14,6 +14,10 @@ pub struct Opt {
     /// Read specific templates directory path
     #[structopt(long, name = "templates_path")]
     pub templates: Option<String>,
+
+    /// Port number
+    #[structopt(short, long, name = "port")]
+    pub port: Option<u16>,
 }
 
 pub async fn init_opt() {
@@ -26,4 +30,8 @@ pub fn get_opt_config() -> Option<&'static PathBuf> {
 
 pub fn get_opt_templates() -> Option<&'static String> {
     OPT.get().unwrap().templates.as_ref()
+}
+
+pub fn get_opt_port() -> Option<u16> {
+    OPT.get().unwrap().port
 }

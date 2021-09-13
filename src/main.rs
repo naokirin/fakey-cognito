@@ -24,7 +24,9 @@ async fn main() {
         templates::init_template(templates_opt.map(String::as_str)),
         templates::init_default_template()
     );
+
+    let port = opts::get_opt_port().unwrap_or(8080);
     warp::serve(routes::user_pools_routes())
-        .run(([127, 0, 0, 1], 8080))
+        .run(([127, 0, 0, 1], port))
         .await;
 }
