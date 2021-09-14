@@ -12,7 +12,7 @@ pub async fn init_template(dir_path: Option<&str>) {
     let path = format!("{}/**/*", dir_path);
     log::debug!("Load templates: {}", path);
     TEMPLATES
-        .get_or_init(|| async {
+        .get_or_init(|| async move {
             let t = Tera::new(path.as_str());
             if let Err(e) = t.as_ref() {
                 log::warn!("{}", e);
@@ -27,7 +27,7 @@ pub async fn init_default_template() {
     let path = format!("{}/**/*", dir_path);
     log::debug!("Load default templates: {}", path);
     DEFAULT_TEMPLATES
-        .get_or_init(|| async {
+        .get_or_init(|| async move {
             let t = Tera::new(path.as_str());
             if let Err(e) = t.as_ref() {
                 log::warn!("{}", e);
@@ -59,7 +59,7 @@ fn render_template_internal(
     file_name: &str,
     context_values: std::collections::HashMap<String, serde_json::Value>,
 ) -> Option<String> {
-    tera.as_ref().and_then(|t| {
+    tera.as_ref().and_then(move |t| {
         // NOTE: Manually inserts to a context because tera does not treat an option value.
         let mut context = Context::new();
         for (k, v) in context_values.iter() {

@@ -13,13 +13,13 @@ pub fn get_config(action: &str, name: &String) -> Option<String> {
         .get(action)
         .unwrap_or(&HashMap::new())
         .get(name)
-        .map(|c| c.clone())
+        .map(move |c| c.clone())
 }
 
 /// Initializes global config.
 pub async fn init_config(path: Option<&PathBuf>) {
     CONFIG
-        .get_or_init(|| async {
+        .get_or_init(|| async move {
             match read_config(path) {
                 Ok(c) => c,
                 Err(e) => {

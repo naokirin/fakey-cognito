@@ -21,7 +21,7 @@ pub struct Opt {
 }
 
 pub async fn init_opt() {
-    OPT.get_or_init(|| async { Opt::from_args() }).await;
+    OPT.get_or_init(|| async move { Opt::from_args() }).await;
 }
 
 pub fn get_opt_config() -> Option<&'static PathBuf> {

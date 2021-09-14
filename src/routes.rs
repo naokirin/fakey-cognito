@@ -24,10 +24,12 @@ fn take_action(
 ) -> std::result::Result<String, Box<dyn std::error::Error>> {
     let json: serde_json::Value = serde_json::from_slice(&body)?;
     let body_action = match json {
-        serde_json::Value::Object(map) => map.get(AWS_ACTION_TAREGET_KEY).and_then(|s| match s {
-            serde_json::Value::String(s) => Some(s.clone()),
-            _ => None,
-        }),
+        serde_json::Value::Object(map) => {
+            map.get(AWS_ACTION_TAREGET_KEY).and_then(move |s| match s {
+                serde_json::Value::String(s) => Some(s.clone()),
+                _ => None,
+            })
+        }
         _ => None,
     };
 
@@ -114,12 +116,12 @@ pub fn user_pools_routes(
         .and(warp::header::optional::<String>(AWS_ACTION_TARGET_HEADER))
         .and(warp::query::<HashMap<String, String>>())
         .and(warp::header::headers_cloned())
-        .map(|bytes: Bytes, target, queries, headers| {
+        .map(move |bytes: Bytes, target, queries, headers| {
             log::debug!("request headers: {:?}", &headers);
             log::debug!("request body: {:?}", &bytes);
             let result = post_routes(target, &bytes, queries).unwrap();
-            log::debug!("headers: {:?}", &result.headers());
-            log::debug!("status: {:?}", &result.status());
+            log::debug!("response status: {:?}", &result.status());
+            log::debug!("response headers: {:?}", &result.headers());
             result
         })
         .with(warp::log("info"))
