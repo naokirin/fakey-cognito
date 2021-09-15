@@ -83,6 +83,9 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::ADMIN_GET_DEVICE_ACTION_NAME => {
             user_pools::response::<user_pools::AdminGetDeviceRequest>(body)
         }
+        user_pools::ADMIN_GET_USER_ACTION_NAME => {
+            user_pools::response::<user_pools::AdminGetUserRequest>(body)
+        }
 
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,

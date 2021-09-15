@@ -1,0 +1,21 @@
+{
+    "Enabled": true,
+    "MFAOptions": [ 
+       { 
+          "AttributeName": "string",
+          "DeliveryMedium": "string"
+       }
+    ],
+    "PreferredMfaSetting": "string",
+    "UserAttributes": [ 
+       { 
+          "Name": "string",
+          "Value": "string"
+       }
+    ],
+    "UserCreateDate": {{ now() | date(format="%Y%m%d%H%M%S" )}},
+    "UserLastModifiedDate": {{ now() | date(format="%Y%m%d%H%M%S" )}},
+    "UserMFASettingList": [ "string" ],
+    "Username": "{{Username}}",
+    "UserStatus": "CONFIRMED"
+ }
