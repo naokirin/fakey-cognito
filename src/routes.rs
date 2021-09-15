@@ -86,6 +86,9 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::ADMIN_GET_USER_ACTION_NAME => {
             user_pools::response::<user_pools::AdminGetUserRequest>(body)
         }
+        user_pools::ADMIN_INITIATE_AUTH_ACTION_NAME => {
+            user_pools::response::<user_pools::AdminInitiateAuthRequest>(body)
+        }
 
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,
