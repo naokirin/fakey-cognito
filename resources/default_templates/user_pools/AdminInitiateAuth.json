@@ -1,7 +1,7 @@
 {
     "AuthenticationResult": { 
        "AccessToken": "string",
-       "ExpiresIn": {{ now() + 3600 * 24  | date(format="%Y%m%d%H%M%S" }},
+       "ExpiresIn": {{ now() + 3600 * 24  | date(format="%Y%m%d%H%M%S") }},
        "IdToken": "string",
        "NewDeviceMetadata": { 
           "DeviceGroupKey": "string",
