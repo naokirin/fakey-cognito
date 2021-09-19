@@ -128,6 +128,9 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::ADMIN_UPDATE_USER_ATTRIBUTES_ACTION_NAME => {
             user_pools::response::<user_pools::AdminUpdateUserAttributesRequest>(body)
         }
+        user_pools::ADMIN_USER_GLOBAL_SIGN_OUT_ACTION_NAME => {
+            user_pools::response::<user_pools::AdminUserGlobalSignOutRequest>(body)
+        }
 
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,
