@@ -104,6 +104,9 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::ADMIN_REMOVE_USER_FROM_GROUP_ACTION_NAME => {
             user_pools::response::<user_pools::AdminRemoveUserFromGroupRequest>(body)
         }
+        user_pools::ADMIN_RESET_USER_PASSWORD_ACTION_NAME => {
+            user_pools::response::<user_pools::AdminResetUserPasswordRequest>(body)
+        }
 
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,
