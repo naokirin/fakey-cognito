@@ -53,9 +53,10 @@ impl super::ToActionName for AdminSetUserMFAPreferenceRequest {
 
 impl super::ToResponse for AdminSetUserMFAPreferenceRequest {
     fn to_response(&self) -> super::Response {
-        if let Some(response) =
-            super::config_response::<AdminSetUserMFAPreferenceRequest, AdminSetUserMFAPreferenceError>()
-        {
+        if let Some(response) = super::config_response::<
+            AdminSetUserMFAPreferenceRequest,
+            AdminSetUserMFAPreferenceError,
+        >() {
             return response;
         };
         if !valid_request(&self) {
@@ -74,8 +75,7 @@ impl super::ToResponse for AdminSetUserMFAPreferenceRequest {
 
 /// Validates request.
 fn valid_request(request: &AdminSetUserMFAPreferenceRequest) -> bool {
-    !common::is_blank(&request.username)
-        && !common::is_blank(&request.user_pool_id)
+    !common::is_blank(&request.username) && !common::is_blank(&request.user_pool_id)
 }
 
 #[cfg(test)]
