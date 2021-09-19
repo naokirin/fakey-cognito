@@ -1,0 +1,14 @@
+{
+   "Groups": [ 
+      { 
+         "CreationDate": {{ now() | date(format="%Y%m%d%H%M%S") }},
+         "Description": "string",
+         "GroupName": "string",
+         "LastModifiedDate": {{ now() | date(format="%Y%m%d%H%M%S") }},
+         "Precedence": {{ now() | date(format="%Y%m%d%H%M%S") }},
+         "RoleArn": "string",
+         "UserPoolId": "{{UserPoolId}}"
+      }
+   ],
+   "NextToken": "string"
+}
