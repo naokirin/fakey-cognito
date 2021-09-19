@@ -110,6 +110,9 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::ADMIN_RESPOND_TO_AUTH_CHALLENGE_ACTION_NAME => {
             user_pools::response::<user_pools::AdminRespondToAuthChallengeRequest>(body)
         }
+        user_pools::ADMIN_SET_USER_MFA_PREFERENCE_ACTION_NAME => {
+            user_pools::response::<user_pools::AdminSetUserMFAPreferenceRequest>(body)
+        }
 
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,
