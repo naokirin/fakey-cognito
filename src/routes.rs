@@ -116,6 +116,9 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::ADMIN_SET_USER_PASSWORD_ACTION_NAME => {
             user_pools::response::<user_pools::AdminSetUserPasswordRequest>(body)
         }
+        user_pools::ADMIN_SET_USER_SETTINGS_ACTION_NAME => {
+            user_pools::response::<user_pools::AdminSetUserSettingsRequest>(body)
+        }
 
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,
