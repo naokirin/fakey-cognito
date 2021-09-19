@@ -1,0 +1,17 @@
+{
+    "Devices": [ 
+       { 
+          "DeviceAttributes": [ 
+             { 
+                "Name": "string",
+                "Value": "string"
+             }
+          ],
+          "DeviceCreateDate": {{ now() | date(format="%Y%m%d%H%M%S") }},
+          "DeviceKey": "string",
+          "DeviceLastAuthenticatedDate": {{ now() | date(format="%Y%m%d%H%M%S") }},
+          "DeviceLastModifiedDate": {{ now() | date(format="%Y%m%d%H%M%S") }}
+       }
+    ],
+    "PaginationToken": "string"
+ }

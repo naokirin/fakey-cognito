@@ -92,6 +92,9 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::ADMIN_LINK_PROVIDER_FOR_USER_ACTION_NAME => {
             user_pools::response::<user_pools::AdminLinkProviderForUserRequest>(body)
         }
+        user_pools::ADMIN_LIST_DEVICES_ACTION_NAME => {
+            user_pools::response::<user_pools::AdminListDevicesRequest>(body)
+        }
 
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,
