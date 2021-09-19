@@ -46,30 +46,15 @@ impl super::ToActionName for AdminUserGlobalSignOutRequest {
 }
 
 impl super::ToResponse for AdminUserGlobalSignOutRequest {
+    type E = AdminUserGlobalSignOutError;
     fn to_response(&self) -> super::Response {
-        if let Some(response) =
-            super::config_response::<AdminUserGlobalSignOutRequest, AdminUserGlobalSignOutError>()
-        {
-            return response;
-        };
-        if !valid_request(&self) {
-            let error = super::ResponseError::<AdminUserGlobalSignOutError>::CommonError(
-                super::CommonError::InvalidParameterValue,
-            );
-            return super::error_response(error);
-        }
-
-        warp::http::Response::builder()
-            .status(http::status_code(200))
-            .body(super::responses::empty_body())
-            .unwrap()
+        super::to_empty_response(self, valid_request)
     }
 }
 
 /// Validates request.
 fn valid_request(request: &AdminUserGlobalSignOutRequest) -> bool {
-    !common::is_blank(&request.username)
-        && !common::is_blank(&request.user_pool_id)
+    !common::is_blank(&request.username) && !common::is_blank(&request.user_pool_id)
 }
 
 #[cfg(test)]

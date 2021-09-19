@@ -3,6 +3,8 @@ use crate::http;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
 
+use super::AdminAddUserToGroupError;
+
 pub const ADMIN_DELETE_USER_ATTRIBUTES_NAME: &str = "AdminDeleteUserAttributes";
 pub const ADMIN_DELETE_USER_ATTRIBUTES_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminDeleteUserAttributes";
@@ -47,24 +49,9 @@ impl super::ToActionName for AdminDeleteUserAttributesRequest {
 }
 
 impl super::ToResponse for AdminDeleteUserAttributesRequest {
+    type E = AdminAddUserToGroupError;
     fn to_response(&self) -> super::Response {
-        if let Some(response) = super::config_response::<
-            AdminDeleteUserAttributesRequest,
-            AdminDeleteUserAttributesError,
-        >() {
-            return response;
-        };
-        if !valid_request(&self) {
-            let error = super::ResponseError::<AdminDeleteUserAttributesError>::CommonError(
-                super::CommonError::InvalidParameterValue,
-            );
-            return super::error_response(error);
-        }
-
-        warp::http::Response::builder()
-            .status(http::status_code(200))
-            .body(super::responses::empty_body())
-            .unwrap()
+        super::to_empty_response(self, valid_request)
     }
 }
 

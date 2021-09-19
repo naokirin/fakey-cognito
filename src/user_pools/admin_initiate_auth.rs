@@ -1,6 +1,5 @@
 use crate::common;
 use crate::http;
-use crate::templates;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
 
@@ -70,27 +69,9 @@ impl super::ToActionName for AdminInitiateAuthRequest {
 }
 
 impl super::ToResponse for AdminInitiateAuthRequest {
+    type E = AdminInitiateAuthError;
     fn to_response(&self) -> super::Response {
-        if let Some(response) =
-            super::config_response::<AdminInitiateAuthRequest, AdminInitiateAuthError>()
-        {
-            return response;
-        };
-        if !valid_request(&self) {
-            let error = super::ResponseError::<AdminInitiateAuthError>::CommonError(
-                super::CommonError::InvalidParameterValue,
-            );
-            return super::error_response(error);
-        }
-
-        let opt_json = templates::render_template(ADMIN_INITIATE_AUTH_NAME, &self);
-        match opt_json {
-            Some(json) => warp::http::Response::builder()
-                .status(http::status_code(200))
-                .body(super::responses::json_body(&json))
-                .unwrap(),
-            _ => super::error_response(super::CommonError::InternalFailure),
-        }
+        super::to_json_response(self, ADMIN_INITIATE_AUTH_NAME, valid_request)
     }
 }
 

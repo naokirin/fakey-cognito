@@ -1,6 +1,5 @@
 use crate::common;
 use crate::http;
-use crate::templates;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
 
@@ -47,27 +46,9 @@ impl super::ToActionName for AdminGetDeviceRequest {
 }
 
 impl super::ToResponse for AdminGetDeviceRequest {
+    type E = AdminGetDeviceError;
     fn to_response(&self) -> super::Response {
-        if let Some(response) =
-            super::config_response::<AdminGetDeviceRequest, AdminGetDeviceError>()
-        {
-            return response;
-        };
-        if !valid_request(&self) {
-            let error = super::ResponseError::<AdminGetDeviceError>::CommonError(
-                super::CommonError::InvalidParameterValue,
-            );
-            return super::error_response(error);
-        }
-
-        let opt_json = templates::render_template(ADMIN_GET_DEVICE_NAME, &self);
-        match opt_json {
-            Some(json) => warp::http::Response::builder()
-                .status(http::status_code(200))
-                .body(super::responses::json_body(&json))
-                .unwrap(),
-            _ => super::error_response(super::CommonError::InternalFailure),
-        }
+        super::to_json_response(self, ADMIN_GET_DEVICE_NAME, valid_request)
     }
 }
 

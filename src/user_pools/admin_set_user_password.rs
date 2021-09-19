@@ -3,6 +3,8 @@ use crate::http;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
 
+use super::AdminAddUserToGroupError;
+
 pub const ADMIN_SET_USER_PASSWORD_NAME: &str = "AdminSetUserPassword";
 pub const ADMIN_SET_USER_PASSWORD_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminSetUserPassword";
@@ -50,23 +52,9 @@ impl super::ToActionName for AdminSetUserPasswordRequest {
 }
 
 impl super::ToResponse for AdminSetUserPasswordRequest {
+    type E = AdminAddUserToGroupError;
     fn to_response(&self) -> super::Response {
-        if let Some(response) =
-            super::config_response::<AdminSetUserPasswordRequest, AdminSetUserPasswordError>()
-        {
-            return response;
-        };
-        if !valid_request(&self) {
-            let error = super::ResponseError::<AdminSetUserPasswordError>::CommonError(
-                super::CommonError::InvalidParameterValue,
-            );
-            return super::error_response(error);
-        }
-
-        warp::http::Response::builder()
-            .status(http::status_code(200))
-            .body(super::responses::empty_body())
-            .unwrap()
+        super::to_empty_response(self, valid_request)
     }
 }
 

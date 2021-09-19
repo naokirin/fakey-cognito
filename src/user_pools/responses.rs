@@ -1,3 +1,5 @@
+use crate::http;
+use crate::templates;
 use bytes::Bytes;
 use hyper::StatusCode;
 use serde::{Deserialize, Serialize};
@@ -10,7 +12,12 @@ const AWS_ERROR_MESSAGE_HEADER: &str = "x-amzn-ErrorMessage";
 pub type Response = warp::http::Response<hyper::Body>;
 pub type UserPoolsResponseResult = std::result::Result<Response, Infallible>;
 
+pub trait ToActionName {
+    fn to_action_name() -> &'static str;
+}
+
 pub trait ToResponse {
+    type E: std::str::FromStr + std::fmt::Display + ToStatusCode;
     fn to_response(&self) -> Response;
 }
 
@@ -55,17 +62,60 @@ where
         .unwrap()
 }
 
-pub fn config_response<R, E>() -> Option<Response>
+pub fn config_response<R>() -> Option<Response>
 where
-    R: super::ToActionName,
-    E: std::str::FromStr + std::fmt::Display + ToStatusCode,
+    R: super::ToActionName + ToResponse,
 {
     use std::str::FromStr;
     match super::get_config(R::to_action_name(), &super::CONFIG_ERROR_TYPE.to_string()) {
-        Some(name) => super::ResponseError::<E>::from_str(name.as_str())
+        Some(name) => super::ResponseError::<R::E>::from_str(name.as_str())
             .map_or(None, |e| Some(super::error_response(e))),
         _ => None,
     }
+}
+
+pub fn to_json_response<R, F>(request: &R, template_name: &str, validation_callback: F) -> Response
+where
+    R: super::ToActionName + ToResponse + serde::Serialize,
+    F: Fn(&R) -> bool,
+{
+    if let Some(response) = super::config_response::<R>() {
+        return response;
+    };
+    if !validation_callback(&request) {
+        let error =
+            super::ResponseError::<R::E>::CommonError(super::CommonError::InvalidParameterValue);
+        return super::error_response(error);
+    }
+
+    let opt_json = templates::render_template(template_name, &request);
+    match opt_json {
+        Some(json) => warp::http::Response::builder()
+            .status(http::status_code(200))
+            .body(super::responses::json_body(&json))
+            .unwrap(),
+        _ => super::error_response(super::CommonError::InternalFailure),
+    }
+}
+
+pub fn to_empty_response<R, F>(request: &R, validation_callback: F) -> Response
+where
+    R: super::ToActionName + ToResponse + serde::Serialize,
+    F: Fn(&R) -> bool,
+{
+    if let Some(response) = super::config_response::<R>() {
+        return response;
+    };
+    if !validation_callback(&request) {
+        let error =
+            super::ResponseError::<R::E>::CommonError(super::CommonError::InvalidParameterValue);
+        return super::error_response(error);
+    }
+
+    warp::http::Response::builder()
+        .status(crate::http::status_code(200))
+        .body(super::responses::empty_body())
+        .unwrap()
 }
 
 #[cfg(test)]

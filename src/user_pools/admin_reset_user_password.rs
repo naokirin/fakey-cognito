@@ -61,23 +61,9 @@ impl super::ToActionName for AdminResetUserPasswordRequest {
 }
 
 impl super::ToResponse for AdminResetUserPasswordRequest {
+    type E = AdminResetUserPasswordError;
     fn to_response(&self) -> super::Response {
-        if let Some(response) =
-            super::config_response::<AdminResetUserPasswordRequest, AdminResetUserPasswordError>()
-        {
-            return response;
-        };
-        if !valid_request(&self) {
-            let error = super::ResponseError::<AdminResetUserPasswordError>::CommonError(
-                super::CommonError::InvalidParameterValue,
-            );
-            return super::error_response(error);
-        }
-
-        warp::http::Response::builder()
-            .status(http::status_code(200))
-            .body(super::responses::empty_body())
-            .unwrap()
+        super::to_empty_response(self, valid_request)
     }
 }
 

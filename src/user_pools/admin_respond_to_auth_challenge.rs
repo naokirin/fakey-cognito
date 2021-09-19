@@ -1,6 +1,5 @@
 use crate::common;
 use crate::http;
-use crate::templates;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
 
@@ -81,28 +80,9 @@ impl super::ToActionName for AdminRespondToAuthChallengeRequest {
 }
 
 impl super::ToResponse for AdminRespondToAuthChallengeRequest {
+    type E = AdminRespondToAuthChallengeError;
     fn to_response(&self) -> super::Response {
-        if let Some(response) = super::config_response::<
-            AdminRespondToAuthChallengeRequest,
-            AdminRespondToAuthChallengeError,
-        >() {
-            return response;
-        };
-        if !valid_request(&self) {
-            let error = super::ResponseError::<AdminRespondToAuthChallengeError>::CommonError(
-                super::CommonError::InvalidParameterValue,
-            );
-            return super::error_response(error);
-        }
-
-        let opt_json = templates::render_template(ADMIN_RESPOND_TO_AUTH_CHALLENGE_NAME, &self);
-        match opt_json {
-            Some(json) => warp::http::Response::builder()
-                .status(http::status_code(200))
-                .body(super::responses::json_body(&json))
-                .unwrap(),
-            _ => super::error_response(super::CommonError::InternalFailure),
-        }
+        super::to_json_response(self, ADMIN_RESPOND_TO_AUTH_CHALLENGE_NAME, valid_request)
     }
 }
 

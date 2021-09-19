@@ -62,24 +62,9 @@ impl super::ToActionName for AdminUpdateUserAttributesRequest {
 }
 
 impl super::ToResponse for AdminUpdateUserAttributesRequest {
+    type E = AdminUpdateUserAttributesError;
     fn to_response(&self) -> super::Response {
-        if let Some(response) = super::config_response::<
-            AdminUpdateUserAttributesRequest,
-            AdminUpdateUserAttributesError,
-        >() {
-            return response;
-        };
-        if !valid_request(&self) {
-            let error = super::ResponseError::<AdminUpdateUserAttributesError>::CommonError(
-                super::CommonError::InvalidParameterValue,
-            );
-            return super::error_response(error);
-        }
-
-        warp::http::Response::builder()
-            .status(http::status_code(200))
-            .body(super::responses::empty_body())
-            .unwrap()
+        super::to_empty_response(self, valid_request)
     }
 }
 

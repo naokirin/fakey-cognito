@@ -46,23 +46,9 @@ impl super::ToActionName for AdminDisableUserRequest {
 }
 
 impl super::ToResponse for AdminDisableUserRequest {
+    type E = AdminDisableUserError;
     fn to_response(&self) -> super::Response {
-        if let Some(response) =
-            super::config_response::<AdminDisableUserRequest, AdminDisableUserError>()
-        {
-            return response;
-        };
-        if !valid_request(&self) {
-            let error = super::ResponseError::<AdminDisableUserError>::CommonError(
-                super::CommonError::InvalidParameterValue,
-            );
-            return super::error_response(error);
-        }
-
-        warp::http::Response::builder()
-            .status(http::status_code(200))
-            .body(super::responses::empty_body())
-            .unwrap()
+        super::to_empty_response(self, valid_request)
     }
 }
 

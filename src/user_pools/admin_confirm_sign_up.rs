@@ -55,24 +55,9 @@ impl super::ToActionName for AdminConfirmSignUpRequest {
 }
 
 impl super::ToResponse for AdminConfirmSignUpRequest {
+    type E = AdminConfirmSignUpError;
     fn to_response(&self) -> super::Response {
-        if let Some(response) =
-            super::config_response::<AdminConfirmSignUpRequest, AdminConfirmSignUpError>()
-        {
-            return response;
-        };
-
-        if !valid_request(&self) {
-            let error = super::ResponseError::<AdminConfirmSignUpError>::CommonError(
-                super::CommonError::InvalidParameterValue,
-            );
-            return super::error_response(error);
-        }
-
-        warp::http::Response::builder()
-            .status(http::status_code(200))
-            .body(super::responses::empty_body())
-            .unwrap()
+        super::to_empty_response(self, valid_request)
     }
 }
 
