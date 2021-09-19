@@ -1,0 +1,34 @@
+{
+   "AuthEvents": [ 
+      { 
+         "ChallengeResponses": [ 
+            { 
+               "ChallengeName": "string",
+               "ChallengeResponse": "string"
+            }
+         ],
+         "CreationDate": {{ now() | date(format="%Y%m%d%H%M%S") }},
+         "EventContextData": { 
+            "City": "string",
+            "Country": "string",
+            "DeviceName": "string",
+            "IpAddress": "string",
+            "Timezone": "string"
+         },
+         "EventFeedback": { 
+            "FeedbackDate": {{ now() | date(format="%Y%m%d%H%M%S") }},
+            "FeedbackValue": "string",
+            "Provider": "string"
+         },
+         "EventId": "string",
+         "EventResponse": "string",
+         "EventRisk": { 
+            "CompromisedCredentialsDetected": true,
+            "RiskDecision": "string",
+            "RiskLevel": "string"
+         },
+         "EventType": "string"
+      }
+   ],
+   "NextToken": "string"
+}

@@ -98,6 +98,9 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::ADMIN_LIST_GROUPS_FOR_USER_ACTION_NAME => {
             user_pools::response::<user_pools::AdminListGroupsForUserRequest>(body)
         }
+        user_pools::ADMIN_LIST_USER_AUTH_EVENTS_ACTION_NAME => {
+            user_pools::response::<user_pools::AdminListUserAuthEventsRequest>(body)
+        }
 
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,
