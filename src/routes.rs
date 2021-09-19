@@ -107,6 +107,9 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::ADMIN_RESET_USER_PASSWORD_ACTION_NAME => {
             user_pools::response::<user_pools::AdminResetUserPasswordRequest>(body)
         }
+        user_pools::ADMIN_RESPOND_TO_AUTH_CHALLENGE_ACTION_NAME => {
+            user_pools::response::<user_pools::AdminRespondToAuthChallengeRequest>(body)
+        }
 
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,

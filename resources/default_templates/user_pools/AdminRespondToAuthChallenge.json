@@ -1,0 +1,18 @@
+{
+    "AuthenticationResult": { 
+       "AccessToken": "string",
+       "ExpiresIn": {{ now() + 3600 * 24 | date(format="%Y%m%d%H%M%S") }},
+       "IdToken": "string",
+       "NewDeviceMetadata": { 
+          "DeviceGroupKey": "string",
+          "DeviceKey": "string"
+       },
+       "RefreshToken": "string",
+       "TokenType": "string"
+    },
+    "ChallengeName": "NEW_PASSWORD_REQUIRED",
+    "ChallengeParameters": { 
+       "string" : "string" 
+    },
+    "Session": "string"
+ }

@@ -83,8 +83,7 @@ impl super::ToResponse for AdminResetUserPasswordRequest {
 
 /// Validates request.
 fn valid_request(request: &AdminResetUserPasswordRequest) -> bool {
-    !common::is_blank(&request.username)
-        && !common::is_blank(&request.user_pool_id)
+    !common::is_blank(&request.username) && !common::is_blank(&request.user_pool_id)
 }
 
 #[cfg(test)]

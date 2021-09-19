@@ -21,13 +21,13 @@
             "Provider": "string"
          },
          "EventId": "string",
-         "EventResponse": "string",
+         "EventResponse": "Success",
          "EventRisk": { 
             "CompromisedCredentialsDetected": true,
-            "RiskDecision": "string",
-            "RiskLevel": "string"
+            "RiskDecision": "NoRisk",
+            "RiskLevel": "Low"
          },
-         "EventType": "string"
+         "EventType": "SignIn"
       }
    ],
    "NextToken": "string"
