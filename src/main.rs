@@ -1,9 +1,4 @@
-mod common;
-mod http;
-mod opts;
-mod routes;
-mod templates;
-mod user_pools;
+use fakey_cognito::*;
 
 const DEFAULT_LOG_LEVEL: &str = "info";
 const LOG_LEVEL_KEY: &str = "RUST_LOG";
