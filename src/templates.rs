@@ -46,31 +46,31 @@ where
     let map: std::collections::HashMap<String, serde_json::Value> =
         serde_json::from_str(&r).unwrap();
     if let Some(o) = TEMPLATES.get() {
-        return render_template_internal(&o, file_name.as_str(), map);
+        let t = render_template_internal(&o, file_name.as_str(), &map);
+        if let Ok(_) = t {
+            return t.ok();
+        }
     }
     if let Some(o) = DEFAULT_TEMPLATES.get() {
-        return render_template_internal(&o, file_name.as_str(), map);
+        return render_template_internal(&o, file_name.as_str(), &map).ok();
     }
+    log::error!("Template '{}' not found", file_name);
     None
 }
 
 fn render_template_internal(
     tera: &Option<Tera>,
     file_name: &str,
-    context_values: std::collections::HashMap<String, serde_json::Value>,
-) -> Option<String> {
-    tera.as_ref().and_then(move |t| {
-        // NOTE: Manually inserts to a context because tera does not treat an option value.
-        let mut context = Context::new();
-        for (k, v) in context_values.iter() {
-            context.insert(k, &v);
-        }
-        let res = t.render(file_name, &context);
-        if let Err(e) = res {
-            log::error!("{}", e);
-            None
-        } else {
-            res.ok()
-        }
-    })
+    context_values: &std::collections::HashMap<String, serde_json::Value>,
+) -> std::result::Result<String, tera::Error> {
+    let t = tera.as_ref();
+    if let None = t {
+        return Err(tera::Error::msg("No initialized tera templates"));
+    }
+    // NOTE: Manually inserts to a context because tera does not treat an option value.
+    let mut context = Context::new();
+    for (k, v) in context_values.iter() {
+        context.insert(k, &v);
+    }
+    t.unwrap().render(file_name, &context)
 }

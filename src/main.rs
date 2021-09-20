@@ -27,6 +27,6 @@ async fn main() {
 
     let port = opts::get_opt_port().unwrap_or(8080);
     warp::serve(routes::user_pools_routes())
-        .run(([127, 0, 0, 1], port))
+        .run(([0, 0, 0, 0], port))
         .await;
 }
