@@ -1,6 +1,7 @@
 use fakey_cognito::*;
 
 mod admin_add_user_to_group_test;
+mod admin_confirm_sign_up_test;
 
 pub async fn setup() {
     opts::init_opt().await;
