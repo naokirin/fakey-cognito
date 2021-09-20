@@ -146,10 +146,16 @@ fn post_routes(
 ) -> user_pools::UserPoolsResponseResult {
     let target = match take_action(action_header, body, queries) {
         Ok(action) => action,
-        Err(_) => {
-            return Ok(user_pools::error_response(
-                user_pools::CommonError::MissingAction,
-            ))
+        Err(e) => {
+            if e.downcast_ref::<MissingActionError>().is_some() {
+                return Ok(user_pools::error_response(
+                    user_pools::CommonError::MissingAction,
+                ));
+            } else {
+                return Ok(user_pools::error_response(
+                    user_pools::CommonError::InternalFailure,
+                ));
+            }
         }
     };
 
