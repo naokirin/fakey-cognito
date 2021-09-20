@@ -9,6 +9,7 @@ pub const ADMIN_LINK_PROVIDER_FOR_USER_ACTION_NAME: &str =
 
 /// AdminLinkProviderForUser response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminLinkProviderForUser.html#API_AdminLinkProviderForUser_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminLinkProviderForUserError {
     AliasExistsException,

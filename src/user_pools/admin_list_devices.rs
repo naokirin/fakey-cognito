@@ -9,6 +9,7 @@ pub const ADMIN_LIST_DEVICES_ACTION_NAME: &str =
 
 /// AdminListDevices response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminListDevices.html#API_AdminListDevices_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminListDevicesError {
     InternalErrorException,

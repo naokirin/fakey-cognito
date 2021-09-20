@@ -9,6 +9,7 @@ pub const ADMIN_SET_USER_SETTINGS_ACTION_NAME: &str =
 
 /// AdminSetUserSettings response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminSetUserSettings.html#API_AdminSetUserSettings_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminSetUserSettingsError {
     InternalErrorException,

@@ -9,6 +9,7 @@ pub const ADMIN_FORGET_DEVICE_ACTION_NAME: &str =
 
 /// AdminForgetDevice response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminForgetDevice.html#API_AdminForgetDevice_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminForgetDeviceError {
     InternalErrorException,

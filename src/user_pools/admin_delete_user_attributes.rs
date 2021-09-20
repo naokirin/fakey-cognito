@@ -11,6 +11,7 @@ pub const ADMIN_DELETE_USER_ATTRIBUTES_ACTION_NAME: &str =
 
 /// AdminDeleteUserAttributes response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminDeleteUserAttributes.html#API_AdminDeleteUserAttributes_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminDeleteUserAttributesError {
     InternalErrorException,

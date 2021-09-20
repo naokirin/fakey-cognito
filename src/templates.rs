@@ -2,8 +2,8 @@ use serde::Serialize;
 use tera::{Context, Tera};
 use tokio::sync::OnceCell;
 
-const TEMPLATE_PATH: &'static str = "templates";
-const DEFAULT_TEMPLATE_PATH: &'static str = "resources/default_templates";
+const TEMPLATE_PATH: &str = "templates";
+const DEFAULT_TEMPLATE_PATH: &str = "resources/default_templates";
 static TEMPLATES: OnceCell<Option<Tera>> = OnceCell::const_new();
 static DEFAULT_TEMPLATES: OnceCell<Option<Tera>> = OnceCell::const_new();
 
@@ -46,13 +46,13 @@ where
     let map: std::collections::HashMap<String, serde_json::Value> =
         serde_json::from_str(&r).unwrap();
     if let Some(o) = TEMPLATES.get() {
-        let t = render_template_internal(&o, file_name.as_str(), &map);
-        if let Ok(_) = t {
+        let t = render_template_internal(o, file_name.as_str(), &map);
+        if t.is_ok() {
             return t.ok();
         }
     }
     if let Some(o) = DEFAULT_TEMPLATES.get() {
-        return render_template_internal(&o, file_name.as_str(), &map).ok();
+        return render_template_internal(o, file_name.as_str(), &map).ok();
     }
     log::error!("Template '{}' not found", file_name);
     None
@@ -64,7 +64,7 @@ fn render_template_internal(
     context_values: &std::collections::HashMap<String, serde_json::Value>,
 ) -> std::result::Result<String, tera::Error> {
     let t = tera.as_ref();
-    if let None = t {
+    if t.is_none() {
         return Err(tera::Error::msg("No initialized tera templates"));
     }
     // NOTE: Manually inserts to a context because tera does not treat an option value.

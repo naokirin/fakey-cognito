@@ -9,6 +9,7 @@ pub const ADMIN_USER_GLOBAL_SIGN_OUT_ACTION_NAME: &str =
 
 /// AdminUserGlobalSignOut response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminUserGlobalSignOut.html#API_AdminUserGlobalSignOut_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminUserGlobalSignOutError {
     InternalErrorException,

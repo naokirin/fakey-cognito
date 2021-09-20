@@ -9,6 +9,7 @@ pub const ADMIN_UPDATE_AUTH_EVENT_FEEDBACK_ACTION_NAME: &str =
 
 /// AdminUpdateAuthEventFeedback response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminUpdateAuthEventFeedback.html#API_AdminUpdateAuthEventFeedback_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminUpdateAuthEventFeedbackError {
     InternalErrorException,

@@ -31,8 +31,8 @@ pub fn empty_body() -> hyper::Body {
 }
 
 /// Returns body with json serialized value.
-pub fn json_body(value: &String) -> hyper::Body {
-    hyper::Body::from(value.clone())
+pub fn json_body(value: &str) -> hyper::Body {
+    hyper::Body::from(value.to_string())
 }
 
 pub fn response<'a, T>(body: &'a Bytes) -> UserPoolsResponseResult
@@ -82,7 +82,7 @@ where
     if let Some(response) = super::config_response::<R>() {
         return response;
     };
-    if !validation_callback(&request) {
+    if !validation_callback(request) {
         let error =
             super::ResponseError::<R::E>::CommonError(super::CommonError::InvalidParameterValue);
         return super::error_response(error);
@@ -106,7 +106,7 @@ where
     if let Some(response) = super::config_response::<R>() {
         return response;
     };
-    if !validation_callback(&request) {
+    if !validation_callback(request) {
         let error =
             super::ResponseError::<R::E>::CommonError(super::CommonError::InvalidParameterValue);
         return super::error_response(error);

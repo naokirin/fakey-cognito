@@ -8,6 +8,7 @@ pub const ADMIN_CREATE_USER_ACTION_NAME: &str = "AWSCognitoIdentityProviderServi
 
 /// AdminCreateUser response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminCreateUser.html#API_AdminCreateUser_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminCreateUserError {
     CodeDeliveryFailureException,

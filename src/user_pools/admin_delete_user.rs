@@ -8,6 +8,7 @@ pub const ADMIN_DELETE_USER_ACTION_NAME: &str = "AWSCognitoIdentityProviderServi
 
 /// AdminDeleteUser response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminDeleteUser.html#API_AdminDeleteUser_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminDeleteUserError {
     InternalErrorException,

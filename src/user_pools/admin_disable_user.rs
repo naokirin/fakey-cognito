@@ -9,6 +9,7 @@ pub const ADMIN_DISABLE_USER_ACTION_NAME: &str =
 
 /// AdminDisableUser response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminDisableUser.html#API_AdminDisableUser_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminDisableUserError {
     InternalErrorException,

@@ -22,7 +22,7 @@ fn take_action(
     body: &Bytes,
     queries: HashMap<String, String>,
 ) -> std::result::Result<String, Box<dyn std::error::Error>> {
-    let json: serde_json::Value = serde_json::from_slice(&body)?;
+    let json: serde_json::Value = serde_json::from_slice(body)?;
     let body_action = match json {
         serde_json::Value::Object(map) => {
             map.get(AWS_ACTION_TAREGET_KEY).and_then(move |s| match s {
@@ -37,7 +37,7 @@ fn take_action(
         && common::is_blank(&action_header)
         && !queries.contains_key(AWS_ACTION_TAREGET_KEY)
     {
-        Err(MissingActionError {})?;
+        return Err(MissingActionError {}.into());
     }
 
     let action = if !common::is_blank(&body_action) {
@@ -153,7 +153,7 @@ fn post_routes(
         }
     };
 
-    post_action_routes(target.as_ref(), &body)
+    post_action_routes(target.as_ref(), body)
 }
 
 pub fn user_pools_routes(

@@ -94,7 +94,7 @@ where
 
     fn from_str(s: &str) -> Result<Self, strum::ParseError> {
         T::from_str(s)
-            .map(move |e| ResponseError::ActionError(e))
-            .or(CommonError::from_str(s).map(move |e| ResponseError::CommonError(e)))
+            .map(ResponseError::ActionError)
+            .or_else(|_| CommonError::from_str(s).map(ResponseError::CommonError))
     }
 }

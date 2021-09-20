@@ -8,6 +8,7 @@ pub const ADMIN_GET_USER_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.
 
 /// AdminGetUser response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminGetUser.html#API_AdminGetUser_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminGetUserError {
     InternalErrorException,

@@ -9,6 +9,7 @@ pub const ADMIN_LIST_USER_AUTH_EVENTS_ACTION_NAME: &str =
 
 /// AdminListUserAuthEvents response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminListUserAuthEvents.html#API_AdminListUserAuthEvents_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminListUserAuthEventsError {
     InternalErrorException,

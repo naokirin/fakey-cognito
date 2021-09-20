@@ -11,6 +11,7 @@ pub const ADMIN_SET_USER_PASSWORD_ACTION_NAME: &str =
 
 /// AdminSetUserPassword response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminSetUserPassword.html#API_AdminSetUserPassword_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminSetUserPasswordError {
     InternalErrorException,

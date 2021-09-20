@@ -8,6 +8,7 @@ pub const ADMIN_GET_DEVICE_ACTION_NAME: &str = "AWSCognitoIdentityProviderServic
 
 /// AdminGetDevice response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminGetDevice.html#API_AdminGetDevice_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminGetDeviceError {
     InternalErrorException,

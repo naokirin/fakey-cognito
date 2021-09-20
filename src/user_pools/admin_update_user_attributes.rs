@@ -9,6 +9,7 @@ pub const ADMIN_UPDATE_USER_ATTRIBUTES_ACTION_NAME: &str =
 
 /// AdminUpdateUserAttributes response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminUpdateUserAttributes.html#API_AdminUpdateUserAttributes_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminUpdateUserAttributesError {
     AliasExistsException,

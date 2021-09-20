@@ -9,6 +9,7 @@ pub const ADMIN_CONFIRM_SIGN_UP_ACTION_NAME: &str =
 
 /// AdminConfirmSignUp response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminConfirmSignUp.html#API_AdminConfirmSignUp_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminConfirmSignUpError {
     InternalErrorException,

@@ -9,6 +9,7 @@ pub const ADMIN_INITIATE_AUTH_ACTION_NAME: &str =
 
 /// AdminInitiateAuth response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminInitiateAuth.html#API_AdminInitiateAuth_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminInitiateAuthError {
     InternalErrorException,

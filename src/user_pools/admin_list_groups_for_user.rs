@@ -9,6 +9,7 @@ pub const ADMIN_LIST_GROUPS_FOR_USER_ACTION_NAME: &str =
 
 /// AdminListGroupsForUser response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminListGroupsForUser.html#API_AdminListGroupsForUser_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminListGroupsForUserError {
     InternalErrorException,

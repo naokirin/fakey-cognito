@@ -8,12 +8,12 @@ static CONFIG: OnceCell<Config> = OnceCell::const_new();
 
 pub const CONFIG_ERROR_TYPE: &str = "error_type";
 
-pub fn get_config(action: &str, name: &String) -> Option<String> {
+pub fn get_config(action: &str, name: &str) -> Option<String> {
     super::config()
         .get(action)
         .unwrap_or(&HashMap::new())
         .get(name)
-        .map(move |c| c.clone())
+        .cloned()
 }
 
 /// Initializes global config.

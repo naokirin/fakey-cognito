@@ -9,6 +9,7 @@ pub const ADMIN_DISABLE_PROVIDER_FOR_USER_ACTION_NAME: &str =
 
 /// AdminDisableProviderForUser response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminDisableProviderForUser.html#API_AdminDisableProviderForUser_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminDisableProviderForUserError {
     AliasExistsException,

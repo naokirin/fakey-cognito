@@ -9,6 +9,7 @@ pub const ADMIN_SET_USER_MFA_PREFERENCE_ACTION_NAME: &str =
 
 /// AdminSetUserMFAPreference response errors.
 /// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminSetUserMFAPreference.html#API_AdminSetUserMFAPreference_Errors
+#[allow(clippy::enum_variant_names)]
 #[derive(Display, EnumString)]
 pub enum AdminSetUserMFAPreferenceError {
     InternalErrorException,
