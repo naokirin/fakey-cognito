@@ -41,12 +41,15 @@ where
 {
     match serde_json::from_slice::<T>(body) {
         Ok(req) => Ok(req.to_response()),
-        Err(_) => Ok(error_response(super::CommonError::InternalFailure)),
+        Err(_) => Ok(error_response(
+            super::CommonError::InternalFailure,
+            Some("Cannot deserialize json body."),
+        )),
     }
 }
 
 /// Generates error response for aws.
-pub fn error_response<T>(error: T) -> Response
+pub fn error_response<T>(error: T, message: Option<&str>) -> Response
 where
     T: std::fmt::Display + ToStatusCode,
 {
@@ -56,8 +59,9 @@ where
         .header(AWS_ERROR_MESSAGE_HEADER, "DUMMY ERROR MESSAGE")
         .header("Content-Type", AWS_CONTENT_TYPE_HEADER_VALUE)
         .body(json_body(&format!(
-            "{{\"__type\": \"{}\",\"message\":\"DUMMY ERROR MESSAGE\"}}",
-            error
+            "{{\"__type\": \"{}\",\"message\":\"{}\"}}",
+            error,
+            message.unwrap_or("DUMMY ERROR MESSAGE")
         )))
         .unwrap()
 }
@@ -68,8 +72,12 @@ where
 {
     use std::str::FromStr;
     match super::get_config(R::to_action_name(), &super::CONFIG_ERROR_TYPE.to_string()) {
-        Some(name) => super::ResponseError::<R::E>::from_str(name.as_str())
-            .map_or(None, |e| Some(super::error_response(e))),
+        Some(name) => super::ResponseError::<R::E>::from_str(name.as_str()).map_or(None, |e| {
+            Some(super::error_response(
+                e,
+                Some("force response from config."),
+            ))
+        }),
         _ => None,
     }
 }
@@ -85,7 +93,7 @@ where
     if !validation_callback(request) {
         let error =
             super::ResponseError::<R::E>::CommonError(super::CommonError::InvalidParameterValue);
-        return super::error_response(error);
+        return super::error_response(error, Some("Parameters validation error."));
     }
 
     let opt_json = templates::render_template(template_name, &request);
@@ -94,7 +102,10 @@ where
             .status(http::status_code(200))
             .body(super::responses::json_body(&json))
             .unwrap(),
-        _ => super::error_response(super::CommonError::InternalFailure),
+        _ => super::error_response(
+            super::CommonError::InternalFailure,
+            Some("Error during rendering response template."),
+        ),
     }
 }
 
@@ -109,7 +120,7 @@ where
     if !validation_callback(request) {
         let error =
             super::ResponseError::<R::E>::CommonError(super::CommonError::InvalidParameterValue);
-        return super::error_response(error);
+        return super::error_response(error, Some("Parameters validation error."));
     }
 
     warp::http::Response::builder()
@@ -136,15 +147,16 @@ mod tests {
 
     #[test]
     fn error_response_has_status_code() {
-        let response = error_response(CommonError::AccessDeniedException);
+        let response = error_response(CommonError::AccessDeniedException, None);
         assert_eq!(http::status_code(400), response.status());
     }
 
     #[test]
     fn error_response_has_error_header() {
-        let response = error_response::<ResponseError<TestError>>(ResponseError::CommonError(
-            CommonError::AccessDeniedException,
-        ));
+        let response = error_response::<ResponseError<TestError>>(
+            ResponseError::CommonError(CommonError::AccessDeniedException),
+            None,
+        );
         assert!(response.headers().contains_key(AWS_ERROR_TYPE_HEADER));
         assert_eq!(
             "AccessDeniedException",

@@ -21,7 +21,7 @@ fn take_action(
     action_header: Option<String>,
     body: &Bytes,
     queries: HashMap<String, String>,
-) -> std::result::Result<String, Box<dyn std::error::Error>> {
+) -> anyhow::Result<String> {
     let json: serde_json::Value = serde_json::from_slice(body)?;
     let body_action = match json {
         serde_json::Value::Object(map) => {
@@ -134,6 +134,7 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
 
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,
+            Some(&format!("Unknown action name '{}'.", action)),
         )),
     }
 }
@@ -150,10 +151,12 @@ fn post_routes(
             if e.downcast_ref::<MissingActionError>().is_some() {
                 return Ok(user_pools::error_response(
                     user_pools::CommonError::MissingAction,
+                    Some("No specified action."),
                 ));
             } else {
                 return Ok(user_pools::error_response(
                     user_pools::CommonError::InternalFailure,
+                    Some(&format!("Error: {:?}", e)),
                 ));
             }
         }

@@ -11,6 +11,7 @@ mod admin_enable_user_test;
 mod admin_forget_device_test;
 mod admin_get_device_test;
 mod admin_get_user_test;
+mod admin_initiate_auth_test;
 
 pub async fn setup() {
     opts::init_opt().await;
