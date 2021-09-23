@@ -11,14 +11,14 @@ async fn test_success_to_request() {
         .path("/")
         .header(
             "x-amz-target",
-            "AWSCognitoIdentityProviderService.AdminAddUserToGroup",
+            "AWSCognitoIdentityProviderService.AdminDeleteUserAttributes",
         )
-        .body(r#"{"GroupName":"group_name","Username":"username","UserPoolId":"user_pool_id"}"#)
+        .body(r#"{"UserAttributeNames":["attribute"],"Username":"username","UserPoolId":"user_pool_id"}"#)
         .reply(&filter)
         .await;
 
     assert_eq!(200, res.status());
-    assert!(res.body().is_empty());
+    assert_eq!("".as_bytes(), res.body());
 }
 
 #[tokio::test]
@@ -31,9 +31,9 @@ async fn test_failure_to_request() {
         .path("/")
         .header(
             "x-amz-target",
-            "AWSCognitoIdentityProviderService.AdminAddUserToGroup",
+            "AWSCognitoIdentityProviderService.AdminDeleteUserAttributes",
         )
-        .body(r#"{"GroupName":"","Username":"username","UserPoolId":"user_pool_id"}"#)
+        .body(r#"{"UserAttributeNames":[],"Username":"","UserPoolId":"user_pool_id"}"#)
         .reply(&filter)
         .await;
 

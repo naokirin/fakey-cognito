@@ -33,6 +33,7 @@ async fn test_success_to_request() {
         .await;
 
     assert_eq!(200, res.status());
+    assert!(!res.body().is_empty())
 }
 
 #[tokio::test]

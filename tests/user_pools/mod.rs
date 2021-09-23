@@ -3,6 +3,8 @@ use fakey_cognito::*;
 mod admin_add_user_to_group_test;
 mod admin_confirm_sign_up_test;
 mod admin_create_user_test;
+mod admin_delete_user_test;
+mod admin_delete_user_attributes_test;
 
 pub async fn setup() {
     opts::init_opt().await;
