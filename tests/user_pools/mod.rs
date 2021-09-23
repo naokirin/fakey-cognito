@@ -14,6 +14,7 @@ mod admin_get_user_test;
 mod admin_initiate_auth_test;
 mod admin_link_provider_for_user_test;
 mod admin_list_devices_test;
+mod admin_list_groups_for_user_test;
 
 pub async fn setup() {
     opts::init_opt().await;
