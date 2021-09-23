@@ -69,7 +69,7 @@ impl super::ToActionName for AdminSetUserSettingsRequest {
 impl super::ToResponse for AdminSetUserSettingsRequest {
     type E = AdminSetUserSettingsError;
     fn to_response(&self) -> super::Response {
-        super::to_json_response(self, ADMIN_SET_USER_SETTINGS_NAME, valid_request)
+        super::to_empty_response(self, valid_request)
     }
 }
 

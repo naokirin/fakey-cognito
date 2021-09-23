@@ -21,6 +21,7 @@ mod admin_reset_user_password_test;
 mod admin_respond_to_auth_challenge_test;
 mod admin_set_user_mfa_preference_test;
 mod admin_set_user_password_test;
+mod admin_set_user_settings_test;
 
 pub async fn setup() {
     opts::init_opt().await;
