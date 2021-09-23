@@ -19,6 +19,7 @@ mod admin_list_user_auth_events_test;
 mod admin_remove_user_from_group_test;
 mod admin_reset_user_password_test;
 mod admin_respond_to_auth_challenge_test;
+mod admin_set_user_mfa_preference_test;
 
 pub async fn setup() {
     opts::init_opt().await;
