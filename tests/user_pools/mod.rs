@@ -8,6 +8,7 @@ mod admin_delete_user_test;
 mod admin_disable_provider_for_user_test;
 mod admin_disable_user_test;
 mod admin_enable_user_test;
+mod admin_forget_device_test;
 
 pub async fn setup() {
     opts::init_opt().await;
