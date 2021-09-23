@@ -13,7 +13,8 @@ async fn test_success_to_request() {
             "x-amz-target",
             "AWSCognitoIdentityProviderService.AdminInitiateAuth",
         )
-        .body(r#"{
+        .body(
+            r#"{
             "AnalyticsMetadata": { 
                "AnalyticsEndpointId": "string"
             },

@@ -40,7 +40,7 @@ impl super::ToStatusCode for AdminLinkProviderForUserError {
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]
 pub struct AdminLinkProviderForUserRequest {
-    pub desitination_user: Option<super::data_types::ProviderUserIdentifierType>,
+    pub destination_user: Option<super::data_types::ProviderUserIdentifierType>,
     pub source_user: Option<super::data_types::ProviderUserIdentifierType>,
     pub user_pool_id: Option<String>,
 }
@@ -60,7 +60,7 @@ impl super::ToResponse for AdminLinkProviderForUserRequest {
 
 /// Validates request.
 fn valid_request(request: &AdminLinkProviderForUserRequest) -> bool {
-    request.desitination_user.is_some()
+    request.destination_user.is_some()
         && request.source_user.is_some()
         && !common::is_blank(&request.user_pool_id)
 }
@@ -73,7 +73,7 @@ mod tests {
     #[test]
     fn success_to_valid_request() {
         let request = AdminLinkProviderForUserRequest {
-            desitination_user: Some(Default::default()),
+            destination_user: Some(Default::default()),
             source_user: Some(Default::default()),
             user_pool_id: Some("user_pool_id".to_string()),
             ..Default::default()
@@ -84,7 +84,7 @@ mod tests {
     #[test]
     fn failure_to_valid_request() {
         let request = AdminLinkProviderForUserRequest {
-            desitination_user: Some(Default::default()),
+            destination_user: Some(Default::default()),
             source_user: Some(Default::default()),
             user_pool_id: Some("".to_string()),
             ..Default::default()
