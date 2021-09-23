@@ -41,7 +41,7 @@ impl super::ToStatusCode for AdminSetUserPasswordError {
 #[serde(rename_all = "PascalCase")]
 pub struct AdminSetUserPasswordRequest {
     pub password: Option<String>,
-    pub permanent: Option<String>,
+    pub permanent: Option<bool>,
     pub username: Option<String>,
     pub user_pool_id: Option<String>,
 }
