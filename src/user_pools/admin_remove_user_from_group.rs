@@ -50,7 +50,7 @@ impl super::ToActionName for AdminRemoveUserFromGroupRequest {
 impl super::ToResponse for AdminRemoveUserFromGroupRequest {
     type E = AdminRemoveUserFromGroupError;
     fn to_response(&self) -> super::Response {
-        super::to_json_response(self, ADMIN_REMOVE_USER_FROM_GROUP_NAME, valid_request)
+        super::to_empty_response(self, valid_request)
     }
 }
 
