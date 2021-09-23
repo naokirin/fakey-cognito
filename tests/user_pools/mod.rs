@@ -6,6 +6,7 @@ mod admin_create_user_test;
 mod admin_delete_user_attributes_test;
 mod admin_delete_user_test;
 mod admin_disable_provider_for_user_test;
+mod admin_disable_user_test;
 
 pub async fn setup() {
     opts::init_opt().await;
