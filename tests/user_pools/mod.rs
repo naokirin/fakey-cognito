@@ -17,6 +17,7 @@ mod admin_list_devices_test;
 mod admin_list_groups_for_user_test;
 mod admin_list_user_auth_events_test;
 mod admin_remove_user_from_group_test;
+mod admin_reset_user_password_test;
 
 pub async fn setup() {
     opts::init_opt().await;

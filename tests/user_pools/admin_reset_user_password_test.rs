@@ -11,21 +11,14 @@ async fn test_success_to_request() {
         .path("/")
         .header(
             "x-amz-target",
-            "AWSCognitoIdentityProviderService.AdminListUserAuthEvents",
+            "AWSCognitoIdentityProviderService.AdminResetUserPassword",
         )
-        .body(
-            r#"{
-            "MaxResults": 10,
-            "NextToken": "string",
-            "Username": "string",
-            "UserPoolId": "string"
-         }"#,
-        )
+        .body(r#"{"ClientMetadata":{},"Username":"username","UserPoolId":"user_pool_id"}"#)
         .reply(&filter)
         .await;
 
     assert_eq!(200, res.status());
-    assert!(!res.body().is_empty());
+    assert!(res.body().is_empty());
 }
 
 #[tokio::test]
@@ -38,16 +31,9 @@ async fn test_failure_to_request() {
         .path("/")
         .header(
             "x-amz-target",
-            "AWSCognitoIdentityProviderService.AdminListUserAuthEvents",
+            "AWSCognitoIdentityProviderService.AdminResetUserPassword",
         )
-        .body(
-            r#"{
-            "MaxResults": 10,
-            "NextToken": "string",
-            "Username": "string",
-            "UserPoolId": ""
-         }"#,
-        )
+        .body(r#"{"ClientMetadata":{},"Username":"username","UserPoolId":""}"#)
         .reply(&filter)
         .await;
 
