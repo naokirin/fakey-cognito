@@ -25,6 +25,7 @@ mod admin_set_user_settings_test;
 mod admin_update_auth_event_feedback_test;
 mod admin_update_device_status_test;
 mod admin_update_user_attributes_test;
+mod admin_user_global_sign_out_test;
 
 pub async fn setup() {
     opts::init_opt().await;
