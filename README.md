@@ -1,8 +1,11 @@
 # Fakey Cognito 
 
-> Simple fake AWS Cognito API server for development.
+![test](https://github.com/naokirin/fakey-cognito/actions/workflows/test.yml/badge.svg)
+
 
 :house_with_garden: [Homepage](https://github.com/naokirin/fakey-cognito)
+
+Simple fake AWS Cognito API server for development.
 
 ### :warning: Unsupported features
 
@@ -49,11 +52,10 @@ First read "[Get Started](#get-started)".
 
 ### Configurations
 
-You use configuration with configuration file (YAML).  
+You use configuration with file (YAML).  
 Default configuration path is `/repository_root/config.yml` .
 
 Following configuration file format.
-
 ```yaml
 ActionName:
   error_type: <force response error type (e.g. InternalFailure)>
