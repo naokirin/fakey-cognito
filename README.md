@@ -1,4 +1,4 @@
-# Fakey Cognito (Work In Progress)
+# Fakey Cognito 
 
 > Simple fake AWS Cognito API server for development.
 
@@ -15,8 +15,8 @@
 
 This project priority is following.
 
-1. AdminXxx on User Pools API.
-2. Other User Pools API.
+1. [DONE] AdminXxx on User Pools API.
+2. [Not Implemented] Other User Pools API.
 
 ## Get Started
 
