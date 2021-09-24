@@ -4,15 +4,18 @@ const DEFAULT_LOG_LEVEL: &str = "info";
 const LOG_LEVEL_KEY: &str = "RUST_LOG";
 
 fn setup_logger() {
-    let log_level = std::env::var(LOG_LEVEL_KEY).unwrap_or_else(|_| DEFAULT_LOG_LEVEL.to_string());
+    let log_level = opts::get_opt_log_level()
+        .or_else(|| std::env::var(LOG_LEVEL_KEY).ok())
+        .or_else(|| Some(DEFAULT_LOG_LEVEL.to_string()))
+        .unwrap();
     std::env::set_var(LOG_LEVEL_KEY, log_level);
     pretty_env_logger::init();
 }
 
 #[tokio::main]
 async fn main() {
-    setup_logger();
     opts::init_opt().await;
+    setup_logger();
     let templates_opt = opts::get_opt_templates();
     tokio::join!(
         user_pools::init_config(opts::get_opt_config()),

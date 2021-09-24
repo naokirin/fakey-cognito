@@ -18,6 +18,10 @@ pub struct Opt {
     /// Port number
     #[structopt(short, long, name = "port")]
     pub port: Option<u16>,
+
+    /// Log level (debug, info, warn, error)
+    #[structopt(long, name = "level")]
+    pub log_level: Option<String>,
 }
 
 pub async fn init_opt() {
@@ -34,4 +38,8 @@ pub fn get_opt_templates() -> Option<&'static String> {
 
 pub fn get_opt_port() -> Option<u16> {
     OPT.get().unwrap().port
+}
+
+pub fn get_opt_log_level() -> Option<String> {
+    OPT.get().unwrap().log_level.clone()
 }

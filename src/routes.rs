@@ -174,11 +174,12 @@ pub fn user_pools_routes(
         .and(warp::query::<HashMap<String, String>>())
         .and(warp::header::headers_cloned())
         .map(move |bytes: Bytes, target, queries, headers| {
-            log::debug!("request headers: {:?}", &headers);
-            log::debug!("request body: {:?}", &bytes);
+            log::debug!("incoming headers: {:?}", &headers);
+            log::debug!("incoming body: {:?}", &bytes);
             let result = post_routes(target, &bytes, queries).unwrap();
             log::debug!("response status: {:?}", &result.status());
             log::debug!("response headers: {:?}", &result.headers());
+            log::debug!("response body: {:?}", &result.body());
             result
         })
         .with(warp::log("info"))
