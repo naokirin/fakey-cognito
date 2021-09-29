@@ -15,6 +15,10 @@ pub struct Opt {
     #[structopt(long, name = "templates_path")]
     pub templates: Option<String>,
 
+    /// Read specific hooks directory path
+    #[structopt(long, name = "hooks_path")]
+    pub hooks: Option<String>,
+
     /// Port number
     #[structopt(short, long, name = "port")]
     pub port: Option<u16>,
@@ -34,6 +38,10 @@ pub fn get_opt_config() -> Option<&'static PathBuf> {
 
 pub fn get_opt_templates() -> Option<&'static String> {
     OPT.get().unwrap().templates.as_ref()
+}
+
+pub fn get_opt_hooks() -> Option<&'static String> {
+    OPT.get().unwrap().hooks.as_ref()
 }
 
 pub fn get_opt_port() -> Option<u16> {
