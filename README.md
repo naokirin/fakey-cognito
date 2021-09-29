@@ -105,6 +105,25 @@ When use custom path you specify a command line arguments.
 cargo run -- --templates /path/to/templates
 ```
 
+### Hooks
+
+Can run python hook scripts before responses.
+
+fakey-cognito calls a `hook` function in snake_case action name python script.  
+A `hook` function takes a request json body string and should return a json string for using a response template.
+
+```py
+def hook(request):
+    return '{ "json": "response" }'
+```
+
+Default hook scripts directory path is `./hooks`.  
+When use custom path you specify a command line arguments.
+
+```sh
+cargo run -- --hooks /path/to/hooks
+```
+
 ## License
 
 Fakey Cognito(fakey-cognito) is under [MIT License](https://github.com/naokirin/fakey-cognito/blob/master/LICENSE)
