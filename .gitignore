@@ -1,1 +1,3 @@
 /target
+hooks/*
+!hooks/.keep
