@@ -96,7 +96,11 @@ where
         return super::error_response(error, Some("Parameters validation error."));
     }
 
-    let hook_result = crate::hooks::call_request_hook(&template_name.to_string(), &request);
+    let hook_result = crate::hooks::call_request_hook(
+        &template_name.to_string(),
+        &request,
+        crate::opts::get_opt_hooks().map(|o| o.as_ref()),
+    );
     let opt_json = templates::render_template(
         template_name,
         &request,

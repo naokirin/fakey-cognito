@@ -5,12 +5,16 @@ use std::path::Path;
 
 const DEFAULT_HOOK_DIR_PATH: &str = "hooks";
 
-pub fn call_request_hook<T>(action: &str, value: &T) -> Result<String, PyErr>
+pub fn call_request_hook<T>(
+    action: &str,
+    value: &T,
+    hooks_dir: Option<&str>,
+) -> Result<String, PyErr>
 where
     T: serde::Serialize,
 {
     let pyname = action.to_snake_case();
-    let dir = crate::opts::get_opt_hooks().map_or(DEFAULT_HOOK_DIR_PATH, |o| o);
+    let dir = hooks_dir.unwrap_or(DEFAULT_HOOK_DIR_PATH);
     let path = format!("{}/{}.py", dir, pyname);
     if !Path::new(&path).exists() {
         return Ok("{}".to_string());
@@ -32,4 +36,17 @@ where
         let arg = serde_json::to_string(value).unwrap_or_else(|_| "".to_string());
         hook.getattr("hook")?.call1((arg,))?.extract()
     })
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use pretty_assertions::assert_eq;
+
+    #[test]
+    fn call_hook_test() {
+        let result = call_request_hook("AdminGetUser", &"{}", Some("resources/test/hooks"));
+        assert!(result.is_ok());
+        assert_eq!("{ \"foo\": \"bar\" }", result.unwrap());
+    }
 }
