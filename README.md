@@ -7,19 +7,9 @@
 
 Simple fake AWS Cognito API server for development.
 
-### :warning: Unsupported features
+### :white_check_mark: Implemented features
 
-* Request parameters validations
-* Stateful behaviours
-* Error response with corrected messages (but supported error types)
-* No check any authentication and authorization
-
-### :warning: Priority for implementation
-
-This project priority is following.
-
-1. [DONE] AdminXxx on User Pools API.
-2. [Not Implemented] Other User Pools API.
+* [x] AdminXxx on User Pools API.
 
 ## Get Started
 
@@ -79,7 +69,7 @@ Template file name is a action name and a directory is `user_pools`, `user_pools
 
 You can use request parameters in template.
 
-Example for template file (e.g. `user_pools/AdminGetDevice.json` )
+Example for template file (e.g.`user_pools/AdminGetDevice.json`).
 ```json
 {
    "Device": { 
@@ -112,6 +102,7 @@ Can run python hook scripts before responses.
 fakey-cognito calls a `hook` function in snake_case action name python script.  
 A `hook` function takes a request json body string and should return a json string for using a response template.
 
+Example for AdminGetUser action hook script (e.g.`hooks/admin_get_user.py`).
 ```py
 def hook(request):
     return '{ "json": "response" }'
@@ -123,6 +114,12 @@ When use custom path you specify a command line arguments.
 ```sh
 cargo run -- --hooks /path/to/hooks
 ```
+
+## :warning: Unsupported features
+
+* Request parameter validations
+* Error response with corrected messages (but supported error types)
+* No check any authentication and authorization
 
 ## License
 
