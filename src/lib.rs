@@ -1,4 +1,5 @@
 pub mod common;
+pub mod hooks;
 pub mod http;
 pub mod opts;
 pub mod routes;

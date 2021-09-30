@@ -1,1 +1,4 @@
 /target
+hooks/*
+!hooks/.keep
+resources/test/hooks/__pycache__

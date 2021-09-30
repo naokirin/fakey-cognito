@@ -96,7 +96,19 @@ where
         return super::error_response(error, Some("Parameters validation error."));
     }
 
-    let opt_json = templates::render_template(template_name, &request);
+    let hook_result = crate::hooks::call_request_hook(
+        &template_name.to_string(),
+        &request,
+        crate::opts::get_opt_hooks().map(|o| o.as_ref()),
+    );
+    let opt_json = templates::render_template(
+        template_name,
+        &request,
+        hook_result.unwrap_or_else(|e| {
+            log::warn!("hook script error: {}", e);
+            "{}".to_string()
+        }),
+    );
     match opt_json {
         Some(json) => warp::http::Response::builder()
             .status(http::status_code(200))

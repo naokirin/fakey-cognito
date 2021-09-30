@@ -37,7 +37,11 @@ pub async fn init_default_template() {
         .await;
 }
 
-pub fn render_template<T>(action_name: &str, context_value: &T) -> Option<String>
+pub fn render_template<T>(
+    action_name: &str,
+    context_value: &T,
+    additional_values: String,
+) -> Option<String>
 where
     T: Serialize,
 {
@@ -45,6 +49,9 @@ where
     let r = serde_json::to_string(&context_value).unwrap();
     let map: std::collections::HashMap<String, serde_json::Value> =
         serde_json::from_str(&r).unwrap();
+    let map2: std::collections::HashMap<String, serde_json::Value> =
+        serde_json::from_str(&additional_values).unwrap();
+    let map = map.into_iter().chain(map2).collect();
     if let Some(o) = TEMPLATES.get() {
         let t = render_template_internal(o, file_name.as_str(), &map);
         if t.is_ok() {
