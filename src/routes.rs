@@ -134,6 +134,9 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::ADMIN_USER_GLOBAL_SIGN_OUT_ACTION_NAME => {
             user_pools::response::<user_pools::AdminUserGlobalSignOutRequest>(body)
         }
+        user_pools::ASSOCIATE_SOFTWARE_TOKEN_ACTION_NAME => {
+            user_pools::response::<user_pools::AssociateSoftwareTokenRequest>(body)
+        }
 
         _ => Ok(user_pools::error_response(
             user_pools::CommonError::InvalidAction,
