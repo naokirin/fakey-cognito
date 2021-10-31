@@ -53,6 +53,9 @@ fn take_action(
 
 fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
     match action {
+        user_pools::ADD_CUSTOM_ATTRIBUTES_ACTION_NAME => {
+            user_pools::response::<user_pools::AddCustomAttributesRequest>(body)
+        }
         user_pools::ADMIN_ADD_USER_TO_GROUP_ACTION_NAME => {
             user_pools::response::<user_pools::AdminAddUserToGroupRequest>(body)
         }
