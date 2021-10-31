@@ -1,3 +1,4 @@
+mod add_custom_attributes;
 mod admin_add_user_to_group;
 mod admin_confirm_sign_up;
 mod admin_create_user;
@@ -30,6 +31,7 @@ mod data_types;
 mod errors;
 mod responses;
 
+pub use self::add_custom_attributes::*;
 pub use self::admin_add_user_to_group::*;
 pub use self::admin_confirm_sign_up::*;
 pub use self::admin_create_user::*;
