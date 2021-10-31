@@ -1,5 +1,6 @@
 use fakey_cognito::*;
 
+mod add_custom_attributes_test;
 mod admin_add_user_to_group_test;
 mod admin_confirm_sign_up_test;
 mod admin_create_user_test;
