@@ -32,6 +32,11 @@ pub async fn init_opt() {
     OPT.get_or_init(|| async move { Opt::from_args() }).await;
 }
 
+pub async fn init_fake_opt() {
+    OPT.get_or_init(|| async move { Opt::from_iter(Vec::<String>::new()) })
+        .await;
+}
+
 pub fn get_opt_config() -> Option<&'static PathBuf> {
     OPT.get().unwrap().config.as_ref()
 }
