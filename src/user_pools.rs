@@ -26,6 +26,7 @@ mod admin_update_device_status;
 mod admin_update_user_attributes;
 mod admin_user_global_sign_out;
 mod associate_software_token;
+mod change_password;
 mod configs;
 mod data_types;
 mod errors;
@@ -59,6 +60,8 @@ pub use self::admin_update_device_status::*;
 pub use self::admin_update_user_attributes::*;
 pub use self::admin_user_global_sign_out::*;
 pub use self::associate_software_token::*;
+pub use self::change_password::*;
+
 pub use self::configs::*;
 pub use self::data_types::*;
 pub use self::errors::*;

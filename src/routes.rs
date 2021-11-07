@@ -94,6 +94,7 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::ADMIN_UPDATE_USER_ATTRIBUTES_ACTION_NAME => user_pools::AdminUpdateUserAttributesRequest,
         user_pools::ADMIN_USER_GLOBAL_SIGN_OUT_ACTION_NAME => user_pools::AdminUserGlobalSignOutRequest,
         user_pools::ASSOCIATE_SOFTWARE_TOKEN_ACTION_NAME => user_pools::AssociateSoftwareTokenRequest,
+        user_pools::CHANGE_PASSWORD_ACTION_NAME => user_pools::ChangePasswordRequest,
     )
 }
 

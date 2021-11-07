@@ -28,6 +28,7 @@ mod admin_update_device_status_test;
 mod admin_update_user_attributes_test;
 mod admin_user_global_sign_out_test;
 mod associate_software_token_test;
+mod change_password_test;
 
 pub async fn setup() {
     opts::init_opt().await;
