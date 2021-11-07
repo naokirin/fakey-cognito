@@ -1,6 +1,7 @@
 mod analytics_metadata_type;
 mod attribute_type;
 mod context_data_type;
+mod device_secret_verifier_config_type;
 mod http_header;
 mod mfa_option_type;
 mod number_attribute_constraints_type;
@@ -13,6 +14,7 @@ mod string_attribute_constraints_type;
 pub use analytics_metadata_type::*;
 pub use attribute_type::*;
 pub use context_data_type::*;
+pub use device_secret_verifier_config_type::*;
 pub use http_header::*;
 pub use mfa_option_type::*;
 pub use number_attribute_constraints_type::*;

@@ -29,9 +29,10 @@ mod admin_update_user_attributes_test;
 mod admin_user_global_sign_out_test;
 mod associate_software_token_test;
 mod change_password_test;
+mod confirm_device_test;
 
 pub async fn setup() {
-    opts::init_opt().await;
+    opts::init_fake_opt().await;
     let templates_opt = opts::get_opt_templates();
     tokio::join!(
         user_pools::init_config(opts::get_opt_config()),
