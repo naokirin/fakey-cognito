@@ -10,6 +10,7 @@ mod schema_attribute_type;
 mod sms_mfa_settings_type;
 mod software_token_mfa_settings_type;
 mod string_attribute_constraints_type;
+mod user_context_data_type;
 
 pub use analytics_metadata_type::*;
 pub use attribute_type::*;
@@ -23,3 +24,4 @@ pub use schema_attribute_type::*;
 pub use sms_mfa_settings_type::*;
 pub use software_token_mfa_settings_type::*;
 pub use string_attribute_constraints_type::*;
+pub use user_context_data_type::*;
