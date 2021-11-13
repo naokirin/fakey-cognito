@@ -29,6 +29,7 @@ mod associate_software_token;
 mod change_password;
 mod configs;
 mod confirm_device;
+mod confirm_forgot_password;
 mod data_types;
 mod errors;
 mod responses;
@@ -63,6 +64,7 @@ pub use self::admin_user_global_sign_out::*;
 pub use self::associate_software_token::*;
 pub use self::change_password::*;
 pub use self::confirm_device::*;
+pub use self::confirm_forgot_password::*;
 
 pub use self::configs::*;
 pub use self::data_types::*;
