@@ -95,6 +95,7 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::ADMIN_USER_GLOBAL_SIGN_OUT_ACTION_NAME => user_pools::AdminUserGlobalSignOutRequest,
         user_pools::ASSOCIATE_SOFTWARE_TOKEN_ACTION_NAME => user_pools::AssociateSoftwareTokenRequest,
         user_pools::CHANGE_PASSWORD_ACTION_NAME => user_pools::ChangePasswordRequest,
+        user_pools::CONFIRM_SIGN_UP_ACTION_NAME => user_pools::ConfirmSignUpRequest,
         user_pools::CONFIRM_FORGOT_PASSWORD_ACTION_NAME => user_pools::ConfirmForgotPasswordRequest,
         user_pools::CONFIRM_DEVICE_ACTION_NAME => user_pools::ConfirmDeviceRequest,
     )

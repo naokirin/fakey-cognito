@@ -31,6 +31,7 @@ mod associate_software_token_test;
 mod change_password_test;
 mod confirm_device_test;
 mod confirm_forgot_password_test;
+mod confirm_sign_up_test;
 
 pub async fn setup() {
     opts::init_fake_opt().await;
