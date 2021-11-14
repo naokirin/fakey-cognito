@@ -31,6 +31,7 @@ mod configs;
 mod confirm_device;
 mod confirm_forgot_password;
 mod confirm_sign_up;
+mod create_group;
 mod data_types;
 mod errors;
 mod responses;
@@ -67,6 +68,7 @@ pub use self::change_password::*;
 pub use self::confirm_device::*;
 pub use self::confirm_forgot_password::*;
 pub use self::confirm_sign_up::*;
+pub use self::create_group::*;
 
 pub use self::configs::*;
 pub use self::data_types::*;

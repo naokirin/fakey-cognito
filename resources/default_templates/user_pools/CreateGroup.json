@@ -1,0 +1,11 @@
+{
+    "Group": { 
+        "CreationDate": {{ now() | date(format="%Y%m%d%H%M%S" )}},
+        "Description": "description",
+        "GroupName": "group_name",
+        "LastModifiedDate": {{ now() | date(format="%Y%m%d%H%M%S" )}},
+        "Precedence": 0,
+        "RoleArn": "role_arn",
+        "UserPoolId": "user_pool_id"
+     }
+}
