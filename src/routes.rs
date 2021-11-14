@@ -99,6 +99,7 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::CONFIRM_FORGOT_PASSWORD_ACTION_NAME => user_pools::ConfirmForgotPasswordRequest,
         user_pools::CONFIRM_SIGN_UP_ACTION_NAME => user_pools::ConfirmSignUpRequest,
         user_pools::CREATE_GROUP_ACTION_NAME => user_pools::CreateGroupRequest,
+        user_pools::CREATE_IDENTITY_PROVIDER_ACTION_NAME => user_pools::CreateIdentityProviderRequest,
     )
 }
 
