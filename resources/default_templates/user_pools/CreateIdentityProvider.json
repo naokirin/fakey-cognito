@@ -1,0 +1,16 @@
+{
+    "IdentityProvider": { 
+       "AttributeMapping": { 
+          "string" : "string" 
+       },
+       "CreationDate": {{ now() | date(format="%Y%m%d%H%M%S" )}},
+       "IdpIdentifiers": [ "string" ],
+       "LastModifiedDate": {{ now() | date(format="%Y%m%d%H%M%S" )}},
+       "ProviderDetails": { 
+          "string" : "string" 
+       },
+       "ProviderName": "{{ProviderName}}",
+       "ProviderType": "{{ProviderType}}",
+       "UserPoolId": "{{UserPoolId}}"
+    }
+ }
