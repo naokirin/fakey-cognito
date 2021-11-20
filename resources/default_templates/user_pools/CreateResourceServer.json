@@ -1,0 +1,13 @@
+{
+   "ResourceServer": { 
+      "Identifier": "{{Identifier}}",
+      "Name": "{{Name}}",
+      "Scopes": [ 
+         { 
+            "ScopeDescription": "scope_description",
+            "ScopeName": "scope_name"
+         }
+      ],
+      "UserPoolId": "{{UserPoolId}}"
+   }
+}
