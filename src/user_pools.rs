@@ -34,6 +34,7 @@ mod confirm_sign_up;
 mod create_group;
 mod create_identity_provider;
 mod create_resource_server;
+mod create_user_import_job;
 mod data_types;
 mod errors;
 mod responses;
@@ -73,6 +74,7 @@ pub use self::confirm_sign_up::*;
 pub use self::create_group::*;
 pub use self::create_identity_provider::*;
 pub use self::create_resource_server::*;
+pub use self::create_user_import_job::*;
 
 pub use self::configs::*;
 pub use self::data_types::*;

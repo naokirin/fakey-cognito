@@ -35,6 +35,7 @@ mod confirm_sign_up_test;
 mod create_group_test;
 mod create_identity_provider_test;
 mod create_resource_server_test;
+mod create_user_import_job_test;
 
 pub async fn setup() {
     opts::init_fake_opt().await;
