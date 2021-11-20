@@ -101,6 +101,7 @@ fn post_action_routes(action: &str, body: &Bytes) -> UserPoolsResponseResult {
         user_pools::CREATE_GROUP_ACTION_NAME => user_pools::CreateGroupRequest,
         user_pools::CREATE_IDENTITY_PROVIDER_ACTION_NAME => user_pools::CreateIdentityProviderRequest,
         user_pools::CREATE_RESOURCE_SERVER_ACTION_NAME => user_pools::CreateResourceServerRequest,
+        user_pools::CREATE_USER_IMPORT_JOB_ACTION_NAME => user_pools::CreateUserImportJobRequest,
     )
 }
 

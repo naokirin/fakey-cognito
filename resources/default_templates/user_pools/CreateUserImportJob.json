@@ -1,0 +1,17 @@
+{
+   "UserImportJob": { 
+      "CloudWatchLogsRoleArn": "{{CloudWatchLogsRoleArn}}",
+      "CompletionDate": {{ now() | date(format="%Y%m%d%H%M%S" )}},
+      "CompletionMessage": "string",
+      "CreationDate": {{ now() | date(format="%Y%m%d%H%M%S" )}},
+      "FailedUsers": 0,
+      "ImportedUsers": 1,
+      "JobId": "string",
+      "JobName": "{{JobName}}",
+      "PreSignedUrl": "string",
+      "SkippedUsers": 0,
+      "StartDate": {{ now() | date(format="%Y%m%d%H%M%S" )}},
+      "Status": "string",
+      "UserPoolId": "{{UserPoolId}}"
+   }
+}
