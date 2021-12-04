@@ -7,39 +7,19 @@ pub const ADMIN_CONFIRM_SIGN_UP_NAME: &str = "AdminConfirmSignUp";
 pub const ADMIN_CONFIRM_SIGN_UP_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminConfirmSignUp";
 
-/// AdminConfirmSignUp response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminConfirmSignUp.html#API_AdminConfirmSignUp_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminConfirmSignUpError {
-    InternalErrorException,
-    InvalidLambdaResponseException,
-    InvalidParameterException,
-    LimitExceededException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyFailedAttemptsException,
-    TooManyRequestsException,
-    UseLambdaValidationException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminConfirmSignUpError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminConfirmSignUpError::InvalidParameterException
-            | AdminConfirmSignUpError::InvalidLambdaResponseException
-            | AdminConfirmSignUpError::LimitExceededException
-            | AdminConfirmSignUpError::NotAuthorizedException
-            | AdminConfirmSignUpError::ResourceNotFoundException
-            | AdminConfirmSignUpError::TooManyFailedAttemptsException
-            | AdminConfirmSignUpError::TooManyRequestsException
-            | AdminConfirmSignUpError::UseLambdaValidationException
-            | AdminConfirmSignUpError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminConfirmSignUpError,
+    InvalidParameterException
+    | InvalidLambdaResponseException
+    | LimitExceededException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyFailedAttemptsException
+    | TooManyRequestsException
+    | UseLambdaValidationException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "PascalCase")]

@@ -7,33 +7,16 @@ pub const ADMIN_FORGET_DEVICE_NAME: &str = "AdminForgetDevice";
 pub const ADMIN_FORGET_DEVICE_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminForgetDevice";
 
-/// AdminForgetDevice response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminForgetDevice.html#API_AdminForgetDevice_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminForgetDeviceError {
-    InternalErrorException,
-    InvalidParameterException,
-    InvalidUserPoolConfigurationException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminForgetDeviceError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminForgetDeviceError::InvalidParameterException
-            | AdminForgetDeviceError::InvalidUserPoolConfigurationException
-            | AdminForgetDeviceError::NotAuthorizedException
-            | AdminForgetDeviceError::ResourceNotFoundException
-            | AdminForgetDeviceError::TooManyRequestsException
-            | AdminForgetDeviceError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminForgetDeviceError,
+    InvalidParameterException
+    | InvalidUserPoolConfigurationException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

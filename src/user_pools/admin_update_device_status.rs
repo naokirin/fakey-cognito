@@ -7,35 +7,17 @@ pub const ADMIN_UPDATE_DEVICE_STATUS_NAME: &str = "AdminUpdateDeviceStatus";
 pub const ADMIN_UPDATE_DEVICE_STATUS_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminUpdateDeviceStatus";
 
-/// AdminUpdateDeviceStatus response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminUpdateDeviceStatus.html#API_AdminUpdateDeviceStatus_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminUpdateDeviceStatusError {
-    InternalErrorException,
-    InvalidParameterException,
-    InvalidUserPoolConfigurationException,
-    MFAMethodNotFoundException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminUpdateDeviceStatusError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminUpdateDeviceStatusError::InvalidParameterException
-            | AdminUpdateDeviceStatusError::InvalidUserPoolConfigurationException
-            | AdminUpdateDeviceStatusError::MFAMethodNotFoundException
-            | AdminUpdateDeviceStatusError::NotAuthorizedException
-            | AdminUpdateDeviceStatusError::ResourceNotFoundException
-            | AdminUpdateDeviceStatusError::TooManyRequestsException
-            | AdminUpdateDeviceStatusError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminUpdateDeviceStatusError,
+    InvalidParameterException
+    | InvalidUserPoolConfigurationException
+    | MFAMethodNotFoundException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

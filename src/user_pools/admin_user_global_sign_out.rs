@@ -7,31 +7,15 @@ pub const ADMIN_USER_GLOBAL_SIGN_OUT_NAME: &str = "AdminUserGlobalSignOut";
 pub const ADMIN_USER_GLOBAL_SIGN_OUT_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminUserGlobalSignOut";
 
-/// AdminUserGlobalSignOut response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminUserGlobalSignOut.html#API_AdminUserGlobalSignOut_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminUserGlobalSignOutError {
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminUserGlobalSignOutError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminUserGlobalSignOutError::InvalidParameterException
-            | AdminUserGlobalSignOutError::NotAuthorizedException
-            | AdminUserGlobalSignOutError::ResourceNotFoundException
-            | AdminUserGlobalSignOutError::TooManyRequestsException
-            | AdminUserGlobalSignOutError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminUserGlobalSignOutError,
+    InvalidParameterException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

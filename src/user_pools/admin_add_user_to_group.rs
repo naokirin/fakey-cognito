@@ -7,31 +7,15 @@ pub const ADMIN_ADD_USER_TO_GROUP_NAME: &str = "AdminAddUserToGroup";
 pub const ADMIN_ADD_USER_TO_GROUP_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminAddUserToGroup";
 
-/// AdminAddUserToGroup response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminAddUserToGroup.html#API_AdminAddUserToGroup_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminAddUserToGroupError {
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminAddUserToGroupError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminAddUserToGroupError::InvalidParameterException
-            | AdminAddUserToGroupError::NotAuthorizedException
-            | AdminAddUserToGroupError::ResourceNotFoundException
-            | AdminAddUserToGroupError::TooManyRequestsException
-            | AdminAddUserToGroupError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminAddUserToGroupError,
+    InvalidParameterException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "PascalCase")]

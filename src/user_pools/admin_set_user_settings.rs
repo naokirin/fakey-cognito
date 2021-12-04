@@ -7,49 +7,24 @@ pub const ADMIN_SET_USER_SETTINGS_NAME: &str = "AdminSetUserSettings";
 pub const ADMIN_SET_USER_SETTINGS_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminSetUserSettings";
 
-/// AdminSetUserSettings response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminSetUserSettings.html#API_AdminSetUserSettings_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminSetUserSettingsError {
-    InternalErrorException,
-    InvalidLambdaResponseException,
-    InvalidParameterException,
-    InvalidSmsRoleAccessPolicyException,
-    InvalidSmsRoleTrustRelationshipException,
-    InvalidUserPoolConfigurationException,
-    MFAMethodNotFoundException,
-    NotAuthorizedException,
-    PasswordResetRequiredException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UnexpectedLambdaException,
-    UserLambdaValidationException,
-    UserNotConfirmedException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminSetUserSettingsError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminSetUserSettingsError::InvalidParameterException
-            | AdminSetUserSettingsError::InvalidLambdaResponseException
-            | AdminSetUserSettingsError::InvalidSmsRoleAccessPolicyException
-            | AdminSetUserSettingsError::InvalidSmsRoleTrustRelationshipException
-            | AdminSetUserSettingsError::InvalidUserPoolConfigurationException
-            | AdminSetUserSettingsError::MFAMethodNotFoundException
-            | AdminSetUserSettingsError::NotAuthorizedException
-            | AdminSetUserSettingsError::PasswordResetRequiredException
-            | AdminSetUserSettingsError::ResourceNotFoundException
-            | AdminSetUserSettingsError::TooManyRequestsException
-            | AdminSetUserSettingsError::UnexpectedLambdaException
-            | AdminSetUserSettingsError::UserLambdaValidationException
-            | AdminSetUserSettingsError::UserNotConfirmedException
-            | AdminSetUserSettingsError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminSetUserSettingsError,
+    InvalidParameterException
+    | InvalidLambdaResponseException
+    | InvalidSmsRoleAccessPolicyException
+    | InvalidSmsRoleTrustRelationshipException
+    | InvalidUserPoolConfigurationException
+    | MFAMethodNotFoundException
+    | NotAuthorizedException
+    | PasswordResetRequiredException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UnexpectedLambdaException
+    | UserLambdaValidationException
+    | UserNotConfirmedException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

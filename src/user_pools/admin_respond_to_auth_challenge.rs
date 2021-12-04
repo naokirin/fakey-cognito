@@ -7,59 +7,29 @@ pub const ADMIN_RESPOND_TO_AUTH_CHALLENGE_NAME: &str = "AdminRespondToAuthChalle
 pub const ADMIN_RESPOND_TO_AUTH_CHALLENGE_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminRespondToAuthChallenge";
 
-/// AdminRespondToAuthChallenge response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminRespondToAuthChallenge.html#API_AdminRespondToAuthChallenge_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminRespondToAuthChallengeError {
-    AliasExistsException,
-    CodeMismatchException,
-    ExpiredCodeException,
-    InternalErrorException,
-    InvalidLambdaResponseException,
-    InvalidParameterException,
-    InvalidPasswordException,
-    InvalidSmsRoleAccessPolicyException,
-    InvalidSmsRoleTrustRelationshipException,
-    InvalidUserPoolConfigurationException,
-    MFAMethodNotFoundException,
-    NotAuthorizedException,
-    PasswordResetRequiredException,
-    ResourceNotFoundException,
-    SoftwareTokenMFANotFoundException,
-    TooManyRequestsException,
-    UnexpectedLambdaException,
-    UserLambdaValidationException,
-    UserNotConfirmedException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminRespondToAuthChallengeError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminRespondToAuthChallengeError::AliasExistsException
-            | AdminRespondToAuthChallengeError::CodeMismatchException
-            | AdminRespondToAuthChallengeError::ExpiredCodeException
-            | AdminRespondToAuthChallengeError::InvalidParameterException
-            | AdminRespondToAuthChallengeError::InvalidPasswordException
-            | AdminRespondToAuthChallengeError::InvalidLambdaResponseException
-            | AdminRespondToAuthChallengeError::InvalidSmsRoleAccessPolicyException
-            | AdminRespondToAuthChallengeError::InvalidSmsRoleTrustRelationshipException
-            | AdminRespondToAuthChallengeError::InvalidUserPoolConfigurationException
-            | AdminRespondToAuthChallengeError::MFAMethodNotFoundException
-            | AdminRespondToAuthChallengeError::NotAuthorizedException
-            | AdminRespondToAuthChallengeError::PasswordResetRequiredException
-            | AdminRespondToAuthChallengeError::ResourceNotFoundException
-            | AdminRespondToAuthChallengeError::TooManyRequestsException
-            | AdminRespondToAuthChallengeError::SoftwareTokenMFANotFoundException
-            | AdminRespondToAuthChallengeError::UnexpectedLambdaException
-            | AdminRespondToAuthChallengeError::UserLambdaValidationException
-            | AdminRespondToAuthChallengeError::UserNotConfirmedException
-            | AdminRespondToAuthChallengeError::UserNotFoundException => http::status_code(400),
-            AdminRespondToAuthChallengeError::InternalErrorException => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminRespondToAuthChallengeError,
+    AliasExistsException
+    | CodeMismatchException
+    | ExpiredCodeException
+    | InvalidParameterException
+    | InvalidPasswordException
+    | InvalidLambdaResponseException
+    | InvalidSmsRoleAccessPolicyException
+    | InvalidSmsRoleTrustRelationshipException
+    | InvalidUserPoolConfigurationException
+    | MFAMethodNotFoundException
+    | NotAuthorizedException
+    | PasswordResetRequiredException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | SoftwareTokenMFANotFoundException
+    | UnexpectedLambdaException
+    | UserLambdaValidationException
+    | UserNotConfirmedException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

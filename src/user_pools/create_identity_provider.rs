@@ -7,49 +7,24 @@ pub const CREATE_IDENTITY_PROVIDER_NAME: &str = "CreateIdentityProvider";
 pub const CREATE_IDENTITY_PROVIDER_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.CreateIdentityProvider";
 
-/// CreateIdentityProvider response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_CreateIdentityProvider.html#API_CreateIdentityProvider_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum CreateIdentityProviderError {
-    InternalErrorException,
-    InvalidLambdaResponseException,
-    InvalidParameterException,
-    InvalidSmsRoleAccessPolicyException,
-    InvalidSmsRoleTrustRelationshipException,
-    InvalidUserPoolConfigurationException,
-    MFAMethodNotFoundException,
-    NotAuthorizedException,
-    PasswordResetRequiredException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UnexpectedLambdaException,
-    UserLambdaValidationException,
-    UserNotConfirmedException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for CreateIdentityProviderError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            CreateIdentityProviderError::InvalidParameterException
-            | CreateIdentityProviderError::InvalidLambdaResponseException
-            | CreateIdentityProviderError::InvalidSmsRoleAccessPolicyException
-            | CreateIdentityProviderError::InvalidSmsRoleTrustRelationshipException
-            | CreateIdentityProviderError::InvalidUserPoolConfigurationException
-            | CreateIdentityProviderError::MFAMethodNotFoundException
-            | CreateIdentityProviderError::NotAuthorizedException
-            | CreateIdentityProviderError::PasswordResetRequiredException
-            | CreateIdentityProviderError::ResourceNotFoundException
-            | CreateIdentityProviderError::TooManyRequestsException
-            | CreateIdentityProviderError::UnexpectedLambdaException
-            | CreateIdentityProviderError::UserLambdaValidationException
-            | CreateIdentityProviderError::UserNotConfirmedException
-            | CreateIdentityProviderError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    CreateIdentityProviderError,
+    InvalidParameterException
+    | InvalidLambdaResponseException
+    | InvalidSmsRoleAccessPolicyException
+    | InvalidSmsRoleTrustRelationshipException
+    | InvalidUserPoolConfigurationException
+    | MFAMethodNotFoundException
+    | NotAuthorizedException
+    | PasswordResetRequiredException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UnexpectedLambdaException
+    | UserLambdaValidationException
+    | UserNotConfirmedException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

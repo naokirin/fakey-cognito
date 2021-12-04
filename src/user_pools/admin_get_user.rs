@@ -6,31 +6,15 @@ use strum_macros::{Display, EnumString};
 pub const ADMIN_GET_USER_NAME: &str = "AdminGetUser";
 pub const ADMIN_GET_USER_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.AdminGetUser";
 
-/// AdminGetUser response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminGetUser.html#API_AdminGetUser_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminGetUserError {
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminGetUserError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminGetUserError::InvalidParameterException
-            | AdminGetUserError::NotAuthorizedException
-            | AdminGetUserError::ResourceNotFoundException
-            | AdminGetUserError::TooManyRequestsException
-            | AdminGetUserError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminGetUserError,
+    InvalidParameterException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

@@ -6,39 +6,19 @@ use strum_macros::{Display, EnumString};
 pub const CHANGE_PASSWORD_NAME: &str = "ChangePassword";
 pub const CHANGE_PASSWORD_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.ChangePassword";
 
-/// ChangePassword response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_ChangePassword.html#API_ChangePassword_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum ChangePasswordError {
-    InternalErrorException,
-    InvalidParameterException,
-    InvalidPasswordException,
-    LimitExceededException,
-    NotAuthorizedException,
-    PasswordResetRequiredException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotConfirmedException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for ChangePasswordError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            ChangePasswordError::InvalidParameterException
-            | ChangePasswordError::InvalidPasswordException
-            | ChangePasswordError::LimitExceededException
-            | ChangePasswordError::NotAuthorizedException
-            | ChangePasswordError::PasswordResetRequiredException
-            | ChangePasswordError::ResourceNotFoundException
-            | ChangePasswordError::TooManyRequestsException
-            | ChangePasswordError::UserNotConfirmedException
-            | ChangePasswordError::UserNotFoundException => http::status_code(400),
-            ChangePasswordError::InternalErrorException => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    ChangePasswordError,
+    InvalidParameterException
+    | InvalidPasswordException
+    | LimitExceededException
+    | NotAuthorizedException
+    | PasswordResetRequiredException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotConfirmedException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

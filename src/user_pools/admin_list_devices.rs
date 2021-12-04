@@ -7,31 +7,15 @@ pub const ADMIN_LIST_DEVICES_NAME: &str = "AdminListDevices";
 pub const ADMIN_LIST_DEVICES_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminListDevices";
 
-/// AdminListDevices response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminListDevices.html#API_AdminListDevices_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminListDevicesError {
-    InternalErrorException,
-    InvalidParameterException,
-    InvalidUserPoolConfigurationException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-}
-
-impl super::ToStatusCode for AdminListDevicesError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminListDevicesError::InvalidParameterException
-            | AdminListDevicesError::InvalidUserPoolConfigurationException
-            | AdminListDevicesError::NotAuthorizedException
-            | AdminListDevicesError::ResourceNotFoundException
-            | AdminListDevicesError::TooManyRequestsException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminListDevicesError,
+    InvalidParameterException
+    | InvalidUserPoolConfigurationException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

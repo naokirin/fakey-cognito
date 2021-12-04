@@ -6,32 +6,14 @@ pub const ASSOCIATE_SOFTWARE_TOKEN_NAME: &str = "AssociateSoftwareToken";
 pub const ASSOCIATE_SOFTWARE_TOKEN_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AssociateSoftwareToken";
 
-/// AssociateSoftwareToken response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AssociateSoftwareToken.html#API_AssociateSoftwareToken_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AssociateSoftwareTokenError {
-    ConcurrentModificationException,
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    SoftwareTokenMFANotFoundException,
-}
-
-impl super::ToStatusCode for AssociateSoftwareTokenError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AssociateSoftwareTokenError::InvalidParameterException
-            | AssociateSoftwareTokenError::NotAuthorizedException
-            | AssociateSoftwareTokenError::ResourceNotFoundException
-            | AssociateSoftwareTokenError::SoftwareTokenMFANotFoundException => {
-                http::status_code(400)
-            }
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AssociateSoftwareTokenError,
+    InvalidParameterException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | SoftwareTokenMFANotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

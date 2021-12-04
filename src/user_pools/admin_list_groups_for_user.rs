@@ -7,31 +7,15 @@ pub const ADMIN_LIST_GROUPS_FOR_USER_NAME: &str = "AdminListGroupsForUser";
 pub const ADMIN_LIST_GROUPS_FOR_USER_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminListGroupsForUser";
 
-/// AdminListGroupsForUser response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminListGroupsForUser.html#API_AdminListGroupsForUser_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminListGroupsForUserError {
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminListGroupsForUserError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminListGroupsForUserError::InvalidParameterException
-            | AdminListGroupsForUserError::NotAuthorizedException
-            | AdminListGroupsForUserError::ResourceNotFoundException
-            | AdminListGroupsForUserError::TooManyRequestsException
-            | AdminListGroupsForUserError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminListGroupsForUserError,
+    InvalidParameterException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

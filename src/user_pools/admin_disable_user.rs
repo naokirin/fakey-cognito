@@ -7,31 +7,15 @@ pub const ADMIN_DISABLE_USER_NAME: &str = "AdminDisableUser";
 pub const ADMIN_DISABLE_USER_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminDisableUser";
 
-/// AdminDisableUser response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminDisableUser.html#API_AdminDisableUser_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminDisableUserError {
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminDisableUserError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminDisableUserError::InvalidParameterException
-            | AdminDisableUserError::NotAuthorizedException
-            | AdminDisableUserError::ResourceNotFoundException
-            | AdminDisableUserError::TooManyRequestsException
-            | AdminDisableUserError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminDisableUserError,
+    InvalidParameterException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

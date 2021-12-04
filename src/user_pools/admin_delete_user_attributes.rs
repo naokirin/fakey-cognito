@@ -9,31 +9,15 @@ pub const ADMIN_DELETE_USER_ATTRIBUTES_NAME: &str = "AdminDeleteUserAttributes";
 pub const ADMIN_DELETE_USER_ATTRIBUTES_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminDeleteUserAttributes";
 
-/// AdminDeleteUserAttributes response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminDeleteUserAttributes.html#API_AdminDeleteUserAttributes_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminDeleteUserAttributesError {
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminDeleteUserAttributesError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminDeleteUserAttributesError::InvalidParameterException
-            | AdminDeleteUserAttributesError::NotAuthorizedException
-            | AdminDeleteUserAttributesError::ResourceNotFoundException
-            | AdminDeleteUserAttributesError::TooManyRequestsException
-            | AdminDeleteUserAttributesError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminDeleteUserAttributesError,
+    InvalidParameterException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

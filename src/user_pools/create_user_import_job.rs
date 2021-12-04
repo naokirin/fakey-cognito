@@ -7,33 +7,16 @@ pub const CREATE_USER_IMPORT_JOB_NAME: &str = "CreateUserImportJob";
 pub const CREATE_USER_IMPORT_JOB_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.CreateUserImportJob";
 
-/// CreateUserImportJob response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_CreateUserImportJob.html#API_CreateUserImportJob_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum CreateUserImportJobError {
-    InternalErrorException,
-    InvalidParameterException,
-    LimitExceededException,
-    NotAuthorizedException,
-    PreconditionNotMetException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-}
-
-impl super::ToStatusCode for CreateUserImportJobError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            CreateUserImportJobError::InvalidParameterException
-            | CreateUserImportJobError::LimitExceededException
-            | CreateUserImportJobError::NotAuthorizedException
-            | CreateUserImportJobError::PreconditionNotMetException
-            | CreateUserImportJobError::ResourceNotFoundException
-            | CreateUserImportJobError::TooManyRequestsException => http::status_code(400),
-            CreateUserImportJobError::InternalErrorException => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    CreateUserImportJobError,
+    InvalidParameterException
+    | LimitExceededException
+    | NotAuthorizedException
+    | PreconditionNotMetException
+    | ResourceNotFoundException
+    | TooManyRequestsException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

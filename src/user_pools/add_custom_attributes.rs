@@ -7,31 +7,15 @@ pub const ADD_CUSTOM_ATTRIBUTES_NAME: &str = "AddCustomAttributes";
 pub const ADD_CUSTOM_ATTRIBUTES_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AddCustomAttributes";
 
-/// AddCustomAttributes response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AddCustomAttributes.html#API_AddCustomAttributes_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AddCustomAttributesError {
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserImportInProgressException,
-}
-
-impl super::ToStatusCode for AddCustomAttributesError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AddCustomAttributesError::InvalidParameterException
-            | AddCustomAttributesError::NotAuthorizedException
-            | AddCustomAttributesError::ResourceNotFoundException
-            | AddCustomAttributesError::TooManyRequestsException
-            | AddCustomAttributesError::UserImportInProgressException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AddCustomAttributesError,
+    InvalidParameterException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserImportInProgressException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]
