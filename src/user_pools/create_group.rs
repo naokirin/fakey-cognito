@@ -6,33 +6,16 @@ use strum_macros::{Display, EnumString};
 pub const CREATE_GROUP_NAME: &str = "CreateGroup";
 pub const CREATE_GROUP_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.CreateGroup";
 
-/// CreateGroup response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_CreateGroup.html#API_CreateGroup_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum CreateGroupError {
-    GroupExistsException,
-    InternalErrorException,
-    InvalidParameterException,
-    LimitExceededException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-}
-
-impl super::ToStatusCode for CreateGroupError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            CreateGroupError::GroupExistsException
-            | CreateGroupError::InvalidParameterException
-            | CreateGroupError::LimitExceededException
-            | CreateGroupError::NotAuthorizedException
-            | CreateGroupError::ResourceNotFoundException
-            | CreateGroupError::TooManyRequestsException => http::status_code(400),
-            CreateGroupError::InternalErrorException => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    CreateGroupError,
+    GroupExistsException
+    | InvalidParameterException
+    | LimitExceededException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

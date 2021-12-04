@@ -7,35 +7,16 @@ pub const ADMIN_LIST_USER_AUTH_EVENTS_NAME: &str = "AdminListUserAuthEvents";
 pub const ADMIN_LIST_USER_AUTH_EVENTS_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminListUserAuthEvents";
 
-/// AdminListUserAuthEvents response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminListUserAuthEvents.html#API_AdminListUserAuthEvents_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminListUserAuthEventsError {
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotFoundException,
-    UserPoolAddOnNotEnabledException,
-}
-
-impl super::ToStatusCode for AdminListUserAuthEventsError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminListUserAuthEventsError::InvalidParameterException
-            | AdminListUserAuthEventsError::NotAuthorizedException
-            | AdminListUserAuthEventsError::ResourceNotFoundException
-            | AdminListUserAuthEventsError::TooManyRequestsException
-            | AdminListUserAuthEventsError::UserNotFoundException
-            | AdminListUserAuthEventsError::UserPoolAddOnNotEnabledException => {
-                http::status_code(400)
-            }
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminListUserAuthEventsError,
+    InvalidParameterException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotFoundException
+    | UserPoolAddOnNotEnabledException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

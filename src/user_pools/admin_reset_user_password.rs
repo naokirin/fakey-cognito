@@ -7,45 +7,22 @@ pub const ADMIN_RESET_USER_PASSWORD_NAME: &str = "AdminResetUserPassword";
 pub const ADMIN_RESET_USER_PASSWORD_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminResetUserPassword";
 
-/// AdminResetUserPassword response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminResetUserPassword.html#API_AdminResetUserPassword_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminResetUserPasswordError {
-    InternalErrorException,
-    InvalidEmailRoleAccessPolicyException,
-    InvalidLambdaResponseException,
-    InvalidParameterException,
-    InvalidSmsRoleAccessPolicyException,
-    InvalidSmsRoleTrustRelationshipException,
-    LimitExceededException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UnexpectedLambdaException,
-    UserLambdaValidationException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminResetUserPasswordError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminResetUserPasswordError::InvalidEmailRoleAccessPolicyException
-            | AdminResetUserPasswordError::InvalidParameterException
-            | AdminResetUserPasswordError::InvalidLambdaResponseException
-            | AdminResetUserPasswordError::InvalidSmsRoleAccessPolicyException
-            | AdminResetUserPasswordError::InvalidSmsRoleTrustRelationshipException
-            | AdminResetUserPasswordError::NotAuthorizedException
-            | AdminResetUserPasswordError::LimitExceededException
-            | AdminResetUserPasswordError::ResourceNotFoundException
-            | AdminResetUserPasswordError::TooManyRequestsException
-            | AdminResetUserPasswordError::UnexpectedLambdaException
-            | AdminResetUserPasswordError::UserLambdaValidationException
-            | AdminResetUserPasswordError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminResetUserPasswordError,
+    InvalidEmailRoleAccessPolicyException
+    | InvalidParameterException
+    | InvalidLambdaResponseException
+    | InvalidSmsRoleAccessPolicyException
+    | InvalidSmsRoleTrustRelationshipException
+    | NotAuthorizedException
+    | LimitExceededException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UnexpectedLambdaException
+    | UserLambdaValidationException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

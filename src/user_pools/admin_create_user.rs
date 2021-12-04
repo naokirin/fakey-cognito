@@ -6,51 +6,25 @@ use strum_macros::{Display, EnumString};
 pub const ADMIN_CREATE_USER_NAME: &str = "AdminCreateUser";
 pub const ADMIN_CREATE_USER_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.AdminCreateUser";
 
-/// AdminCreateUser response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminCreateUser.html#API_AdminCreateUser_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminCreateUserError {
-    CodeDeliveryFailureException,
-    InternalErrorException,
-    InvalidLambdaResponseException,
-    InvalidParameterException,
-    InvalidPasswordException,
-    InvalidSmsRoleAccessPolicyException,
-    InvalidSmsRoleTrustRelationshipException,
-    NotAuthorizedException,
-    PreconditionNotMetException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UnexpectedLambdaException,
-    UnsupportedUserStateException,
-    UserLambdaValidationException,
-    UsernameExistsException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminCreateUserError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminCreateUserError::CodeDeliveryFailureException
-            | AdminCreateUserError::InvalidLambdaResponseException
-            | AdminCreateUserError::InvalidParameterException
-            | AdminCreateUserError::InvalidPasswordException
-            | AdminCreateUserError::InvalidSmsRoleAccessPolicyException
-            | AdminCreateUserError::InvalidSmsRoleTrustRelationshipException
-            | AdminCreateUserError::NotAuthorizedException
-            | AdminCreateUserError::PreconditionNotMetException
-            | AdminCreateUserError::ResourceNotFoundException
-            | AdminCreateUserError::TooManyRequestsException
-            | AdminCreateUserError::UnexpectedLambdaException
-            | AdminCreateUserError::UnsupportedUserStateException
-            | AdminCreateUserError::UserLambdaValidationException
-            | AdminCreateUserError::UsernameExistsException
-            | AdminCreateUserError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminCreateUserError,
+    CodeDeliveryFailureException
+    | InvalidLambdaResponseException
+    | InvalidParameterException
+    | InvalidPasswordException
+    | InvalidSmsRoleAccessPolicyException
+    | InvalidSmsRoleTrustRelationshipException
+    | NotAuthorizedException
+    | PreconditionNotMetException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UnexpectedLambdaException
+    | UnsupportedUserStateException
+    | UserLambdaValidationException
+    | UsernameExistsException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

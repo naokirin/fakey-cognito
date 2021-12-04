@@ -7,45 +7,22 @@ pub const ADMIN_UPDATE_USER_ATTRIBUTES_NAME: &str = "AdminUpdateUserAttributes";
 pub const ADMIN_UPDATE_USER_ATTRIBUTES_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminUpdateUserAttributes";
 
-/// AdminUpdateUserAttributes response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminUpdateUserAttributes.html#API_AdminUpdateUserAttributes_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminUpdateUserAttributesError {
-    AliasExistsException,
-    InternalErrorException,
-    InvalidEmailRoleAccessPolicyException,
-    InvalidLambdaResponseException,
-    InvalidParameterException,
-    InvalidSmsRoleAccessPolicyException,
-    InvalidSmsRoleTrustRelationshipException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UnexpectedLambdaException,
-    UserLambdaValidationException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminUpdateUserAttributesError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminUpdateUserAttributesError::AliasExistsException
-            | AdminUpdateUserAttributesError::InvalidEmailRoleAccessPolicyException
-            | AdminUpdateUserAttributesError::InvalidParameterException
-            | AdminUpdateUserAttributesError::InvalidLambdaResponseException
-            | AdminUpdateUserAttributesError::InvalidSmsRoleAccessPolicyException
-            | AdminUpdateUserAttributesError::InvalidSmsRoleTrustRelationshipException
-            | AdminUpdateUserAttributesError::NotAuthorizedException
-            | AdminUpdateUserAttributesError::ResourceNotFoundException
-            | AdminUpdateUserAttributesError::TooManyRequestsException
-            | AdminUpdateUserAttributesError::UnexpectedLambdaException
-            | AdminUpdateUserAttributesError::UserLambdaValidationException
-            | AdminUpdateUserAttributesError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminUpdateUserAttributesError,
+    AliasExistsException
+    | InvalidEmailRoleAccessPolicyException
+    | InvalidParameterException
+    | InvalidLambdaResponseException
+    | InvalidSmsRoleAccessPolicyException
+    | InvalidSmsRoleTrustRelationshipException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UnexpectedLambdaException
+    | UserLambdaValidationException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

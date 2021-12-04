@@ -6,31 +6,15 @@ use strum_macros::{Display, EnumString};
 pub const ADMIN_DELETE_USER_NAME: &str = "AdminDeleteUser";
 pub const ADMIN_DELETE_USER_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.AdminDeleteUser";
 
-/// AdminDeleteUser response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminDeleteUser.html#API_AdminDeleteUser_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminDeleteUserError {
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminDeleteUserError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminDeleteUserError::InvalidParameterException
-            | AdminDeleteUserError::NotAuthorizedException
-            | AdminDeleteUserError::ResourceNotFoundException
-            | AdminDeleteUserError::TooManyRequestsException
-            | AdminDeleteUserError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminDeleteUserError,
+    InvalidParameterException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

@@ -9,33 +9,16 @@ pub const ADMIN_SET_USER_PASSWORD_NAME: &str = "AdminSetUserPassword";
 pub const ADMIN_SET_USER_PASSWORD_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminSetUserPassword";
 
-/// AdminSetUserPassword response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminSetUserPassword.html#API_AdminSetUserPassword_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminSetUserPasswordError {
-    InternalErrorException,
-    InvalidParameterException,
-    InvalidPasswordException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminSetUserPasswordError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminSetUserPasswordError::InvalidParameterException
-            | AdminSetUserPasswordError::InvalidPasswordException
-            | AdminSetUserPasswordError::NotAuthorizedException
-            | AdminSetUserPasswordError::ResourceNotFoundException
-            | AdminSetUserPasswordError::TooManyRequestsException
-            | AdminSetUserPasswordError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminSetUserPasswordError,
+    InvalidParameterException
+    | InvalidPasswordException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

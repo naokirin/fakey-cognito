@@ -7,47 +7,23 @@ pub const CONFIRM_FORGOT_PASSWORD_NAME: &str = "ConfirmForgotPassword";
 pub const CONFIRM_FORGOT_PASSWORD_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.ConfirmForgotPassword";
 
-/// ConfirmForgotPassword response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_ConfirmForgotPassword.html#API_ConfirmForgotPassword_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum ConfirmForgotPasswordError {
-    CodeMismatchException,
-    ExpiredCodeException,
-    InternalErrorException,
-    InvalidLambdaResponseException,
-    InvalidParameterException,
-    InvalidPasswordException,
-    LimitExceededException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UnexpectedLambdaException,
-    UserLambdaValidationException,
-    UserNotConfirmedException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for ConfirmForgotPasswordError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            ConfirmForgotPasswordError::CodeMismatchException
-            | ConfirmForgotPasswordError::ExpiredCodeException
-            | ConfirmForgotPasswordError::InvalidParameterException
-            | ConfirmForgotPasswordError::InvalidLambdaResponseException
-            | ConfirmForgotPasswordError::InvalidPasswordException
-            | ConfirmForgotPasswordError::LimitExceededException
-            | ConfirmForgotPasswordError::NotAuthorizedException
-            | ConfirmForgotPasswordError::ResourceNotFoundException
-            | ConfirmForgotPasswordError::TooManyRequestsException
-            | ConfirmForgotPasswordError::UnexpectedLambdaException
-            | ConfirmForgotPasswordError::UserLambdaValidationException
-            | ConfirmForgotPasswordError::UserNotConfirmedException
-            | ConfirmForgotPasswordError::UserNotFoundException => http::status_code(400),
-            ConfirmForgotPasswordError::InternalErrorException => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    ConfirmForgotPasswordError,
+    CodeMismatchException
+    | ExpiredCodeException
+    | InvalidParameterException
+    | InvalidLambdaResponseException
+    | InvalidPasswordException
+    | LimitExceededException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UnexpectedLambdaException
+    | UserLambdaValidationException
+    | UserNotConfirmedException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

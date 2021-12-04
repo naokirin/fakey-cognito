@@ -7,35 +7,16 @@ pub const ADMIN_UPDATE_AUTH_EVENT_FEEDBACK_NAME: &str = "AdminUpdateAuthEventFee
 pub const ADMIN_UPDATE_AUTH_EVENT_FEEDBACK_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminUpdateAuthEventFeedback";
 
-/// AdminUpdateAuthEventFeedback response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminUpdateAuthEventFeedback.html#API_AdminUpdateAuthEventFeedback_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminUpdateAuthEventFeedbackError {
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotFoundException,
-    UserPoolAddOnNotEnabledException,
-}
-
-impl super::ToStatusCode for AdminUpdateAuthEventFeedbackError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminUpdateAuthEventFeedbackError::InvalidParameterException
-            | AdminUpdateAuthEventFeedbackError::NotAuthorizedException
-            | AdminUpdateAuthEventFeedbackError::ResourceNotFoundException
-            | AdminUpdateAuthEventFeedbackError::TooManyRequestsException
-            | AdminUpdateAuthEventFeedbackError::UserNotFoundException
-            | AdminUpdateAuthEventFeedbackError::UserPoolAddOnNotEnabledException => {
-                http::status_code(400)
-            }
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminUpdateAuthEventFeedbackError,
+    InvalidParameterException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotFoundException
+    | UserPoolAddOnNotEnabledException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

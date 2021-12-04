@@ -6,43 +6,21 @@ use strum_macros::{Display, EnumString};
 pub const CONFIRM_DEVICE_NAME: &str = "ConfirmDevice";
 pub const CONFIRM_DEVICE_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.ConfirmDevice";
 
-/// ConfirmDevice response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_ConfirmDevice.html#API_ConfirmDevice_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum ConfirmDeviceError {
-    InternalErrorException,
-    InvalidLambdaResponseException,
-    InvalidParameterException,
-    InvalidPasswordException,
-    InvalidUserPoolConfigurationException,
-    NotAuthorizedException,
-    PasswordResetRequiredException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UsernameExistsException,
-    UserNotConfirmedException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for ConfirmDeviceError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            ConfirmDeviceError::InvalidParameterException
-            | ConfirmDeviceError::InvalidLambdaResponseException
-            | ConfirmDeviceError::InvalidPasswordException
-            | ConfirmDeviceError::InvalidUserPoolConfigurationException
-            | ConfirmDeviceError::NotAuthorizedException
-            | ConfirmDeviceError::PasswordResetRequiredException
-            | ConfirmDeviceError::ResourceNotFoundException
-            | ConfirmDeviceError::TooManyRequestsException
-            | ConfirmDeviceError::UsernameExistsException
-            | ConfirmDeviceError::UserNotConfirmedException
-            | ConfirmDeviceError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    ConfirmDeviceError,
+    InvalidParameterException
+    | InvalidLambdaResponseException
+    | InvalidPasswordException
+    | InvalidUserPoolConfigurationException
+    | NotAuthorizedException
+    | PasswordResetRequiredException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UsernameExistsException
+    | UserNotConfirmedException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

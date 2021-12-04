@@ -7,33 +7,16 @@ pub const ADMIN_SET_USER_MFA_PREFERENCE_NAME: &str = "AdminSetUserMFAPreference"
 pub const ADMIN_SET_USER_MFA_PREFERENCE_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminSetUserMFAPreference";
 
-/// AdminSetUserMFAPreference response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminSetUserMFAPreference.html#API_AdminSetUserMFAPreference_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminSetUserMFAPreferenceError {
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    PasswordResetRequiredException,
-    ResourceNotFoundException,
-    UserNotConfirmedException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminSetUserMFAPreferenceError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminSetUserMFAPreferenceError::InvalidParameterException
-            | AdminSetUserMFAPreferenceError::NotAuthorizedException
-            | AdminSetUserMFAPreferenceError::PasswordResetRequiredException
-            | AdminSetUserMFAPreferenceError::ResourceNotFoundException
-            | AdminSetUserMFAPreferenceError::UserNotConfirmedException
-            | AdminSetUserMFAPreferenceError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminSetUserMFAPreferenceError,
+    InvalidParameterException
+    | NotAuthorizedException
+    | PasswordResetRequiredException
+    | ResourceNotFoundException
+    | UserNotConfirmedException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

@@ -7,31 +7,15 @@ pub const CREATE_RESOURCE_SERVER_NAME: &str = "CreateResourceServer";
 pub const CREATE_RESOURCE_SERVER_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.CreateResourceServer";
 
-/// CreateResourceServer response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_CreateResourceServer.html#API_CreateResourceServer_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum CreateResourceServerError {
-    InternalErrorException,
-    InvalidParameterException,
-    LimitExceededException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-}
-
-impl super::ToStatusCode for CreateResourceServerError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            CreateResourceServerError::InvalidParameterException
-            | &CreateResourceServerError::LimitExceededException
-            | CreateResourceServerError::NotAuthorizedException
-            | CreateResourceServerError::ResourceNotFoundException
-            | CreateResourceServerError::TooManyRequestsException => http::status_code(400),
-            CreateResourceServerError::InternalErrorException => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    CreateResourceServerError,
+    InvalidParameterException
+    | LimitExceededException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

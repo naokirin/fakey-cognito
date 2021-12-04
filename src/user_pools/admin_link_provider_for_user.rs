@@ -7,35 +7,17 @@ pub const ADMIN_LINK_PROVIDER_FOR_USER_NAME: &str = "AdminLinkProviderForUser";
 pub const ADMIN_LINK_PROVIDER_FOR_USER_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminLinkProviderForUser";
 
-/// AdminLinkProviderForUser response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminLinkProviderForUser.html#API_AdminLinkProviderForUser_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminLinkProviderForUserError {
-    AliasExistsException,
-    InternalErrorException,
-    InvalidParameterException,
-    LimitExceededException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminLinkProviderForUserError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminLinkProviderForUserError::AliasExistsException
-            | AdminLinkProviderForUserError::InvalidParameterException
-            | AdminLinkProviderForUserError::NotAuthorizedException
-            | AdminLinkProviderForUserError::LimitExceededException
-            | AdminLinkProviderForUserError::ResourceNotFoundException
-            | AdminLinkProviderForUserError::TooManyRequestsException
-            | AdminLinkProviderForUserError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminLinkProviderForUserError,
+    AliasExistsException
+    | InvalidParameterException
+    | NotAuthorizedException
+    | LimitExceededException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

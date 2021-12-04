@@ -7,49 +7,24 @@ pub const ADMIN_INITIATE_AUTH_NAME: &str = "AdminInitiateAuth";
 pub const ADMIN_INITIATE_AUTH_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminInitiateAuth";
 
-/// AdminInitiateAuth response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminInitiateAuth.html#API_AdminInitiateAuth_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminInitiateAuthError {
-    InternalErrorException,
-    InvalidLambdaResponseException,
-    InvalidParameterException,
-    InvalidSmsRoleAccessPolicyException,
-    InvalidSmsRoleTrustRelationshipException,
-    InvalidUserPoolConfigurationException,
-    MFAMethodNotFoundException,
-    NotAuthorizedException,
-    PasswordResetRequiredException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UnexpectedLambdaException,
-    UserLambdaValidationException,
-    UserNotConfirmedException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminInitiateAuthError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminInitiateAuthError::InvalidParameterException
-            | AdminInitiateAuthError::InvalidLambdaResponseException
-            | AdminInitiateAuthError::InvalidSmsRoleAccessPolicyException
-            | AdminInitiateAuthError::InvalidSmsRoleTrustRelationshipException
-            | AdminInitiateAuthError::InvalidUserPoolConfigurationException
-            | AdminInitiateAuthError::MFAMethodNotFoundException
-            | AdminInitiateAuthError::NotAuthorizedException
-            | AdminInitiateAuthError::PasswordResetRequiredException
-            | AdminInitiateAuthError::ResourceNotFoundException
-            | AdminInitiateAuthError::TooManyRequestsException
-            | AdminInitiateAuthError::UnexpectedLambdaException
-            | AdminInitiateAuthError::UserLambdaValidationException
-            | AdminInitiateAuthError::UserNotConfirmedException
-            | AdminInitiateAuthError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminInitiateAuthError,
+    InvalidParameterException
+    | InvalidLambdaResponseException
+    | InvalidSmsRoleAccessPolicyException
+    | InvalidSmsRoleTrustRelationshipException
+    | InvalidUserPoolConfigurationException
+    | MFAMethodNotFoundException
+    | NotAuthorizedException
+    | PasswordResetRequiredException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UnexpectedLambdaException
+    | UserLambdaValidationException
+    | UserNotConfirmedException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

@@ -7,31 +7,15 @@ pub const ADMIN_REMOVE_USER_FROM_GROUP_NAME: &str = "AdminRemoveUserFromGroup";
 pub const ADMIN_REMOVE_USER_FROM_GROUP_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminRemoveUserFromGroup";
 
-/// AdminRemoveUserFromGroup response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminRemoveUserFromGroup.html#API_AdminRemoveUserFromGroup_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminRemoveUserFromGroupError {
-    InternalErrorException,
-    InvalidParameterException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for AdminRemoveUserFromGroupError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminRemoveUserFromGroupError::InvalidParameterException
-            | AdminRemoveUserFromGroupError::NotAuthorizedException
-            | AdminRemoveUserFromGroupError::ResourceNotFoundException
-            | AdminRemoveUserFromGroupError::TooManyRequestsException
-            | AdminRemoveUserFromGroupError::UserNotFoundException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminRemoveUserFromGroupError,
+    InvalidParameterException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

@@ -6,47 +6,23 @@ use strum_macros::{Display, EnumString};
 pub const CONFIRM_SIGN_UP_NAME: &str = "ConfirmSignUp";
 pub const CONFIRM_SIGN_UP_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.ConfirmSignUp";
 
-/// ConfirmSignUp response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_ConfirmSignUp.html#API_ConfirmSignUp_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum ConfirmSignUpError {
-    AliasExistsException,
-    CodeMismatchException,
-    ExpiredCodeException,
-    InternalErrorException,
-    InvalidLambdaResponseException,
-    InvalidParameterException,
-    LimitExceededException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyFailedAttemptsException,
-    TooManyRequestsException,
-    UnexpectedLambdaException,
-    UserLambdaValidationException,
-    UserNotFoundException,
-}
-
-impl super::ToStatusCode for ConfirmSignUpError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            ConfirmSignUpError::AliasExistsException
-            | ConfirmSignUpError::CodeMismatchException
-            | ConfirmSignUpError::ExpiredCodeException
-            | ConfirmSignUpError::InvalidParameterException
-            | ConfirmSignUpError::InvalidLambdaResponseException
-            | ConfirmSignUpError::LimitExceededException
-            | ConfirmSignUpError::NotAuthorizedException
-            | ConfirmSignUpError::ResourceNotFoundException
-            | ConfirmSignUpError::TooManyRequestsException
-            | ConfirmSignUpError::TooManyFailedAttemptsException
-            | ConfirmSignUpError::UnexpectedLambdaException
-            | ConfirmSignUpError::UserLambdaValidationException
-            | ConfirmSignUpError::UserNotFoundException => http::status_code(400),
-            ConfirmSignUpError::InternalErrorException => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    ConfirmSignUpError,
+    AliasExistsException
+    | CodeMismatchException
+    | ExpiredCodeException
+    | InvalidParameterException
+    | InvalidLambdaResponseException
+    | LimitExceededException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException
+    | TooManyFailedAttemptsException
+    | UnexpectedLambdaException
+    | UserLambdaValidationException
+    | UserNotFoundException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]

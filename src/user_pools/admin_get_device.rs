@@ -6,31 +6,15 @@ use strum_macros::{Display, EnumString};
 pub const ADMIN_GET_DEVICE_NAME: &str = "AdminGetDevice";
 pub const ADMIN_GET_DEVICE_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.AdminGetDevice";
 
-/// AdminGetDevice response errors.
-/// See https://docs.aws.amazon.com/cognito-user-identity-pools/latest/APIReference/API_AdminGetDevice.html#API_AdminGetDevice_Errors
-#[allow(clippy::enum_variant_names)]
-#[derive(Display, EnumString)]
-pub enum AdminGetDeviceError {
-    InternalErrorException,
-    InvalidParameterException,
-    InvalidUserPoolConfigurationException,
-    NotAuthorizedException,
-    ResourceNotFoundException,
-    TooManyRequestsException,
-}
-
-impl super::ToStatusCode for AdminGetDeviceError {
-    fn to_status_code(&self) -> hyper::StatusCode {
-        match self {
-            AdminGetDeviceError::InvalidParameterException
-            | AdminGetDeviceError::InvalidUserPoolConfigurationException
-            | AdminGetDeviceError::NotAuthorizedException
-            | AdminGetDeviceError::ResourceNotFoundException
-            | AdminGetDeviceError::TooManyRequestsException => http::status_code(400),
-            _ => http::status_code(500),
-        }
-    }
-}
+super::gen_response_err!(
+    AdminGetDeviceError,
+    InvalidParameterException
+    | InvalidUserPoolConfigurationException
+    | NotAuthorizedException
+    | ResourceNotFoundException
+    | TooManyRequestsException => http::status_code(400),
+    InternalErrorException => http::status_code(500)
+);
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 #[serde(rename_all = "PascalCase")]
