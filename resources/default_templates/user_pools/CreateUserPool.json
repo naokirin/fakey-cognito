@@ -1,0 +1,120 @@
+{
+    "UserPool": { 
+       "AccountRecoverySetting": { 
+          "RecoveryMechanisms": [ 
+             { 
+                "Name": "string",
+                "Priority": 1
+             }
+          ]
+       },
+       "AdminCreateUserConfig": { 
+          "AllowAdminCreateUserOnly": false,
+          "InviteMessageTemplate": { 
+             "EmailMessage": "string",
+             "EmailSubject": "string",
+             "SMSMessage": "string"
+          },
+          "UnusedAccountValidityDays": 7
+       },
+       "AliasAttributes": [ "string" ],
+       "Arn": "string",
+       "AutoVerifiedAttributes": [ "string" ],
+       "CreationDate": {{ now() | date(format="%Y%m%d%H%M%S") }},
+       "CustomDomain": "string",
+       "DeviceConfiguration": { 
+          "ChallengeRequiredOnNewDevice": false,
+          "DeviceOnlyRememberedOnUserPrompt": false
+       },
+       "Domain": "string",
+       "EmailConfiguration": { 
+          "ConfigurationSet": "string",
+          "EmailSendingAccount": "string",
+          "From": "string",
+          "ReplyToEmailAddress": "string",
+          "SourceArn": "string"
+       },
+       "EmailConfigurationFailure": "string",
+       "EmailVerificationMessage": "string",
+       "EmailVerificationSubject": "string",
+       "EstimatedNumberOfUsers": 1,
+       "Id": "string",
+       "LambdaConfig": { 
+          "CreateAuthChallenge": "string",
+          "CustomEmailSender": { 
+             "LambdaArn": "string",
+             "LambdaVersion": "string"
+          },
+          "CustomMessage": "string",
+          "CustomSMSSender": { 
+             "LambdaArn": "string",
+             "LambdaVersion": "string"
+          },
+          "DefineAuthChallenge": "string",
+          "KMSKeyID": "string",
+          "PostAuthentication": "string",
+          "PostConfirmation": "string",
+          "PreAuthentication": "string",
+          "PreSignUp": "string",
+          "PreTokenGeneration": "string",
+          "UserMigration": "string",
+          "VerifyAuthChallengeResponse": "string"
+       },
+       "LastModifiedDate": {{ now() | date(format="%Y%m%d%H%M%S") }},
+       "MfaConfiguration": "string",
+       "Name": "string",
+       "Policies": { 
+          "PasswordPolicy": { 
+             "MinimumLength": 10,
+             "RequireLowercase": false,
+             "RequireNumbers": false,
+             "RequireSymbols": false,
+             "RequireUppercase": false,
+             "TemporaryPasswordValidityDays": 7
+          }
+       },
+       "SchemaAttributes": [ 
+          { 
+             "AttributeDataType": "string",
+             "DeveloperOnlyAttribute": false,
+             "Mutable": true,
+             "Name": "string",
+             "NumberAttributeConstraints": { 
+                "MaxValue": "string",
+                "MinValue": "string"
+             },
+             "Required": false,
+             "StringAttributeConstraints": { 
+                "MaxLength": "string",
+                "MinLength": "string"
+             }
+          }
+       ],
+       "SmsAuthenticationMessage": "string",
+       "SmsConfiguration": { 
+          "ExternalId": "string",
+          "SnsCallerArn": "string"
+       },
+       "SmsConfigurationFailure": "string",
+       "SmsVerificationMessage": "string",
+       "Status": "string",
+       "UsernameAttributes": [ "string" ],
+       "UsernameConfiguration": { 
+          "CaseSensitive": false
+       },
+       "UserPoolAddOns": { 
+          "AdvancedSecurityMode": "string"
+       },
+       "UserPoolTags": { 
+          "string" : "string" 
+       },
+       "VerificationMessageTemplate": { 
+          "DefaultEmailOption": "string",
+          "EmailMessage": "string",
+          "EmailMessageByLink": "string",
+          "EmailSubject": "string",
+          "EmailSubjectByLink": "string",
+          "SmsMessage": "string"
+       }
+    }
+ }
