@@ -1,0 +1,37 @@
+{
+    "UserPoolClient": { 
+       "AccessTokenValidity": 1,
+       "AllowedOAuthFlows": [ "string" ],
+       "AllowedOAuthFlowsUserPoolClient": true,
+       "AllowedOAuthScopes": [ "string" ],
+       "AnalyticsConfiguration": { 
+          "ApplicationArn": "string",
+          "ApplicationId": "string",
+          "ExternalId": "string",
+          "RoleArn": "string",
+          "UserDataShared": true
+       },
+       "CallbackURLs": [ "string" ],
+       "ClientId": "string",
+       "ClientName": "string",
+       "ClientSecret": "string",
+       "CreationDate": {{ now() | date(format="%Y%m%d%H%M%S" )}},
+       "DefaultRedirectURI": "string",
+       "EnableTokenRevocation": true,
+       "ExplicitAuthFlows": [ "string" ],
+       "IdTokenValidity": 1,
+       "LastModifiedDate": {{ now() | date(format="%Y%m%d%H%M%S" )}},
+       "LogoutURLs": [ "string" ],
+       "PreventUserExistenceErrors": "string",
+       "ReadAttributes": [ "string" ],
+       "RefreshTokenValidity": 1,
+       "SupportedIdentityProviders": [ "string" ],
+       "TokenValidityUnits": { 
+          "AccessToken": "string",
+          "IdToken": "string",
+          "RefreshToken": "string"
+       },
+       "UserPoolId": "string",
+       "WriteAttributes": [ "string" ]
+    }
+ }

@@ -36,6 +36,7 @@ mod create_group_test;
 mod create_identity_provider_test;
 mod create_resource_server_test;
 mod create_user_import_job_test;
+mod create_user_pool_client_test;
 mod create_user_pool_test;
 
 pub async fn setup() {
