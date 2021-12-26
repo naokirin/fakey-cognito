@@ -1,11 +1,16 @@
-use crate::common;
+use crate::common::{NAME_REGEX, USER_POOL_ID_REGEX};
 use crate::http;
+use once_cell::sync::Lazy;
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
+use validator::Validate;
 
 pub const ADMIN_LIST_GROUPS_FOR_USER_NAME: &str = "AdminListGroupsForUser";
 pub const ADMIN_LIST_GROUPS_FOR_USER_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminListGroupsForUser";
+
+static NEXT_TOKEN_REGEX: Lazy<Regex> = Lazy::new(|| Regex::new(r"[\S]+").unwrap());
 
 super::gen_response_err!(
     AdminListGroupsForUserError,
@@ -17,12 +22,21 @@ super::gen_response_err!(
     InternalErrorException => http::status_code(500)
 );
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct AdminListGroupsForUserRequest {
+    #[validate(range(min = 0, max = 60))]
     limit: Option<u8>,
+    #[validate(length(min = 1))]
+    #[validate(regex = "NEXT_TOKEN_REGEX")]
     next_token: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 128))]
+    #[validate(regex = "NAME_REGEX")]
     username: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 55))]
+    #[validate(regex = "USER_POOL_ID_REGEX")]
     user_pool_id: Option<String>,
 }
 
@@ -35,13 +49,8 @@ impl super::ToActionName for AdminListGroupsForUserRequest {
 impl super::ToResponse for AdminListGroupsForUserRequest {
     type E = AdminListGroupsForUserError;
     fn to_response(&self) -> super::Response {
-        super::to_json_response(self, ADMIN_LIST_GROUPS_FOR_USER_NAME, valid_request)
+        super::to_json_response(self, ADMIN_LIST_GROUPS_FOR_USER_NAME)
     }
-}
-
-/// Validates request.
-fn valid_request(request: &AdminListGroupsForUserRequest) -> bool {
-    !common::is_blank(&request.username) && !common::is_blank(&request.user_pool_id)
 }
 
 #[cfg(test)]
@@ -56,7 +65,7 @@ mod tests {
             user_pool_id: Some("user_pool_id".to_string()),
             ..Default::default()
         };
-        assert!(valid_request(&request));
+        assert!(request.validate().is_ok());
     }
 
     #[test]
@@ -66,7 +75,7 @@ mod tests {
             user_pool_id: Some("".to_string()),
             ..Default::default()
         };
-        assert!(!valid_request(&request));
+        assert!(request.validate().is_err());
     }
 
     #[test]

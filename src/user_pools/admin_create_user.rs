@@ -1,10 +1,26 @@
-use crate::common;
-use crate::http;
+use crate::common::{NAME_REGEX, USER_POOL_ID_REGEX};
+use crate::{
+    http,
+    validator::{includes, includes_in_array},
+};
+use once_cell::sync::Lazy;
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
+use validator::{Validate, ValidationError};
 
 pub const ADMIN_CREATE_USER_NAME: &str = "AdminCreateUser";
 pub const ADMIN_CREATE_USER_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.AdminCreateUser";
+
+static TEMPORARY_PASSWORD_REGEX: Lazy<Regex> = Lazy::new(|| Regex::new(r"[\S]+").unwrap());
+
+fn validate_desired_delivery_mediums(value: &[String]) -> Result<(), ValidationError> {
+    includes_in_array(value, vec!["SMS", "EMAIL"])
+}
+
+fn validate_message_action(value: &str) -> Result<(), ValidationError> {
+    includes(value, vec!["RESEND", "SUPPRESS"])
+}
 
 super::gen_response_err!(
     AdminCreateUserError,
@@ -26,16 +42,26 @@ super::gen_response_err!(
     InternalErrorException => http::status_code(500)
 );
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct AdminCreateUserRequest {
     pub client_metadata: Option<std::collections::HashMap<String, String>>,
+    #[validate(custom(function = "validate_desired_delivery_mediums"))]
     pub desired_delivery_mediums: Option<Vec<String>>,
     pub force_alias_creation: Option<bool>,
+    #[validate(custom(function = "validate_message_action"))]
     pub message_action: Option<String>,
+    #[validate(length(max = 256))]
+    #[validate(regex = "TEMPORARY_PASSWORD_REGEX")]
     pub temporary_password: Option<String>,
     pub user_attributes: Option<Vec<std::collections::HashMap<String, String>>>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 128))]
+    #[validate(regex = "NAME_REGEX")]
     pub username: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 55))]
+    #[validate(regex = "USER_POOL_ID_REGEX")]
     pub user_pool_id: Option<String>,
     pub validation_data: Option<Vec<std::collections::HashMap<String, String>>>,
 }
@@ -49,13 +75,8 @@ impl super::ToActionName for AdminCreateUserRequest {
 impl super::ToResponse for AdminCreateUserRequest {
     type E = AdminCreateUserError;
     fn to_response(&self) -> super::Response {
-        super::to_json_response(self, ADMIN_CREATE_USER_NAME, valid_request)
+        super::to_json_response(self, ADMIN_CREATE_USER_NAME)
     }
-}
-
-/// Validates request.
-fn valid_request(request: &AdminCreateUserRequest) -> bool {
-    !common::is_blank(&request.username) && !common::is_blank(&request.user_pool_id)
 }
 
 #[cfg(test)]
@@ -70,7 +91,8 @@ mod tests {
             user_pool_id: Some("user_pool_id".to_string()),
             ..Default::default()
         };
-        assert!(valid_request(&request));
+        assert_eq!(request.validate(), Ok(()));
+        assert!(request.validate().is_ok());
     }
 
     #[test]
@@ -80,7 +102,7 @@ mod tests {
             user_pool_id: Some("".to_string()),
             ..Default::default()
         };
-        assert!(!valid_request(&request));
+        assert!(request.validate().is_err());
     }
 
     #[test]

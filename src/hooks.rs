@@ -15,7 +15,7 @@ where
 {
     let pyname = AsSnakeCase(action);
     let dir = hooks_dir.unwrap_or(DEFAULT_HOOK_DIR_PATH);
-    let path = format!("{}/{}.py", dir, pyname);
+    let path = format!("{}/{}.py", dir, &pyname);
     if !Path::new(&path).exists() {
         return Ok("{}".to_string());
     }
@@ -32,7 +32,7 @@ where
         // syspath.insert(0, path.display()).unwrap();
         syspath.insert(0, dir).unwrap();
 
-        let hook = py.import(format!("{}", AsSnakeCase(action)).as_str())?;
+        let hook = py.import(format!("{}", &pyname).as_str())?;
         let arg = serde_json::to_string(value).unwrap_or_else(|_| "".to_string());
         hook.getattr("hook")?.call1((arg,))?.extract()
     })

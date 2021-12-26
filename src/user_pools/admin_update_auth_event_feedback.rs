@@ -1,11 +1,16 @@
-use crate::common;
-use crate::http;
+use crate::common::{EVENT_ID_REGEX, NAME_REGEX, USER_POOL_ID_REGEX};
+use crate::{http, validator::includes};
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
+use validator::{Validate, ValidationError};
 
 pub const ADMIN_UPDATE_AUTH_EVENT_FEEDBACK_NAME: &str = "AdminUpdateAuthEventFeedback";
 pub const ADMIN_UPDATE_AUTH_EVENT_FEEDBACK_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminUpdateAuthEventFeedback";
+
+fn validate_feedback_value(value: &str) -> Result<(), ValidationError> {
+    includes(value, vec!["Valid", "Invalid"])
+}
 
 super::gen_response_err!(
     AdminUpdateAuthEventFeedbackError,
@@ -18,12 +23,24 @@ super::gen_response_err!(
     InternalErrorException => http::status_code(500)
 );
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct AdminUpdateAuthEventFeedbackRequest {
+    #[validate(required)]
+    #[validate(length(min = 1, max = 50))]
+    #[validate(regex = "EVENT_ID_REGEX")]
     pub event_id: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1))]
+    #[validate(custom(function = "validate_feedback_value"))]
     pub feedback_value: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1, 128))]
+    #[validate(regex = "NAME_REGEX")]
     pub username: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1))]
+    #[validate(regex = "USER_POOL_ID_REGEX")]
     pub user_pool_id: Option<String>,
 }
 
@@ -36,16 +53,8 @@ impl super::ToActionName for AdminUpdateAuthEventFeedbackRequest {
 impl super::ToResponse for AdminUpdateAuthEventFeedbackRequest {
     type E = AdminUpdateAuthEventFeedbackError;
     fn to_response(&self) -> super::Response {
-        super::to_empty_response(self, valid_request)
+        super::to_empty_response(self)
     }
-}
-
-/// Validates request.
-fn valid_request(request: &AdminUpdateAuthEventFeedbackRequest) -> bool {
-    !common::is_blank(&request.event_id)
-        && !common::is_blank(&request.feedback_value)
-        && !common::is_blank(&request.username)
-        && !common::is_blank(&request.user_pool_id)
 }
 
 #[cfg(test)]
@@ -57,12 +66,12 @@ mod tests {
     fn success_to_valid_request() {
         let request = AdminUpdateAuthEventFeedbackRequest {
             event_id: Some("event_id".to_string()),
-            feedback_value: Some("feedback_value".to_string()),
+            feedback_value: Some("Valid".to_string()),
             username: Some("username".to_string()),
             user_pool_id: Some("user_pool_id".to_string()),
             ..Default::default()
         };
-        assert!(valid_request(&request));
+        assert!(request.validate().is_ok());
     }
 
     #[test]
@@ -74,7 +83,7 @@ mod tests {
             user_pool_id: Some("".to_string()),
             ..Default::default()
         };
-        assert!(!valid_request(&request));
+        assert!(request.validate().is_err());
     }
 
     #[test]

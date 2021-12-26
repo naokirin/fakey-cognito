@@ -23,8 +23,8 @@ async fn test_success_to_request() {
                "string" : "string" 
             },
             "ProviderName": "string",
-            "ProviderType": "string",
-            "UserPoolId": "string"
+            "ProviderType": "SAML",
+            "UserPoolId": "user_pool_id"
          }"#,
         )
         .reply(&filter)
@@ -56,7 +56,7 @@ async fn test_failure_to_request() {
                "string" : "string" 
             },
             "ProviderName": "string",
-            "ProviderType": "string",
+            "ProviderType": "SAML",
             "UserPoolId": ""
          }"#,
         )

@@ -1,7 +1,8 @@
-use crate::common;
+use crate::common::{DEVICE_KEY_REGEX, NAME_REGEX, USER_POOL_ID_REGEX};
 use crate::http;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
+use validator::Validate;
 
 pub const ADMIN_GET_DEVICE_NAME: &str = "AdminGetDevice";
 pub const ADMIN_GET_DEVICE_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.AdminGetDevice";
@@ -16,11 +17,20 @@ super::gen_response_err!(
     InternalErrorException => http::status_code(500)
 );
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct AdminGetDeviceRequest {
+    #[validate(required)]
+    #[validate(length(min = 1, max = 55))]
+    #[validate(regex = "DEVICE_KEY_REGEX")]
     pub device_key: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 128))]
+    #[validate(regex = "NAME_REGEX")]
     pub username: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 55))]
+    #[validate(regex = "USER_POOL_ID_REGEX")]
     pub user_pool_id: Option<String>,
 }
 
@@ -33,15 +43,8 @@ impl super::ToActionName for AdminGetDeviceRequest {
 impl super::ToResponse for AdminGetDeviceRequest {
     type E = AdminGetDeviceError;
     fn to_response(&self) -> super::Response {
-        super::to_json_response(self, ADMIN_GET_DEVICE_NAME, valid_request)
+        super::to_json_response(self, ADMIN_GET_DEVICE_NAME)
     }
-}
-
-/// Validates request.
-fn valid_request(request: &AdminGetDeviceRequest) -> bool {
-    !common::is_blank(&request.device_key)
-        && !common::is_blank(&request.username)
-        && !common::is_blank(&request.user_pool_id)
 }
 
 #[cfg(test)]
@@ -57,7 +60,7 @@ mod tests {
             user_pool_id: Some("user_pool_id".to_string()),
             ..Default::default()
         };
-        assert!(valid_request(&request));
+        assert!(request.validate().is_ok());
     }
 
     #[test]
@@ -68,7 +71,7 @@ mod tests {
             user_pool_id: Some("".to_string()),
             ..Default::default()
         };
-        assert!(!valid_request(&request));
+        assert!(request.validate().is_err());
     }
 
     #[test]

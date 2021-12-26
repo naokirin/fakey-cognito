@@ -1,6 +1,8 @@
+use crate::common::TOKEN_REGEX;
 use crate::http;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
+use validator::Validate;
 
 pub const ASSOCIATE_SOFTWARE_TOKEN_NAME: &str = "AssociateSoftwareToken";
 pub const ASSOCIATE_SOFTWARE_TOKEN_ACTION_NAME: &str =
@@ -15,10 +17,12 @@ super::gen_response_err!(
     InternalErrorException => http::status_code(500)
 );
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct AssociateSoftwareTokenRequest {
+    #[validate(regex = "TOKEN_REGEX")]
     access_token: Option<String>,
+    #[validate(length(min = 20, max = 2048))]
     session: Option<String>,
 }
 
@@ -31,13 +35,8 @@ impl super::ToActionName for AssociateSoftwareTokenRequest {
 impl super::ToResponse for AssociateSoftwareTokenRequest {
     type E = AssociateSoftwareTokenError;
     fn to_response(&self) -> super::Response {
-        super::to_json_response(self, ASSOCIATE_SOFTWARE_TOKEN_NAME, valid_request)
+        super::to_json_response(self, ASSOCIATE_SOFTWARE_TOKEN_NAME)
     }
-}
-
-/// Validates request.
-fn valid_request(_request: &AssociateSoftwareTokenRequest) -> bool {
-    true
 }
 
 #[cfg(test)]
@@ -50,7 +49,7 @@ mod tests {
         let request = AssociateSoftwareTokenRequest {
             ..Default::default()
         };
-        assert!(valid_request(&request));
+        assert!(request.validate().is_ok());
     }
 
     #[test]

@@ -4,6 +4,7 @@ use bytes::Bytes;
 use hyper::StatusCode;
 use serde::{Deserialize, Serialize};
 use std::convert::Infallible;
+use validator::Validate;
 
 const AWS_CONTENT_TYPE_HEADER_VALUE: &str = "application/x-amz-json-1.1";
 const AWS_ERROR_TYPE_HEADER: &str = "x-amzn-ErrorType";
@@ -71,7 +72,7 @@ where
     R: super::ToActionName + ToResponse,
 {
     use std::str::FromStr;
-    match super::get_config(R::to_action_name(), &super::CONFIG_ERROR_TYPE.to_string()) {
+    match super::get_config(R::to_action_name(), super::CONFIG_ERROR_TYPE) {
         Some(name) => super::ResponseError::<R::E>::from_str(name.as_str()).map_or(None, |e| {
             Some(super::error_response(
                 e,
@@ -82,22 +83,21 @@ where
     }
 }
 
-pub fn to_json_response<R, F>(request: &R, template_name: &str, validation_callback: F) -> Response
+pub fn to_json_response<R>(request: &R, template_name: &str) -> Response
 where
-    R: super::ToActionName + ToResponse + serde::Serialize,
-    F: Fn(&R) -> bool,
+    R: super::ToActionName + ToResponse + serde::Serialize + Validate,
 {
     if let Some(response) = super::config_response::<R>() {
         return response;
     };
-    if !validation_callback(request) {
+    if request.validate().is_err() {
         let error =
             super::ResponseError::<R::E>::CommonError(super::CommonError::InvalidParameterValue);
         return super::error_response(error, Some("Parameters validation error."));
     }
 
     let hook_result = crate::hooks::call_request_hook(
-        &template_name.to_string(),
+        template_name,
         &request,
         crate::opts::get_opt_hooks().map(|o| o.as_ref()),
     );
@@ -121,15 +121,14 @@ where
     }
 }
 
-pub fn to_empty_response<R, F>(request: &R, validation_callback: F) -> Response
+pub fn to_empty_response<R>(request: &R) -> Response
 where
-    R: super::ToActionName + ToResponse + serde::Serialize,
-    F: Fn(&R) -> bool,
+    R: super::ToActionName + ToResponse + serde::Serialize + Validate,
 {
     if let Some(response) = super::config_response::<R>() {
         return response;
     };
-    if !validation_callback(request) {
+    if request.validate().is_err() {
         let error =
             super::ResponseError::<R::E>::CommonError(super::CommonError::InvalidParameterValue);
         return super::error_response(error, Some("Parameters validation error."));

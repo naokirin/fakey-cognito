@@ -1,7 +1,7 @@
-use crate::common;
 use crate::http;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
+use validator::Validate;
 
 pub const ADMIN_DISABLE_PROVIDER_FOR_USER_NAME: &str = "AdminDisableProviderForUser";
 pub const ADMIN_DISABLE_PROVIDER_FOR_USER_ACTION_NAME: &str =
@@ -18,10 +18,14 @@ super::gen_response_err!(
     InternalErrorException => http::status_code(500)
 );
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct AdminDisableProviderForUserRequest {
+    #[validate(required)]
+    #[validate(required_nested)]
     pub user: Option<super::data_types::ProviderUserIdentifierType>,
+    #[validate(required)]
+    #[validate(length(min = 1))]
     pub user_pool_id: Option<String>,
 }
 
@@ -34,13 +38,8 @@ impl super::ToActionName for AdminDisableProviderForUserRequest {
 impl super::ToResponse for AdminDisableProviderForUserRequest {
     type E = AdminDisableProviderForUserError;
     fn to_response(&self) -> super::Response {
-        super::to_empty_response(self, valid_request)
+        super::to_empty_response(self)
     }
-}
-
-/// Validates request.
-fn valid_request(request: &AdminDisableProviderForUserRequest) -> bool {
-    request.user.is_some() && !common::is_blank(&request.user_pool_id)
 }
 
 #[cfg(test)]
@@ -55,7 +54,7 @@ mod tests {
             user_pool_id: Some("user_pool_id".to_string()),
             ..Default::default()
         };
-        assert!(valid_request(&request));
+        assert!(request.validate().is_ok());
     }
 
     #[test]
@@ -65,7 +64,7 @@ mod tests {
             user_pool_id: Some("".to_string()),
             ..Default::default()
         };
-        assert!(!valid_request(&request));
+        assert!(request.validate().is_err());
     }
 
     #[test]

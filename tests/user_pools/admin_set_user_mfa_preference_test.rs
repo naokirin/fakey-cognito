@@ -24,7 +24,7 @@ async fn test_success_to_request() {
                "PreferredMfa": true
             },
             "Username": "string",
-            "UserPoolId": "string"
+            "UserPoolId": "string_0000"
          }"#,
         )
         .reply(&filter)
@@ -57,7 +57,7 @@ async fn test_failure_to_request() {
                "PreferredMfa": true
             },
             "Username": "",
-            "UserPoolId": "string"
+            "UserPoolId": "string_0000"
          }"#,
         )
         .reply(&filter)

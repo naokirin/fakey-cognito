@@ -1,7 +1,8 @@
-use crate::common;
+use crate::common::{CLIENT_ID_REGEX, CODE_REGEX, HASH_REGEX, NAME_REGEX};
 use crate::http;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
+use validator::Validate;
 
 pub const CONFIRM_SIGN_UP_NAME: &str = "ConfirmSignUp";
 pub const CONFIRM_SIGN_UP_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.ConfirmSignUp";
@@ -24,16 +25,27 @@ super::gen_response_err!(
     InternalErrorException => http::status_code(500)
 );
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct ConfirmSignUpRequest {
     pub analytics_metadata: Option<super::data_types::AnalyticsMetadataType>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 128))]
+    #[validate(regex = "CLIENT_ID_REGEX")]
     pub client_id: Option<String>,
     pub client_metadata: Option<std::collections::HashMap<String, String>>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 2048))]
+    #[validate(regex = "CODE_REGEX")]
     pub confirmation_code: Option<String>,
     pub force_alias_creation: Option<bool>,
+    #[validate(length(min = 1, max = 128))]
+    #[validate(regex = "HASH_REGEX")]
     pub secret_hash: Option<String>,
     pub user_context_data: Option<super::data_types::UserContextDataType>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 128))]
+    #[validate(regex = "NAME_REGEX")]
     pub username: Option<String>,
 }
 
@@ -46,15 +58,8 @@ impl super::ToActionName for ConfirmSignUpRequest {
 impl super::ToResponse for ConfirmSignUpRequest {
     type E = ConfirmSignUpError;
     fn to_response(&self) -> super::Response {
-        super::to_empty_response(self, valid_request)
+        super::to_empty_response(self)
     }
-}
-
-/// Validates request.
-fn valid_request(request: &ConfirmSignUpRequest) -> bool {
-    !common::is_blank(&request.client_id)
-        && !common::is_blank(&request.confirmation_code)
-        && !common::is_blank(&request.username)
 }
 
 #[cfg(test)]
@@ -70,7 +75,7 @@ mod tests {
             username: Some("username".to_string()),
             ..Default::default()
         };
-        assert!(valid_request(&request));
+        assert!(request.validate().is_ok());
     }
 
     #[test]
@@ -81,7 +86,7 @@ mod tests {
             username: Some("".to_string()),
             ..Default::default()
         };
-        assert!(!valid_request(&request));
+        assert!(request.validate().is_err());
     }
 
     #[test]

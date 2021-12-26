@@ -1,7 +1,8 @@
-use crate::common;
+use crate::common::{NAME_REGEX, PASSWORD_REGEX, USER_POOL_ID_REGEX};
 use crate::http;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
+use validator::Validate;
 
 use super::AdminAddUserToGroupError;
 
@@ -20,12 +21,21 @@ super::gen_response_err!(
     InternalErrorException => http::status_code(500)
 );
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct AdminSetUserPasswordRequest {
+    #[validate(required)]
+    #[validate(length(min = 1, max = 256))]
+    #[validate(regex = "PASSWORD_REGEX")]
     pub password: Option<String>,
     pub permanent: Option<bool>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 128))]
+    #[validate(regex = "NAME_REGEX")]
     pub username: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 55))]
+    #[validate(regex = "USER_POOL_ID_REGEX")]
     pub user_pool_id: Option<String>,
 }
 
@@ -38,15 +48,8 @@ impl super::ToActionName for AdminSetUserPasswordRequest {
 impl super::ToResponse for AdminSetUserPasswordRequest {
     type E = AdminAddUserToGroupError;
     fn to_response(&self) -> super::Response {
-        super::to_empty_response(self, valid_request)
+        super::to_empty_response(self)
     }
-}
-
-/// Validates request.
-fn valid_request(request: &AdminSetUserPasswordRequest) -> bool {
-    !common::is_blank(&request.password)
-        && !common::is_blank(&request.username)
-        && !common::is_blank(&request.user_pool_id)
 }
 
 #[cfg(test)]
@@ -62,7 +65,7 @@ mod tests {
             user_pool_id: Some("user_pool_id".to_string()),
             ..Default::default()
         };
-        assert!(valid_request(&request));
+        assert!(request.validate().is_ok());
     }
 
     #[test]
@@ -73,7 +76,7 @@ mod tests {
             user_pool_id: Some("".to_string()),
             ..Default::default()
         };
-        assert!(!valid_request(&request));
+        assert!(request.validate().is_err());
     }
 
     #[test]

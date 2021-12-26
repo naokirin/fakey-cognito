@@ -22,7 +22,7 @@ async fn test_success_to_request() {
                }
             ],
             "Username": "string",
-            "UserPoolId": "string"
+            "UserPoolId": "user_pool_id"
          }"#,
         )
         .reply(&filter)

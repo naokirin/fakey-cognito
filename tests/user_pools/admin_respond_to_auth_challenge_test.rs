@@ -18,7 +18,7 @@ async fn test_success_to_request() {
             "AnalyticsMetadata": { 
                "AnalyticsEndpointId": "string"
             },
-            "ChallengeName": "string",
+            "ChallengeName": "SMS_MFA",
             "ChallengeResponses": { 
                "string" : "string" 
             },
@@ -38,8 +38,8 @@ async fn test_success_to_request() {
                "ServerName": "string",
                "ServerPath": "string"
             },
-            "Session": "string",
-            "UserPoolId": "string"
+            "Session": "00000000000000000000",
+            "UserPoolId": "string_0123"
          }"#,
         )
         .reply(&filter)
@@ -66,7 +66,7 @@ async fn test_failure_to_request() {
             "AnalyticsMetadata": { 
                "AnalyticsEndpointId": "string"
             },
-            "ChallengeName": "string",
+            "ChallengeName": "SMS_MFA",
             "ChallengeResponses": { 
                "string" : "string" 
             },
@@ -86,7 +86,7 @@ async fn test_failure_to_request() {
                "ServerName": "string",
                "ServerPath": "string"
             },
-            "Session": "string",
+            "Session": "00000000000000000000",
             "UserPoolId": ""
          }"#,
         )

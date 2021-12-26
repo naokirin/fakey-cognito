@@ -1,11 +1,16 @@
-use crate::common;
-use crate::http;
+use crate::common::{DEVICE_KEY_REGEX, NAME_REGEX, USER_POOL_ID_REGEX};
+use crate::{http, validator::includes};
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
+use validator::{Validate, ValidationError};
 
 pub const ADMIN_UPDATE_DEVICE_STATUS_NAME: &str = "AdminUpdateDeviceStatus";
 pub const ADMIN_UPDATE_DEVICE_STATUS_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminUpdateDeviceStatus";
+
+fn validate_device_remembered_status(value: &str) -> Result<(), ValidationError> {
+    includes(value, vec!["remembered", "not_remembered"])
+}
 
 super::gen_response_err!(
     AdminUpdateDeviceStatusError,
@@ -19,12 +24,22 @@ super::gen_response_err!(
     InternalErrorException => http::status_code(500)
 );
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct AdminUpdateDeviceStatusRequest {
+    #[validate(required)]
+    #[validate(length(min = 1, max = 55))]
+    #[validate(regex = "DEVICE_KEY_REGEX")]
     pub device_key: Option<String>,
+    #[validate(custom(function = "validate_device_remembered_status"))]
     pub device_remembered_status: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 128))]
+    #[validate(regex = "NAME_REGEX")]
     pub username: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 55))]
+    #[validate(regex = "USER_POOL_ID_REGEX")]
     pub user_pool_id: Option<String>,
 }
 
@@ -37,15 +52,8 @@ impl super::ToActionName for AdminUpdateDeviceStatusRequest {
 impl super::ToResponse for AdminUpdateDeviceStatusRequest {
     type E = AdminUpdateDeviceStatusError;
     fn to_response(&self) -> super::Response {
-        super::to_empty_response(self, valid_request)
+        super::to_empty_response(self)
     }
-}
-
-/// Validates request.
-fn valid_request(request: &AdminUpdateDeviceStatusRequest) -> bool {
-    !common::is_blank(&request.device_key)
-        && !common::is_blank(&request.username)
-        && !common::is_blank(&request.user_pool_id)
 }
 
 #[cfg(test)]
@@ -61,7 +69,7 @@ mod tests {
             user_pool_id: Some("user_pool_id".to_string()),
             ..Default::default()
         };
-        assert!(valid_request(&request));
+        assert!(request.validate().is_ok());
     }
 
     #[test]
@@ -72,7 +80,7 @@ mod tests {
             user_pool_id: Some("".to_string()),
             ..Default::default()
         };
-        assert!(!valid_request(&request));
+        assert!(request.validate().is_err());
     }
 
     #[test]

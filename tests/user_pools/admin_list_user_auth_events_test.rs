@@ -18,7 +18,7 @@ async fn test_success_to_request() {
             "MaxResults": 10,
             "NextToken": "string",
             "Username": "string",
-            "UserPoolId": "string"
+            "UserPoolId": "string_00"
          }"#,
         )
         .reply(&filter)

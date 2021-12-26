@@ -18,7 +18,7 @@ async fn test_success_to_request() {
             "Password": "string",
             "Permanent": true,
             "Username": "string",
-            "UserPoolId": "string"
+            "UserPoolId": "user_pool_id"
          }"#,
         )
         .reply(&filter)

@@ -18,8 +18,8 @@ async fn test_success_to_request() {
             "Description": "string",
             "GroupName": "string",
             "Precedence": 0,
-            "RoleArn": "string",
-            "UserPoolId": "string"
+            "RoleArn": "arn:aws:iam::123456789012:user/Development/product_1234",
+            "UserPoolId": "user_pool_id"
          }"#,
         )
         .reply(&filter)
@@ -46,7 +46,7 @@ async fn test_failure_to_request() {
             "Description": "string",
             "GroupName": "string",
             "Precedence": 0,
-            "RoleArn": "string",
+            "RoleArn": "arn:aws:iam::123456789012:user/Development/product_1234",
             "UserPoolId": ""
          }"#,
         )
