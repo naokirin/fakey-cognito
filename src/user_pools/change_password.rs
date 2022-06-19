@@ -1,7 +1,8 @@
-use crate::common;
+use crate::common::{PASSWORD_REGEX, TOKEN_REGEX};
 use crate::http;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
+use validator::Validate;
 
 pub const CHANGE_PASSWORD_NAME: &str = "ChangePassword";
 pub const CHANGE_PASSWORD_ACTION_NAME: &str = "AWSCognitoIdentityProviderService.ChangePassword";
@@ -20,11 +21,20 @@ super::gen_response_err!(
     InternalErrorException => http::status_code(500)
 );
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct ChangePasswordRequest {
+    #[validate(required)]
+    #[validate(length(min = 1))]
+    #[validate(regex = "TOKEN_REGEX")]
     access_token: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 256))]
+    #[validate(regex = "PASSWORD_REGEX")]
     previous_password: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 256))]
+    #[validate(regex = "PASSWORD_REGEX")]
     proposed_password: Option<String>,
 }
 
@@ -37,15 +47,8 @@ impl super::ToActionName for ChangePasswordRequest {
 impl super::ToResponse for ChangePasswordRequest {
     type E = ChangePasswordError;
     fn to_response(&self) -> super::Response {
-        super::to_empty_response(self, valid_request)
+        super::to_empty_response(self)
     }
-}
-
-/// Validates request.
-fn valid_request(request: &ChangePasswordRequest) -> bool {
-    !common::is_blank(&request.access_token)
-        && !common::is_blank(&request.previous_password)
-        && !common::is_blank(&request.proposed_password)
 }
 
 #[cfg(test)]
@@ -60,7 +63,7 @@ mod tests {
             previous_password: Some("previous_password".to_string()),
             proposed_password: Some("proposed_password".to_string()),
         };
-        assert!(valid_request(&request));
+        assert!(request.validate().is_ok());
     }
 
     #[test]
@@ -68,7 +71,7 @@ mod tests {
         let request = ChangePasswordRequest {
             ..Default::default()
         };
-        assert!(!valid_request(&request));
+        assert!(request.validate().is_err());
     }
 
     #[test]

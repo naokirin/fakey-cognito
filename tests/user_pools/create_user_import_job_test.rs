@@ -15,9 +15,9 @@ async fn test_success_to_request() {
         )
         .body(
             r#"{
-            "CloudWatchLogsRoleArn": "string",
+            "CloudWatchLogsRoleArn": "arn:aws:iam::123456789012:user/Development/product_1234",
             "JobName": "string",
-            "UserPoolId": "string"
+            "UserPoolId": "user_pool_id"
          }"#,
         )
         .reply(&filter)
@@ -41,7 +41,7 @@ async fn test_failure_to_request() {
         )
         .body(
             r#"{
-            "CloudWatchLogsRoleArn": "string",
+            "CloudWatchLogsRoleArn": "arn:aws:iam::123456789012:user/Development/product_1234",
             "JobName": "string",
             "UserPoolId": ""
          }"#,

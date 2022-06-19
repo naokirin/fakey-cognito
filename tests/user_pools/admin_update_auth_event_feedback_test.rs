@@ -16,9 +16,9 @@ async fn test_success_to_request() {
         .body(
             r#"{
             "EventId": "string",
-            "FeedbackValue": "string",
+            "FeedbackValue": "Valid",
             "Username": "string",
-            "UserPoolId": "string"
+            "UserPoolId": "user_pool_id"
          }"#,
         )
         .reply(&filter)
@@ -43,7 +43,7 @@ async fn test_failure_to_request() {
         .body(
             r#"{
             "EventId": "string",
-            "FeedbackValue": "string",
+            "FeedbackValue": "Valid",
             "Username": "string",
             "UserPoolId": ""
          }"#,

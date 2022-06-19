@@ -18,7 +18,7 @@ async fn test_success_to_request() {
             "AnalyticsMetadata": { 
                "AnalyticsEndpointId": "string"
             },
-            "AuthFlow": "string",
+            "AuthFlow": "USER_SRP_AUTH",
             "AuthParameters": { 
                "string" : "string" 
             },
@@ -38,7 +38,7 @@ async fn test_success_to_request() {
                "ServerName": "string",
                "ServerPath": "string"
             },
-            "UserPoolId": "string"
+            "UserPoolId": "string_09"
          }"#,
         )
         .reply(&filter)
@@ -65,7 +65,7 @@ async fn test_failure_to_request() {
             "AnalyticsMetadata": { 
                "AnalyticsEndpointId": "string"
             },
-            "AuthFlow": "string",
+            "AuthFlow": "USER_SRP_AUTH",
             "AuthParameters": { 
                "string" : "string" 
             },

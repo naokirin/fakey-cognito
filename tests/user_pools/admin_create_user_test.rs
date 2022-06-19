@@ -19,10 +19,10 @@ async fn test_success_to_request() {
         .body(
             r#"{
             "ClientMetadata":{},
-            "DesiredDeliveryMediums":[],
+            "DesiredDeliveryMediums":["EMAIL"],
             "ForceAliasCreation": true,
-            "MessageAction": "string",
-            "TemporaryPassword": "RESEND",
+            "MessageAction": "RESEND",
+            "TemporaryPassword": "aaaaaa",
             "UserAttributes": [{"Name": "string","Value": "string"}],
             "Username":"username",
             "UserPoolId":"user_pool_id",
@@ -33,7 +33,7 @@ async fn test_success_to_request() {
         .await;
 
     assert_eq!(200, res.status());
-    assert!(!res.body().is_empty())
+    assert!(!res.body().is_empty());
 }
 
 #[tokio::test]
@@ -51,10 +51,10 @@ async fn test_failure_to_request() {
         .body(
             r#"{
             "ClientMetadata":{},
-            "DesiredDeliveryMediums":[],
+            "DesiredDeliveryMediums":["EMAIL"],
             "ForceAliasCreation": true,
-            "MessageAction": "string",
-            "TemporaryPassword": "RESEND",
+            "MessageAction": "RESEND",
+            "TemporaryPassword": "aaaaaa",
             "UserAttributes": [{"Name": "string","Value": "string"}],
             "Username":"",
             "UserPoolId":"user_pool_id",

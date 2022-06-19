@@ -33,8 +33,8 @@ async fn test_success_to_request() {
                },
                "UnusedAccountValidityDays": 7
             },
-            "AliasAttributes": [ "string" ],
-            "AutoVerifiedAttributes": [ "string" ],
+            "AliasAttributes": [ "email" ],
+            "AutoVerifiedAttributes": [ "email" ],
             "DeviceConfiguration": { 
                "ChallengeRequiredOnNewDevice": true,
                "DeviceOnlyRememberedOnUserPrompt": true 
@@ -46,7 +46,7 @@ async fn test_success_to_request() {
                "ReplyToEmailAddress": "string",
                "SourceArn": "string"
             },
-            "EmailVerificationMessage": "string",
+            "EmailVerificationMessage": "string{####}string",
             "EmailVerificationSubject": "string",
             "LambdaConfig": { 
                "CreateAuthChallenge": "string",
@@ -69,7 +69,7 @@ async fn test_success_to_request() {
                "UserMigration": "string",
                "VerifyAuthChallengeResponse": "string"
             },
-            "MfaConfiguration": "string",
+            "MfaConfiguration": "ON",
             "Policies": { 
                "PasswordPolicy": { 
                   "MinimumLength": 10,
@@ -98,13 +98,13 @@ async fn test_success_to_request() {
                   }
                }
             ],
-            "SmsAuthenticationMessage": "string",
+            "SmsAuthenticationMessage": "{####}",
             "SmsConfiguration": { 
                "ExternalId": "string",
                "SnsCallerArn": "string"
             },
-            "SmsVerificationMessage": "string",
-            "UsernameAttributes": [ "string" ],
+            "SmsVerificationMessage": "{####}",
+            "UsernameAttributes": [ "phone_number" ],
             "UsernameConfiguration": { 
                "CaseSensitive": false
             },

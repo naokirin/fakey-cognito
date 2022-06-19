@@ -1,11 +1,15 @@
-use crate::common;
+use crate::common::{ARN_REGEX, USER_POOL_ID_REGEX};
 use crate::http;
+use once_cell::sync::Lazy;
+use regex::Regex;
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
+use validator::Validate;
 
 pub const CREATE_USER_IMPORT_JOB_NAME: &str = "CreateUserImportJob";
 pub const CREATE_USER_IMPORT_JOB_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.CreateUserImportJob";
+static JOB_NAME_REGEX: Lazy<Regex> = Lazy::new(|| Regex::new(r"[\w\s+=.@-]+").unwrap());
 
 super::gen_response_err!(
     CreateUserImportJobError,
@@ -18,11 +22,20 @@ super::gen_response_err!(
     InternalErrorException => http::status_code(500)
 );
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct CreateUserImportJobRequest {
+    #[validate(required)]
+    #[validate(length(min = 20, max = 2048))]
+    #[validate(regex = "ARN_REGEX")]
     pub cloud_watch_logs_role_arn: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 128))]
+    #[validate(regex = "JOB_NAME_REGEX")]
     pub job_name: Option<String>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 55))]
+    #[validate(regex = "USER_POOL_ID_REGEX")]
     pub user_pool_id: Option<String>,
 }
 
@@ -35,15 +48,8 @@ impl super::ToActionName for CreateUserImportJobRequest {
 impl super::ToResponse for CreateUserImportJobRequest {
     type E = CreateUserImportJobError;
     fn to_response(&self) -> super::Response {
-        super::to_json_response(self, CREATE_USER_IMPORT_JOB_NAME, valid_request)
+        super::to_json_response(self, CREATE_USER_IMPORT_JOB_NAME)
     }
-}
-
-/// Validates request.
-fn valid_request(request: &CreateUserImportJobRequest) -> bool {
-    !common::is_blank(&request.cloud_watch_logs_role_arn)
-        && !common::is_blank(&request.job_name)
-        && !common::is_blank(&request.user_pool_id)
 }
 
 #[cfg(test)]
@@ -54,23 +60,27 @@ mod tests {
     #[test]
     fn success_to_valid_request() {
         let request = CreateUserImportJobRequest {
-            cloud_watch_logs_role_arn: Some("cloud_watch_logs_role_arn".to_string()),
-            job_name: Some("job_name".to_string()),
+            cloud_watch_logs_role_arn: Some(
+                "arn:aws:iam::123456789012:user/Development/product_1234".to_string(),
+            ),
+            job_name: Some("job-name".to_string()),
             user_pool_id: Some("user_pool_id".to_string()),
             ..Default::default()
         };
-        assert!(valid_request(&request));
+        assert!(request.validate().is_ok());
     }
 
     #[test]
     fn failure_to_valid_request() {
         let request = CreateUserImportJobRequest {
-            cloud_watch_logs_role_arn: Some("cloud_watch_logs_role_arn".to_string()),
+            cloud_watch_logs_role_arn: Some(
+                "arn:aws:iam::123456789012:user/Development/product_1234".to_string(),
+            ),
             job_name: Some("job_name".to_string()),
             user_pool_id: Some("".to_string()),
             ..Default::default()
         };
-        assert!(!valid_request(&request));
+        assert!(request.validate().is_err());
     }
 
     #[test]

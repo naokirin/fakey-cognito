@@ -15,10 +15,10 @@ async fn test_success_to_request() {
         )
         .body(
             r#"{
-            "DeviceKey": "string",
-            "DeviceRememberedStatus": "string",
+            "DeviceKey": "device_key",
+            "DeviceRememberedStatus": "remembered",
             "Username": "string",
-            "UserPoolId": "string"
+            "UserPoolId": "user_pool_id"
          }"#,
         )
         .reply(&filter)
@@ -42,8 +42,8 @@ async fn test_failure_to_request() {
         )
         .body(
             r#"{
-            "DeviceKey": "string",
-            "DeviceRememberedStatus": "string",
+            "DeviceKey": "device_key",
+            "DeviceRememberedStatus": "remembered",
             "Username": "string",
             "UserPoolId": ""
          }"#,

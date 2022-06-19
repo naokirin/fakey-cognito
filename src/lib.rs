@@ -5,3 +5,4 @@ pub mod opts;
 pub mod routes;
 pub mod templates;
 pub mod user_pools;
+pub mod validator;

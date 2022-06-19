@@ -79,8 +79,8 @@ where
 {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            ResponseError::<T>::CommonError(err) => write!(f, "{}", err.to_string()),
-            ResponseError::ActionError(err) => write!(f, "{}", err.to_string()),
+            ResponseError::<T>::CommonError(err) => write!(f, "{}", err),
+            ResponseError::ActionError(err) => write!(f, "{}", err),
         }
     }
 }

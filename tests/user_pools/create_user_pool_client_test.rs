@@ -16,34 +16,34 @@ async fn test_success_to_request() {
         .body(
             r#"{
             "AccessTokenValidity": 1,
-            "AllowedOAuthFlows": [ "string" ],
+            "AllowedOAuthFlows": [ "code" ],
             "AllowedOAuthFlowsUserPoolClient": true,
-            "AllowedOAuthScopes": [ "string" ],
+            "AllowedOAuthScopes": [ "aws.cognito.signin.user.admin" ],
             "AnalyticsConfiguration": { 
-               "ApplicationArn": "string",
-               "ApplicationId": "string",
-               "ExternalId": "string",
-               "RoleArn": "string",
-               "UserDataShared": true
+                "ApplicationArn": "string",
+                "ApplicationId": "string",
+                "ExternalId": "string",
+                "RoleArn": "string",
+                "UserDataShared": true
             },
-            "CallbackURLs": [ "string" ],
+            "CallbackURLs": [ "http://localhost" ],
             "ClientName": "string",
-            "DefaultRedirectURI": "string",
+            "DefaultRedirectURI": "http://localhost",
             "EnableTokenRevocation": true,
-            "ExplicitAuthFlows": [ "string" ],
+            "ExplicitAuthFlows": [ "ADMIN_NO_SRP_AUTH" ],
             "GenerateSecret": true,
             "IdTokenValidity": 1,
-            "LogoutURLs": [ "string" ],
-            "PreventUserExistenceErrors": "string",
+            "LogoutURLs": [ "http://localhost" ],
+            "PreventUserExistenceErrors": "ENABLED",
             "ReadAttributes": [ "string" ],
             "RefreshTokenValidity": 1,
             "SupportedIdentityProviders": [ "string" ],
             "TokenValidityUnits": { 
-               "AccessToken": "string",
-               "IdToken": "string",
-               "RefreshToken": "string"
+                "AccessToken": "string",
+                "IdToken": "string",
+                "RefreshToken": "string"
             },
-            "UserPoolId": "string",
+            "UserPoolId": "user_pool_id",
             "WriteAttributes": [ "string" ]
          }"#,
         )
@@ -69,9 +69,9 @@ async fn test_failure_to_request() {
         .body(
             r#"{
             "AccessTokenValidity": 1,
-            "AllowedOAuthFlows": [ "string" ],
+            "AllowedOAuthFlows": [ "code" ],
             "AllowedOAuthFlowsUserPoolClient": true,
-            "AllowedOAuthScopes": [ "string" ],
+            "AllowedOAuthScopes": [ "aws.cognito.signin.user.admin" ],
             "AnalyticsConfiguration": { 
                "ApplicationArn": "string",
                "ApplicationId": "string",
@@ -79,15 +79,15 @@ async fn test_failure_to_request() {
                "RoleArn": "string",
                "UserDataShared": true
             },
-            "CallbackURLs": [ "string" ],
+            "CallbackURLs": [ "http://localhost" ],
             "ClientName": "string",
-            "DefaultRedirectURI": "string",
+            "DefaultRedirectURI": "http://localhost",
             "EnableTokenRevocation": true,
-            "ExplicitAuthFlows": [ "string" ],
+            "ExplicitAuthFlows": [ "ADMIN_NO_SRP_AUTH" ],
             "GenerateSecret": true,
             "IdTokenValidity": 1,
-            "LogoutURLs": [ "string" ],
-            "PreventUserExistenceErrors": "string",
+            "LogoutURLs": [ "http://localhost" ],
+            "PreventUserExistenceErrors": "ENABLED",
             "ReadAttributes": [ "string" ],
             "RefreshTokenValidity": 1,
             "SupportedIdentityProviders": [ "string" ],

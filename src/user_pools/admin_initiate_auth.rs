@@ -1,11 +1,27 @@
-use crate::common;
-use crate::http;
+use crate::common::{CLIENT_ID_REGEX, USER_POOL_ID_REGEX};
+use crate::{http, validator::includes};
 use serde::{Deserialize, Serialize};
 use strum_macros::{Display, EnumString};
+use validator::{Validate, ValidationError};
 
 pub const ADMIN_INITIATE_AUTH_NAME: &str = "AdminInitiateAuth";
 pub const ADMIN_INITIATE_AUTH_ACTION_NAME: &str =
     "AWSCognitoIdentityProviderService.AdminInitiateAuth";
+
+fn validate_auth_flow(value: &str) -> Result<(), ValidationError> {
+    includes(
+        value,
+        vec![
+            "USER_SRP_AUTH",
+            "REFRESH_TOKEN_AUTH",
+            "REFRESH_TOKEN",
+            "CUSTOM_AUTH",
+            "ADMIN_NO_SRP_AUTH",
+            "USER_PASSWORD_AUTH",
+            "ADMIN_USER_PASSWORD_AUTH",
+        ],
+    )
+}
 
 super::gen_response_err!(
     AdminInitiateAuthError,
@@ -26,15 +42,25 @@ super::gen_response_err!(
     InternalErrorException => http::status_code(500)
 );
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct AdminInitiateAuthRequest {
+    #[validate]
     pub analytics_metadata: Option<super::data_types::AnalyticsMetadataType>,
+    #[validate(required)]
+    #[validate(length(min = 1))]
+    #[validate(custom(function = "validate_auth_flow"))]
     pub auth_flow: Option<String>,
     pub auth_parameters: Option<std::collections::HashMap<String, String>>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 128))]
+    #[validate(regex = "CLIENT_ID_REGEX")]
     pub client_id: Option<String>,
     pub client_metadata: Option<std::collections::HashMap<String, String>>,
     pub context_data: Option<super::data_types::ContextDataType>,
+    #[validate(required)]
+    #[validate(length(min = 1, max = 55))]
+    #[validate(regex = "USER_POOL_ID_REGEX")]
     pub user_pool_id: Option<String>,
 }
 
@@ -47,15 +73,8 @@ impl super::ToActionName for AdminInitiateAuthRequest {
 impl super::ToResponse for AdminInitiateAuthRequest {
     type E = AdminInitiateAuthError;
     fn to_response(&self) -> super::Response {
-        super::to_json_response(self, ADMIN_INITIATE_AUTH_NAME, valid_request)
+        super::to_json_response(self, ADMIN_INITIATE_AUTH_NAME)
     }
-}
-
-/// Validates request.
-fn valid_request(request: &AdminInitiateAuthRequest) -> bool {
-    !common::is_blank(&request.auth_flow)
-        && !common::is_blank(&request.client_id)
-        && !common::is_blank(&request.user_pool_id)
 }
 
 #[cfg(test)]
@@ -66,23 +85,23 @@ mod tests {
     #[test]
     fn success_to_valid_request() {
         let request = AdminInitiateAuthRequest {
-            auth_flow: Some("auth_flow".to_string()),
+            auth_flow: Some("USER_SRP_AUTH".to_string()),
             client_id: Some("client_id".to_string()),
             user_pool_id: Some("user_pool_id".to_string()),
             ..Default::default()
         };
-        assert!(valid_request(&request));
+        assert!(request.validate().is_ok());
     }
 
     #[test]
     fn failure_to_valid_request() {
         let request = AdminInitiateAuthRequest {
-            auth_flow: Some("auth_flow".to_string()),
+            auth_flow: Some("USER_SRP_AUTH".to_string()),
             client_id: Some("client_id".to_string()),
             user_pool_id: Some("".to_string()),
             ..Default::default()
         };
-        assert!(!valid_request(&request));
+        assert!(request.validate().is_err());
     }
 
     #[test]
