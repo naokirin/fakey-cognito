@@ -134,7 +134,7 @@ fn post_routes(
 }
 
 pub fn user_pools_routes(
-) -> impl Filter<Extract = impl warp::Reply, Error = warp::Rejection> + Clone {
+) -> impl Filter<Extract = (impl warp::Reply,), Error = warp::Rejection> + Clone {
     warp::path::end()
         .and(warp::post())
         .and(warp::body::bytes())
