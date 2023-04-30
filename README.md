@@ -17,7 +17,10 @@ Simple fake AWS Cognito API server for development.
 # run with cargo on port 8080
 cargo run &
 
-# or run with docker
+# or run on docker from ghcr
+docker run -p 8080:8080 ghcr.io/naokirin/fakey-cognito:main
+
+# or build and run on docker from repository code
 docker build -t fakey-cognito .
 docker run -p 8080:8080 fakey-cognito
 
