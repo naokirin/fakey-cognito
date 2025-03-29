@@ -10,7 +10,7 @@ const AWS_CONTENT_TYPE_HEADER_VALUE: &str = "application/x-amz-json-1.1";
 const AWS_ERROR_TYPE_HEADER: &str = "x-amzn-ErrorType";
 const AWS_ERROR_MESSAGE_HEADER: &str = "x-amzn-ErrorMessage";
 
-pub type Response = warp::http::Response<hyper::Body>;
+pub type Response = warp::http::Response<warp::hyper::Body>;
 pub type UserPoolsResponseResult = std::result::Result<Response, Infallible>;
 
 pub trait ToActionName {
@@ -27,13 +27,13 @@ pub trait ToStatusCode {
 }
 
 /// Returns empty body.
-pub fn empty_body() -> hyper::Body {
-    hyper::Body::empty()
+pub fn empty_body() -> warp::hyper::Body {
+    warp::hyper::Body::empty()
 }
 
 /// Returns body with json serialized value.
-pub fn json_body(value: &str) -> hyper::Body {
-    hyper::Body::from(value.to_string())
+pub fn json_body(value: &str) -> warp::hyper::Body {
+    warp::hyper::Body::from(value.to_string())
 }
 
 pub fn response<'a, T>(body: &'a Bytes) -> UserPoolsResponseResult
@@ -55,7 +55,7 @@ where
     T: std::fmt::Display + ToStatusCode,
 {
     warp::http::Response::builder()
-        .status(error.to_status_code())
+        .status(warp::http::StatusCode::from_u16(error.to_status_code().as_u16()).unwrap())
         .header(AWS_ERROR_TYPE_HEADER, format!("{}", error))
         .header(AWS_ERROR_MESSAGE_HEADER, "DUMMY ERROR MESSAGE")
         .header("Content-Type", AWS_CONTENT_TYPE_HEADER_VALUE)
@@ -111,7 +111,7 @@ where
     );
     match opt_json {
         Some(json) => warp::http::Response::builder()
-            .status(http::status_code(200))
+            .status(warp::http::StatusCode::from_u16(http::status_code(200).as_u16()).unwrap())
             .body(super::responses::json_body(&json))
             .unwrap(),
         _ => super::error_response(
@@ -135,7 +135,7 @@ where
     }
 
     warp::http::Response::builder()
-        .status(crate::http::status_code(200))
+        .status(warp::http::StatusCode::from_u16(http::status_code(200).as_u16()).unwrap())
         .body(super::responses::empty_body())
         .unwrap()
 }
@@ -159,7 +159,7 @@ mod tests {
     #[test]
     fn error_response_has_status_code() {
         let response = error_response(CommonError::AccessDeniedException, None);
-        assert_eq!(http::status_code(400), response.status());
+        assert_eq!(400, response.status().as_u16());
     }
 
     #[test]

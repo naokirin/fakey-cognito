@@ -1,4 +1,5 @@
 use crate::http;
+use hyper::StatusCode;
 use std::fmt::Display;
 use strum_macros::{Display, EnumString};
 
@@ -7,7 +8,6 @@ use strum_macros::{Display, EnumString};
 macro_rules! gen_response_err {
     ($t:ident,$($( $errs:ident )|+ => $s:expr),*) => {
         use super::ToStatusCode;
-        use hyper::StatusCode;
 
         #[allow(clippy::enum_variant_names)]
         #[derive(Display, EnumString)]
@@ -16,7 +16,7 @@ macro_rules! gen_response_err {
         }
 
         impl ToStatusCode for $t {
-            fn to_status_code(&self) -> StatusCode {
+            fn to_status_code(&self) -> hyper::StatusCode {
                 match self {
                     $(
                         $(

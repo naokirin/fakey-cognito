@@ -21,16 +21,8 @@ where
     }
 
     Python::with_gil(|py| {
-        let syspath: &PyList = py
-            .import("sys")
-            .unwrap()
-            .getattr("path")
-            .unwrap()
-            .try_into()
-            .unwrap();
-        // error[E0277]: the trait bound `std::path::Display<'_>: pyo3::conversion::ToPyObject` is not satisfied
-        // syspath.insert(0, path.display()).unwrap();
-        syspath.insert(0, dir).unwrap();
+        let syspath: &PyList = pyo3::PyTryInto::try_into(py.import("sys")?.getattr("path")?)?;
+        syspath.insert(0, dir)?;
 
         let hook = py.import(format!("{}", &pyname).as_str())?;
         let arg = serde_json::to_string(value).unwrap_or_else(|_| "".to_string());
