@@ -22,7 +22,7 @@ super::gen_response_err!(
 #[serde(rename_all = "PascalCase")]
 pub struct AdminDisableProviderForUserRequest {
     #[validate(required)]
-    #[validate(required_nested)]
+    #[validate(nested)]
     pub user: Option<super::data_types::ProviderUserIdentifierType>,
     #[validate(required)]
     #[validate(length(min = 1))]

@@ -45,22 +45,22 @@ super::gen_response_err!(
 #[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct AdminInitiateAuthRequest {
-    #[validate]
+    #[validate(nested)]
     pub analytics_metadata: Option<super::data_types::AnalyticsMetadataType>,
     #[validate(required)]
     #[validate(length(min = 1))]
-    #[validate(custom(function = "validate_auth_flow"))]
+    #[validate(custom(function = validate_auth_flow))]
     pub auth_flow: Option<String>,
     pub auth_parameters: Option<std::collections::HashMap<String, String>>,
     #[validate(required)]
     #[validate(length(min = 1, max = 128))]
-    #[validate(regex = "CLIENT_ID_REGEX")]
+    #[validate(regex(path = *CLIENT_ID_REGEX))]
     pub client_id: Option<String>,
     pub client_metadata: Option<std::collections::HashMap<String, String>>,
     pub context_data: Option<super::data_types::ContextDataType>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     pub user_pool_id: Option<String>,
 }
 

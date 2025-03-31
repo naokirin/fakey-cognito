@@ -16,12 +16,12 @@ static SMS_MESSAGE_REGEX: Lazy<Regex> = Lazy::new(|| Regex::new(r".*\{####\}.*")
 #[serde(rename_all = "PascalCase")]
 pub struct MessageTemplateType {
     #[validate(length(min = 6, max = 20000))]
-    #[validate(regex = "EMAIL_MESSAGE_REGEX")]
+    #[validate(regex(path = *EMAIL_MESSAGE_REGEX))]
     email_message: Option<String>,
     #[validate(length(min = 6, max = 140))]
-    #[validate(regex = "EMAIL_SUBJECT_REGEX")]
+    #[validate(regex(path = *EMAIL_SUBJECT_REGEX))]
     email_subject: Option<String>,
     #[validate(length(min = 6, max = 140))]
-    #[validate(regex = "SMS_MESSAGE_REGEX")]
+    #[validate(regex(path = *SMS_MESSAGE_REGEX))]
     sms_message: Option<String>,
 }

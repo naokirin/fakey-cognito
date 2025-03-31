@@ -29,11 +29,11 @@ pub struct CreateGroupRequest {
     #[validate(range(min = 0, max = 2147483647))]
     pub precedence: Option<i64>,
     #[validate(length(min = 20, max = 2048))]
-    #[validate(regex = "ARN_REGEX")]
+    #[validate(regex(path = *ARN_REGEX))]
     pub role_arn: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     pub user_pool_id: Option<String>,
 }
 

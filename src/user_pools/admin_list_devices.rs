@@ -28,15 +28,15 @@ pub struct AdminListDevicesRequest {
     #[validate(range(min = 0, max = 60))]
     limit: Option<u8>,
     #[validate(length(min = 1))]
-    #[validate(regex = "PAGINATION_TOKEN_REGEX")]
+    #[validate(regex(path = *PAGINATION_TOKEN_REGEX))]
     pagination_token: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 128))]
-    #[validate(regex = "NAME_REGEX")]
+    #[validate(regex(path = *NAME_REGEX))]
     username: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     user_pool_id: Option<String>,
 }
 

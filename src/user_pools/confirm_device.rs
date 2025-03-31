@@ -28,11 +28,11 @@ super::gen_response_err!(
 pub struct ConfirmDeviceRequest {
     #[validate(required)]
     #[validate(length(min = 1))]
-    #[validate(regex = "TOKEN_REGEX")]
+    #[validate(regex(path = *TOKEN_REGEX))]
     access_token: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "DEVICE_KEY_REGEX")]
+    #[validate(regex(path = *DEVICE_KEY_REGEX))]
     device_key: Option<String>,
     #[validate(length(min = 1, max = 1024))]
     device_name: Option<String>,

@@ -26,15 +26,15 @@ super::gen_response_err!(
 pub struct ChangePasswordRequest {
     #[validate(required)]
     #[validate(length(min = 1))]
-    #[validate(regex = "TOKEN_REGEX")]
+    #[validate(regex(path = *TOKEN_REGEX))]
     access_token: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 256))]
-    #[validate(regex = "PASSWORD_REGEX")]
+    #[validate(regex(path = *PASSWORD_REGEX))]
     previous_password: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 256))]
-    #[validate(regex = "PASSWORD_REGEX")]
+    #[validate(regex(path = *PASSWORD_REGEX))]
     proposed_password: Option<String>,
 }
 

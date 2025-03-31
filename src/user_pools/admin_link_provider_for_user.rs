@@ -22,9 +22,9 @@ super::gen_response_err!(
 #[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct AdminLinkProviderForUserRequest {
-    #[validate(required_nested)]
+    #[validate(nested)]
     pub destination_user: Option<super::data_types::ProviderUserIdentifierType>,
-    #[validate(required_nested)]
+    #[validate(nested)]
     pub source_user: Option<super::data_types::ProviderUserIdentifierType>,
     #[validate(required)]
     #[validate(length(min = 1))]

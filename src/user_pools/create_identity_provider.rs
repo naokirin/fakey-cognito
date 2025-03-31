@@ -58,20 +58,20 @@ super::gen_response_err!(
 pub struct CreateIdentityProviderRequest {
     pub attribute_mapping: Option<std::collections::HashMap<String, String>>,
     #[validate(length(min = 0, max = 50))]
-    #[validate(custom(function = "validate_idp_identifiers"))]
+    #[validate(custom(function = validate_idp_identifiers))]
     pub idp_identifiers: Option<Vec<String>>,
     pub provider_details: Option<std::collections::HashMap<String, String>>,
     #[validate(required)]
     #[validate(length(min = 1, max = 32))]
-    #[validate(regex = "PROVIDER_NAME_REGEX")]
+    #[validate(regex(path = *PROVIDER_NAME_REGEX))]
     pub provider_name: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1))]
-    #[validate(custom(function = "validate_provider_type"))]
+    #[validate(custom(function = validate_provider_type))]
     pub provider_type: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     pub user_pool_id: Option<String>,
 }
 

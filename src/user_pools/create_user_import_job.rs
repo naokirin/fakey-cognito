@@ -27,15 +27,15 @@ super::gen_response_err!(
 pub struct CreateUserImportJobRequest {
     #[validate(required)]
     #[validate(length(min = 20, max = 2048))]
-    #[validate(regex = "ARN_REGEX")]
+    #[validate(regex(path = *ARN_REGEX))]
     pub cloud_watch_logs_role_arn: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 128))]
-    #[validate(regex = "JOB_NAME_REGEX")]
+    #[validate(regex(path = *JOB_NAME_REGEX))]
     pub job_name: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     pub user_pool_id: Option<String>,
 }
 
