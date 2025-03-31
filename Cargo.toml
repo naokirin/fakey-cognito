@@ -23,7 +23,7 @@ hyper = "1.6"
 strum = "0.27"
 strum_macros = "0.27"
 once_cell = "1.19"
-pyo3 = { version = "0.20", features = ["auto-initialize"] }
+pyo3 = { version = "0.24.1", features = ["auto-initialize"] }
 heck = "0.5"
 validator = { version = "0.20", features = ["derive"] }
 regex = "1.10"
