@@ -1,6 +1,5 @@
 use heck::AsSnakeCase;
 use pyo3::prelude::*;
-use pyo3::types::PyList;
 use std::path::Path;
 
 const DEFAULT_HOOK_DIR_PATH: &str = "hooks";
@@ -21,8 +20,8 @@ where
     }
 
     Python::with_gil(|py| {
-        let syspath: &PyList = pyo3::PyTryInto::try_into(py.import("sys")?.getattr("path")?)?;
-        syspath.insert(0, dir)?;
+        let syspath = py.import("sys")?.getattr("path")?;
+        syspath.call_method1("append", (dir,))?;
 
         let hook = py.import(format!("{}", &pyname).as_str())?;
         let arg = serde_json::to_string(value).unwrap_or_else(|_| "".to_string());

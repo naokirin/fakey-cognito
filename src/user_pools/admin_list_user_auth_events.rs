@@ -29,15 +29,15 @@ pub struct AdminListUserAuthEventsRequest {
     #[validate(range(min = 0, max = 60))]
     pub max_results: Option<u8>,
     #[validate(length(min = 1))]
-    #[validate(regex = "NEXT_TOKEN_REGEX")]
+    #[validate(regex(path = *NEXT_TOKEN_REGEX))]
     pub next_token: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 128))]
-    #[validate(regex = "NAME_REGEX")]
+    #[validate(regex(path = *NAME_REGEX))]
     pub username: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     pub user_pool_id: Option<String>,
 }
 

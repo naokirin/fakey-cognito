@@ -56,12 +56,12 @@ pub struct AdminRespondToAuthChallengeRequest {
     pub analytics_metadata: Option<super::data_types::AnalyticsMetadataType>,
     #[validate(required)]
     #[validate(length(min = 1))]
-    #[validate(custom(function = "validate_challenge_name"))]
+    #[validate(custom(function = validate_challenge_name))]
     pub challenge_name: Option<String>,
     pub challenge_response: Option<std::collections::HashMap<String, String>>,
     #[validate(required)]
     #[validate(length(min = 1, max = 128))]
-    #[validate(regex = "CLIENT_ID_REGEX")]
+    #[validate(regex(path = *CLIENT_ID_REGEX))]
     pub client_id: Option<String>,
     pub client_metadata: Option<std::collections::HashMap<String, String>>,
     pub context_data: Option<super::data_types::ContextDataType>,
@@ -69,7 +69,7 @@ pub struct AdminRespondToAuthChallengeRequest {
     pub session: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     pub user_pool_id: Option<String>,
 }
 

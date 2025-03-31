@@ -1,6 +1,6 @@
 use once_cell::sync::Lazy;
 use regex::Regex;
-use validator::ValidationError;
+use validator::{Validate, ValidationError};
 
 /// Custom validator for string included in a given string set
 pub fn includes(value: &str, set: Vec<&str>) -> Result<(), ValidationError> {
@@ -32,6 +32,19 @@ pub fn regex_in_array(value: &[String], re: &Lazy<Regex>) -> Result<(), Validati
 
 pub fn includes_lambda_version(value: &str) -> Result<(), ValidationError> {
     includes(value, vec!["V1_0"])
+}
+
+pub fn validate_optional_nested<T: Validate>(
+    value: &Option<Vec<T>>,
+) -> Result<(), ValidationError> {
+    value.as_ref().map_or(Ok(()), |value| {
+        for v in value.iter() {
+            if v.validate().is_err() {
+                return Err(ValidationError::new("nested validation failed"));
+            }
+        }
+        Ok(())
+    })
 }
 
 #[cfg(test)]

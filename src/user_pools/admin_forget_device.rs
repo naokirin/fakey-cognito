@@ -24,15 +24,15 @@ super::gen_response_err!(
 pub struct AdminForgetDeviceRequest {
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "DEVICE_KEY_REGEX")]
+    #[validate(regex(path = *DEVICE_KEY_REGEX))]
     pub device_key: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 128))]
-    #[validate(regex = "NAME_REGEX")]
+    #[validate(regex(path = *NAME_REGEX))]
     pub username: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     pub user_pool_id: Option<String>,
 }
 

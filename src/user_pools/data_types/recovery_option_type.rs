@@ -14,7 +14,7 @@ fn includes_valid_name(value: &str) -> Result<(), ValidationError> {
 #[serde(rename_all = "PascalCase")]
 pub struct RecoveryOptionType {
     #[validate(required)]
-    #[validate(custom(function = "includes_valid_name"))]
+    #[validate(custom(function = includes_valid_name))]
     name: Option<String>,
     #[validate(required)]
     #[validate(range(min = 1, max = 2))]

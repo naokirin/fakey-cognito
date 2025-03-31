@@ -8,6 +8,6 @@ pub struct ProviderUserIdentifierType {
     pub provider_attribute_name: Option<String>,
     pub provider_attribute_value: Option<String>,
     #[validate(length(min = 1, max = 32))]
-    #[validate(regex = "NAME_REGEX")]
+    #[validate(regex(path = *NAME_REGEX))]
     pub provider_name: Option<String>,
 }

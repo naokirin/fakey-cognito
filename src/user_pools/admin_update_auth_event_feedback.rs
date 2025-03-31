@@ -28,19 +28,19 @@ super::gen_response_err!(
 pub struct AdminUpdateAuthEventFeedbackRequest {
     #[validate(required)]
     #[validate(length(min = 1, max = 50))]
-    #[validate(regex = "EVENT_ID_REGEX")]
+    #[validate(regex(path = *EVENT_ID_REGEX))]
     pub event_id: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1))]
-    #[validate(custom(function = "validate_feedback_value"))]
+    #[validate(custom(function = validate_feedback_value))]
     pub feedback_value: Option<String>,
     #[validate(required)]
-    #[validate(length(min = 1, 128))]
-    #[validate(regex = "NAME_REGEX")]
+    #[validate(length(min = 1, max = 128))]
+    #[validate(regex(path = *NAME_REGEX))]
     pub username: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     pub user_pool_id: Option<String>,
 }
 

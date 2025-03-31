@@ -46,22 +46,22 @@ super::gen_response_err!(
 #[serde(rename_all = "PascalCase")]
 pub struct AdminCreateUserRequest {
     pub client_metadata: Option<std::collections::HashMap<String, String>>,
-    #[validate(custom(function = "validate_desired_delivery_mediums"))]
+    #[validate(custom(function = validate_desired_delivery_mediums))]
     pub desired_delivery_mediums: Option<Vec<String>>,
     pub force_alias_creation: Option<bool>,
-    #[validate(custom(function = "validate_message_action"))]
+    #[validate(custom(function = validate_message_action))]
     pub message_action: Option<String>,
     #[validate(length(max = 256))]
-    #[validate(regex = "TEMPORARY_PASSWORD_REGEX")]
+    #[validate(regex(path = *TEMPORARY_PASSWORD_REGEX))]
     pub temporary_password: Option<String>,
     pub user_attributes: Option<Vec<std::collections::HashMap<String, String>>>,
     #[validate(required)]
     #[validate(length(min = 1, max = 128))]
-    #[validate(regex = "NAME_REGEX")]
+    #[validate(regex(path = *NAME_REGEX))]
     pub username: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     pub user_pool_id: Option<String>,
     pub validation_data: Option<Vec<std::collections::HashMap<String, String>>>,
 }

@@ -12,6 +12,6 @@ pub struct ResourceServerScopeType {
     #[validate(length(min = 1, max = 256))]
     pub scope_description: Option<String>,
     #[validate(length(min = 1, max = 256))]
-    #[validate(regex = "SCOPE_NAME_REGEX")]
+    #[validate(regex(path = *SCOPE_NAME_REGEX))]
     pub scope_name: Option<String>,
 }

@@ -7,7 +7,7 @@ use validator::Validate;
 pub struct AttributeType {
     #[validate(required)]
     #[validate(length(min = 1, max = 32))]
-    #[validate(regex = "NAME_REGEX")]
+    #[validate(regex(path = *NAME_REGEX))]
     pub name: Option<String>,
     #[validate(length(max = 2048))]
     pub value: Option<String>,

@@ -60,35 +60,35 @@ super::gen_response_err!(
 pub struct CreateUserPoolRequest {
     account_recovery_setting: Option<super::data_types::AccountRecoverySettingType>,
     admin_create_user_config: Option<super::data_types::AdminCreateUserConfigType>,
-    #[validate(custom(function = "validate_alias_attributes"))]
+    #[validate(custom(function = validate_alias_attributes))]
     alias_attributes: Option<Vec<String>>,
-    #[validate(custom(function = "validate_auto_verified_attributes"))]
+    #[validate(custom(function = validate_auto_verified_attributes))]
     auto_verified_attributes: Option<Vec<String>>,
     device_configuration: Option<super::data_types::DeviceConfigurationType>,
     email_configuration: Option<super::data_types::EmailConfigurationType>,
     #[validate(length(min = 6, max = 20000))]
-    #[validate(regex = "EMAIL_VERIFICATION_MESSAGE_REGEX")]
+    #[validate(regex(path = *EMAIL_VERIFICATION_MESSAGE_REGEX))]
     email_verification_message: Option<String>,
     #[validate(length(min = 1, max = 140))]
-    #[validate(regex = "EMAIL_VERIFICATION_SUBJECT_REGEX")]
+    #[validate(regex(path = *EMAIL_VERIFICATION_SUBJECT_REGEX))]
     email_verification_subject: Option<String>,
     lambda_config: Option<super::data_types::LambdaConfigType>,
-    #[validate(custom(function = "validate_mfa_configuration"))]
+    #[validate(custom(function = validate_mfa_configuration))]
     mfa_configuration: Option<String>,
     plicies: Option<super::data_types::UserPoolPolicyType>,
     #[validate(required)]
     #[validate(length(min = 1, max = 128))]
-    #[validate(regex = "POOL_NAME_REGEX")]
+    #[validate(regex(path = *POOL_NAME_REGEX))]
     pool_name: Option<String>,
     schema: Option<Vec<super::data_types::SchemaAttributeType>>,
     #[validate(length(min = 6, max = 140))]
-    #[validate(regex = "SMS_AUTHENTICATION_MESSAGE_REGEX")]
+    #[validate(regex(path = *SMS_AUTHENTICATION_MESSAGE_REGEX))]
     sms_authentication_message: Option<String>,
     sms_configuration: Option<super::data_types::SmsConfigurationType>,
     #[validate(length(min = 6, max = 140))]
-    #[validate(regex = "SMS_VERIFICATION_MESSAGE_REGEX")]
+    #[validate(regex(path = *SMS_VERIFICATION_MESSAGE_REGEX))]
     sms_verification_message: Option<String>,
-    #[validate(custom(function = "validate_username_attributes"))]
+    #[validate(custom(function = validate_username_attributes))]
     username_attributes: Option<Vec<String>>,
     username_configuration: Option<super::data_types::UsernameConfigurationType>,
     user_pool_add_ons: Option<super::data_types::UserPoolAddOnsType>,

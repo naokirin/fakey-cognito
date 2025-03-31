@@ -26,16 +26,16 @@ super::gen_response_err!(
 pub struct AdminSetUserPasswordRequest {
     #[validate(required)]
     #[validate(length(min = 1, max = 256))]
-    #[validate(regex = "PASSWORD_REGEX")]
+    #[validate(regex(path = *PASSWORD_REGEX))]
     pub password: Option<String>,
     pub permanent: Option<bool>,
     #[validate(required)]
     #[validate(length(min = 1, max = 128))]
-    #[validate(regex = "NAME_REGEX")]
+    #[validate(regex(path = *NAME_REGEX))]
     pub username: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     pub user_pool_id: Option<String>,
 }
 

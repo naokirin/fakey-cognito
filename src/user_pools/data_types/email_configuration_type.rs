@@ -16,14 +16,14 @@ fn includes_email_sending_account(value: &str) -> Result<(), ValidationError> {
 #[serde(rename_all = "PascalCase")]
 pub struct EmailConfigurationType {
     #[validate(length(min = 1, max = 64))]
-    #[validate(regex = "CONFIGURATION_SET_REGEX")]
+    #[validate(regex(path = *CONFIGURATION_SET_REGEX))]
     configuration_set: Option<String>,
-    #[validate(custom(function = "includes_email_sending_account"))]
+    #[validate(custom(function = includes_email_sending_account))]
     email_sending_account: Option<String>,
     from: Option<String>,
-    #[validate(regex = "EMAIL_REGEX")]
+    #[validate(regex(path = *EMAIL_REGEX))]
     reply_to_email_address: Option<String>,
     #[validate(length(min = 20, max = 2048))]
-    #[validate(regex = "ARN_REGEX")]
+    #[validate(regex(path = *ARN_REGEX))]
     source_arn: Option<String>,
 }

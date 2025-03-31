@@ -20,7 +20,7 @@ super::gen_response_err!(
 #[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct AssociateSoftwareTokenRequest {
-    #[validate(regex = "TOKEN_REGEX")]
+    #[validate(regex(path = *TOKEN_REGEX))]
     access_token: Option<String>,
     #[validate(length(min = 20, max = 2048))]
     session: Option<String>,

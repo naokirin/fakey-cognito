@@ -5,7 +5,7 @@ use validator::Validate;
 #[serde(rename_all = "PascalCase")]
 pub struct ContextDataType {
     pub encoded_data: Option<String>,
-    #[validate]
+    #[validate(nested)]
     #[validate(required)]
     pub http_headers: Option<Vec<super::HttpHeader>>,
     #[validate(required)]

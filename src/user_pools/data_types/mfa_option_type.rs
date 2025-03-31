@@ -11,8 +11,8 @@ fn includes_delivery_medium(value: &str) -> Result<(), ValidationError> {
 #[serde(rename_all = "PascalCase")]
 pub struct MFAOptionType {
     #[validate(length(min = 1, max = 32))]
-    #[validate(regex = "NAME_REGEX")]
+    #[validate(regex(path = *NAME_REGEX))]
     attribute_name: Option<String>,
-    #[validate(custom(function = "includes_delivery_medium"))]
+    #[validate(custom(function = includes_delivery_medium))]
     delivery_medium: Option<String>,
 }

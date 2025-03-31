@@ -28,17 +28,17 @@ super::gen_response_err!(
 pub struct CreateResourceServerRequest {
     #[validate(required)]
     #[validate(length(min = 1, max = 256))]
-    #[validate(regex = "IDENTIFIER_REGEX")]
+    #[validate(regex(path = *IDENTIFIER_REGEX))]
     pub identifier: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 256))]
-    #[validate(regex = "NAME_REGEX")]
+    #[validate(regex(path = *NAME_REGEX))]
     pub name: Option<String>,
     #[validate(length(max = 100))]
     pub scopes: Option<Vec<super::data_types::ResourceServerScopeType>>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     pub user_pool_id: Option<String>,
 }
 

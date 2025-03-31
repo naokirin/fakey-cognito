@@ -7,6 +7,6 @@ use validator::Validate;
 pub struct SmsConfigurationType {
     external_id: Option<String>,
     #[validate(length(min = 20, max = 2048))]
-    #[validate(regex = "ARN_REGEX")]
+    #[validate(regex(path = *ARN_REGEX))]
     sns_caller_arn: Option<String>,
 }

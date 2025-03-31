@@ -32,24 +32,24 @@ pub struct ConfirmForgotPasswordRequest {
     pub analytics_metadata: Option<super::data_types::AnalyticsMetadataType>,
     #[validate(required)]
     #[validate(length(min = 1, max = 128))]
-    #[validate(regex = "CLIENT_ID_REGEX")]
+    #[validate(regex(path = *CLIENT_ID_REGEX))]
     pub client_id: Option<String>,
     pub client_metadata: Option<std::collections::HashMap<String, String>>,
     #[validate(required)]
     #[validate(length(min = 1, max = 2048))]
-    #[validate(regex = "CODE_REGEX")]
+    #[validate(regex(path = *CODE_REGEX))]
     pub confirmation_code: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 256))]
-    #[validate(regex = "PASSWORD_REGEX")]
+    #[validate(regex(path = *PASSWORD_REGEX))]
     pub password: Option<String>,
     #[validate(length(min = 1, max = 128))]
-    #[validate(regex = "HASH_REGEX")]
+    #[validate(regex(path = *HASH_REGEX))]
     pub secret_hash: Option<String>,
     pub user_context_data: Option<super::data_types::UserContextDataType>,
     #[validate(required)]
-    #[validate(length(min = 1, 128))]
-    #[validate(regex = "NAME_REGEX")]
+    #[validate(length(min = 1, max = 128))]
+    #[validate(regex(path = *NAME_REGEX))]
     pub username: Option<String>,
 }
 

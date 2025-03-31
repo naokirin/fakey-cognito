@@ -21,13 +21,13 @@ super::gen_response_err!(
 #[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct AddCustomAttributesRequest {
-    #[validate]
+    #[validate(nested)]
     #[validate(required)]
     #[validate(length(min = 1, max = 25))]
     pub custom_attributes: Option<Vec<super::data_types::SchemaAttributeType>>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     pub user_pool_id: Option<String>,
 }
 

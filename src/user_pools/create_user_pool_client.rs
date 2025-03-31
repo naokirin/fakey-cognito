@@ -74,29 +74,29 @@ pub struct CreateUserPoolClientRequest {
     access_token_validity: Option<i64>,
     #[serde(rename = "AllowedOAuthFlows")]
     #[validate(length(min = 0, max = 3))]
-    #[validate(custom(function = "validate_allowed_oauth_flows"))]
+    #[validate(custom(function = validate_allowed_oauth_flows))]
     allowed_oatuh_flows: Option<Vec<String>>,
     #[serde(rename = "AllowedOAuthFlowsUserPoolClient")]
     allowed_oauth_flows_user_pool_client: Option<bool>,
     #[serde(rename = "AllowedOAuthScopes")]
     #[validate(length(max = 50))]
-    #[validate(custom(function = "validate_allowed_oauth_scopes"))]
+    #[validate(custom(function = validate_allowed_oauth_scopes))]
     allowed_oauth_scopes: Option<Vec<String>>,
     analytics_configuration: Option<super::data_types::AnalyticsConfigurationType>,
     #[serde(rename = "CallbackURLs")]
     #[validate(length(min = 0, max = 100))]
-    #[validate(custom(function = "validate_urls"))]
+    #[validate(custom(function = validate_urls))]
     callback_urls: Option<Vec<String>>,
     #[validate(required)]
     #[validate(length(min = 1))]
-    #[validate(regex = "CLIENT_NAME_REGEX")]
+    #[validate(regex(path = *CLIENT_NAME_REGEX))]
     client_name: Option<String>,
     #[serde(rename = "DefaultRedirectURI")]
     #[validate(length(min = 1, max = 1024))]
-    #[validate(regex = "URL_REGEX")]
+    #[validate(regex(path = *URL_REGEX))]
     default_redirect_uri: Option<String>,
     enable_token_revocation: Option<bool>,
-    #[validate(custom(function = "validate_explicit_oauth_flows"))]
+    #[validate(custom(function = validate_explicit_oauth_flows))]
     explicit_auth_flows: Option<Vec<String>>,
     generate_secret: Option<bool>,
     #[validate(range(min = 1, max = 86400))]
@@ -105,19 +105,19 @@ pub struct CreateUserPoolClientRequest {
     #[validate(length(min = 1, max = 100))]
     #[validate(custom(function = "validate_urls"))]
     logout_urls: Option<Vec<String>>,
-    #[validate(custom(function = "validate_prevent_user_extence_errors"))]
+    #[validate(custom(function = validate_prevent_user_extence_errors))]
     prevent_user_existence_errors: Option<String>,
     #[validate(length(min = 1, max = 2048))]
     read_attributes: Option<Vec<String>>,
     #[validate(range(min = 0, max = 315360000))]
     refresh_token_validity: Option<i64>,
     #[validate(length(min = 1, max = 32))]
-    #[validate(custom(function = "validate_supported_identity_providers"))]
+    #[validate(custom(function = validate_supported_identity_providers))]
     supported_identity_providers: Option<Vec<String>>,
     token_validity_units: Option<super::data_types::TokenValidityUnitsType>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     user_pool_id: Option<String>,
     #[validate(length(min = 1, max = 2048))]
     write_attributes: Option<Vec<String>>,

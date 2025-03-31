@@ -9,6 +9,6 @@ static DEVICE_KEY_REGEX: Lazy<Regex> = Lazy::new(|| Regex::new(r"[\w-]+_[0-9a-f-
 #[serde(rename_all = "PascalCase")]
 pub struct NumberAttributeConstraintsType {
     max_value: Option<String>,
-    #[validate(regex = "DEVICE_KEY_REGEX")]
+    #[validate(regex(path = *DEVICE_KEY_REGEX))]
     min_value: Option<String>,
 }

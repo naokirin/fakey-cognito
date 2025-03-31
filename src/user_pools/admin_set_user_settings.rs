@@ -35,11 +35,11 @@ pub struct AdminSetUserSettingsRequest {
     pub mfa_options: Option<Vec<super::data_types::MFAOptionType>>,
     #[validate(required)]
     #[validate(length(min = 1, max = 128))]
-    #[validate(regex = "NAME_REGEX")]
+    #[validate(regex(path = *NAME_REGEX))]
     pub username: Option<String>,
     #[validate(required)]
     #[validate(length(min = 1, max = 55))]
-    #[validate(regex = "USER_POOL_ID_REGEX")]
+    #[validate(regex(path = *USER_POOL_ID_REGEX))]
     pub user_pool_id: Option<String>,
 }
 

@@ -8,9 +8,9 @@ use validator::Validate;
 pub struct CustomSMSLambdaVersionConfigType {
     #[validate(required)]
     #[validate(length(min = 20, max = 2048))]
-    #[validate(regex = "ARN_REGEX")]
+    #[validate(regex(path = *ARN_REGEX))]
     lambda_arn: Option<String>,
     #[validate(required)]
-    #[validate(custom(function = "includes_lambda_version"))]
+    #[validate(custom(function = includes_lambda_version))]
     lambda_version: Option<String>,
 }

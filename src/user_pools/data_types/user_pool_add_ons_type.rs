@@ -9,6 +9,6 @@ fn includes_valid_advanced_secure_mode(value: &str) -> Result<(), ValidationErro
 #[derive(Serialize, Deserialize, Debug, Default, Validate)]
 #[serde(rename_all = "PascalCase")]
 pub struct UserPoolAddOnsType {
-    #[validate(custom(function = "includes_valid_advanced_secure_mode"))]
+    #[validate(custom(function = includes_valid_advanced_secure_mode))]
     advanced_security_mode: Option<String>,
 }
